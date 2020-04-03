@@ -16,8 +16,8 @@ type ProjectDetailPageProps = {} & RouteComponentProps<{ uuid: string }>;
 
 type ProjectDetailPageState = {
   name: string;
-  created_at: string;
-  created_user: string;
+  createdAt: string;
+  createdUser: string;
   recruiting: boolean;
   introduction: string;
 
@@ -27,13 +27,13 @@ type ProjectDetailPageState = {
 
   favs: number;
 
-  is_loaded: boolean;
+  isLoaded: boolean;
 };
 
 const favIconStyle = {
   marginLeft: "1em",
   fontSize: "90%",
-  verticalAlign: "middle",
+  verticalAlign: "middle"
 };
 
 class ProjectDetailPage extends React.Component<
@@ -44,15 +44,15 @@ class ProjectDetailPage extends React.Component<
     super(props);
     this.state = {
       name: "",
-      created_at: "",
-      created_user: "",
+      createdAt: "",
+      createdUser: "",
       recruiting: true,
       introduction: "",
       sites: [[]],
       tags: [],
       member: [],
       favs: 0,
-      is_loaded: false,
+      isLoaded: false
     };
   }
 
@@ -60,28 +60,28 @@ class ProjectDetailPage extends React.Component<
     // TODO: ここでAPIをぶっ叩く
     this.setState({
       name: this.props.match.params.uuid + "というUUIDを持つプロジェクト",
-      created_at: "2020/04/02",
-      created_user: "ichiyo",
+      createdAt: "2020/04/02",
+      createdUser: "ichiyo",
       introduction:
         "バックのつよつよムーブが完了するとここがプロジェクトに基づいたものになります",
       sites: [
         ["GitHub", "https://github.com/"],
-        ["Twitter", "https://twitter.com/"],
+        ["Twitter", "https://twitter.com/"]
       ],
       tags: ["1", "2", "3", "4", "5"],
       member: ["haracho", "meme", "birb"],
       favs: 100,
       recruiting: true,
-      is_loaded: true,
+      isLoaded: true
     });
 
     this.setState({
-      name: "【React】Webサービス フロンドエンド",
+      name: "【React】Webサービス フロンドエンド"
     });
   }
 
   render() {
-    if (!this.state.is_loaded) {
+    if (!this.state.isLoaded) {
       return <Loading />;
     }
 
@@ -117,7 +117,7 @@ class ProjectDetailPage extends React.Component<
         <div className="pdetail-content">
           <div className="pdetail-introduction">
             <div className="pdetail-property">
-              {this.state.created_at} 作成
+              {this.state.createdAt} 作成
               <Icons.Favorite style={favIconStyle} />
               {this.state.favs}
             </div>
@@ -129,7 +129,7 @@ class ProjectDetailPage extends React.Component<
               {joinButton}
 
               <h3>プロジェクト作成者</h3>
-              <Avater uuid={this.state.created_user} />
+              <Avater uuid={this.state.createdUser} />
 
               <h3>タグ</h3>
               {this.state.tags.map((tag, index) => (

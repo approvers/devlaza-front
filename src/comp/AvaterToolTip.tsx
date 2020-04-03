@@ -8,7 +8,7 @@ type AvaterToolTipState = {
   name: string;
   id: string;
   picurl: string;
-  is_loaded: boolean;
+  isLoaded: boolean;
 };
 
 class AvaterToolTip extends React.Component<
@@ -21,7 +21,7 @@ class AvaterToolTip extends React.Component<
       name: "",
       id: "",
       picurl: "",
-      is_loaded: false,
+      isLoaded: false
     };
   }
 
@@ -31,12 +31,12 @@ class AvaterToolTip extends React.Component<
       name: this.props.uuid + "＠限界開発鯖",
       id: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      is_loaded: true,
+      isLoaded: true
     });
   }
 
   render() {
-    if (!this.state.is_loaded) {
+    if (!this.state.isLoaded) {
       return <></>;
     }
 

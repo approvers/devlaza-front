@@ -15,12 +15,12 @@ type AvaterProps = {
 type AvaterState = {
   name: string;
   picurl: string;
-  is_loaded: boolean;
+  isLoaded: boolean;
 };
 
 class Avater extends React.Component<AvaterProps, AvaterState> {
   static defaultProps = {
-    hiddenName: false,
+    hiddenName: false
   };
 
   constructor(props: AvaterProps) {
@@ -28,7 +28,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.state = {
       name: "",
       picurl: "",
-      is_loaded: false,
+      isLoaded: false
     };
   }
 
@@ -37,12 +37,12 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.setState({
       name: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      is_loaded: true,
+      isLoaded: true
     });
   }
 
   render() {
-    if (!this.state.is_loaded) {
+    if (!this.state.isLoaded) {
       return <></>;
     }
 
