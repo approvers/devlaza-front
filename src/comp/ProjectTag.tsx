@@ -1,33 +1,26 @@
-import * as React from "react"
-import "./ProjectTag.css"
+import * as React from "react";
+import "./ProjectTag.css";
 
 export type ProjectTagProp = {
-	tag_id: string
-}
+  tag_id: string;
+};
 
 type ProjectTagState = {
-	name: string
-}
+  name: string;
+};
 
 class ProjectTag extends React.Component<ProjectTagProp, ProjectTagState> {
+  constructor(props: ProjectTagProp) {
+    super(props);
 
-	constructor(props: ProjectTagProp){
-		super(props);
+    this.state = {
+      name: "タグ: " + this.props.tag_id,
+    };
+  }
 
-		this.state = {
-			name: "タグ: " + this.props.tag_id
-		}
-
-	}
-
-	render() {
-		return (
-			<div className="ptag-wrapper">
-				{this.state.name}
-			</div>
-		)
-	}
-
+  render() {
+    return <div className="ptag-wrapper">{this.state.name}</div>;
+  }
 }
 
-export default ProjectTag
+export default ProjectTag;
