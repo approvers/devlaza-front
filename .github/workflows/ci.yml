@@ -25,6 +25,15 @@ jobs:
           gem install bundler
           bundle install
 
+      - name: Fetch cache
+        uses: action/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.ref }}
+            ${{ runner.os }}
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
