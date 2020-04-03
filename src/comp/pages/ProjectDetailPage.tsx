@@ -33,7 +33,7 @@ type ProjectDetailPageState = {
 const favIconStyle = {
   marginLeft: "1em",
   fontSize: "90%",
-  verticalAlign: "middle"
+  verticalAlign: "middle",
 };
 
 class ProjectDetailPage extends React.Component<
@@ -52,7 +52,7 @@ class ProjectDetailPage extends React.Component<
       tags: [],
       member: [],
       favs: 0,
-      isLoaded: false
+      isLoaded: false,
     };
   }
 
@@ -66,17 +66,17 @@ class ProjectDetailPage extends React.Component<
         "バックのつよつよムーブが完了するとここがプロジェクトに基づいたものになります",
       sites: [
         ["GitHub", "https://github.com/"],
-        ["Twitter", "https://twitter.com/"]
+        ["Twitter", "https://twitter.com/"],
       ],
       tags: ["1", "2", "3", "4", "5"],
       member: ["haracho", "meme", "birb"],
       favs: 100,
       recruiting: true,
-      isLoaded: true
+      isLoaded: true,
     });
 
     this.setState({
-      name: "【React】Webサービス フロンドエンド"
+      name: "【React】Webサービス フロンドエンド",
     });
   }
 

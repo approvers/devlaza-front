@@ -20,7 +20,7 @@ type AvaterState = {
 
 class Avater extends React.Component<AvaterProps, AvaterState> {
   static defaultProps = {
-    hiddenName: false
+    hiddenName: false,
   };
 
   constructor(props: AvaterProps) {
@@ -28,7 +28,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.state = {
       name: "",
       picurl: "",
-      isLoaded: false
+      isLoaded: false,
     };
   }
 
@@ -37,7 +37,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.setState({
       name: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      isLoaded: true
+      isLoaded: true,
     });
   }
 

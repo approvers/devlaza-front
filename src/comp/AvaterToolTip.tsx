@@ -21,7 +21,7 @@ class AvaterToolTip extends React.Component<
       name: "",
       id: "",
       picurl: "",
-      isLoaded: false
+      isLoaded: false,
     };
   }
 
@@ -31,7 +31,7 @@ class AvaterToolTip extends React.Component<
       name: this.props.uuid + "＠限界開発鯖",
       id: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      isLoaded: true
+      isLoaded: true,
     });
   }
 
