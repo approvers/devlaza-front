@@ -6,4 +6,4 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 # gem "rails"
 gem 'danger'
-gem 'danger-eslint'
+gem 'danger-eslint', git: 'git@github.com:kawaemon/danger-eslint.git', branch: 'master'
