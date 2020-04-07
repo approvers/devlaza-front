@@ -37,10 +37,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run linter
-        run: yarn lint
+      - name: Try to make optimized production build
+        run: yarn build
 
-      - name: Run Danger
+      - name: Run Danger (lint)
         run: bundle exec danger
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
