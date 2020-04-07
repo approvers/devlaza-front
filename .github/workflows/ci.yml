@@ -9,21 +9,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.6'
-          architecture: 'x64'
-
       - name: Setup Node.js 13.12.0
         uses: actions/setup-node@v1
         with:
           node-version: 13.12.0
-
-      - name: Setup Danger
-        run: |
-          gem install bundler
-          bundle install
 
       - name: Fetch cache
         uses: actions/cache@v1
@@ -37,11 +26,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Try to create optimized production build
+      - name: Build
         run: yarn build
 
-      - name: Run Danger (lint)
-        run: bundle exec danger
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run linter
+        run: yarn lint
 
