@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Try to make optimized production build
+      - name: Try to create optimized production build
         run: yarn build
 
       - name: Run Danger (lint)
