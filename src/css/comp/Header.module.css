@@ -1,0 +1,128 @@
+/* ヘッダー用のCSS */
+.header_contents_box,
+.header_button_wrapper,
+.header_search {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  width: 100vw;
+  box-sizing: border-box;
+  position: relative;
+  -ms-user-select: none; /* IE 10+ */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.header_contents_box {
+  position: relative;
+  z-index: 2;
+  background-color: #6094c4;
+}
+
+.header_logo {
+  display: inline-block;
+  padding: 0 2rem;
+  color: #eeeeee;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.header_search {
+  margin: 0.6rem 0.7rem;
+}
+
+.header_search_text input {
+  box-sizing: border-box;
+  height: 2.1rem;
+  padding: 0 1rem;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  color: #333333;
+  background-color: #fff3;
+  transition: all 0.25s;
+}
+
+.header_search_text input:hover,
+.header_search_text input:focus {
+  background-color: #fff5;
+}
+
+.header_search_btn {
+  display: inline-block;
+  color: #333333;
+}
+
+.header_search_btn:hover {
+  color: #a0c4f4;
+}
+
+.header_button_wrapper {
+  margin-left: 1rem;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #70a4d4;
+}
+
+.header_btn {
+  height: 100%;
+  text-align: center;
+  transition: all 0.25s;
+}
+
+.new_regist {
+  font-size: 130%;
+  font-weight: bold;
+}
+
+.menuIcon {
+  position: relative;
+  color: #fff;
+  z-index: 3;
+}
+
+@media screen and (max-width: 970px) {
+  .header_contents_box {
+    width: 100%;
+  }
+  .paper {
+    width: 14rem;
+  }
+  .header_button_wrapper {
+    height: auto;
+    margin-top: 3rem;
+    text-align: left;
+    width: 100%;
+    flex-direction: column;
+    background-color: #fff;
+  }
+  .header_button_wrapper .header_btn:first-of-type {
+    border-top: 1px solid #4084b4;
+  }
+  .header_logo {
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .header_search_text input {
+    border: 1px solid #4084b4;
+  }
+  .header_button_wrapper {
+    margin-top: 2rem;
+  }
+  .header_search_text input:hover,
+  .header_search_text input:focus {
+    background-color: #4084b433;
+  }
+  .header_search {
+    margin: 0.6rem;
+  }
+}

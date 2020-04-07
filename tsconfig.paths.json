@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "css/*.module.css": ["@types/*.module.css"],
+      "css/comp/*.module.css": ["@types/comp/*.module.css"],
+      "css/comp/pages/*.module.css": ["@types/comp/pages/*.module.css"]
+    }
+  }
+}

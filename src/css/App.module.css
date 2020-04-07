@@ -1,0 +1,25 @@
+.App {
+  font-family: Roboto, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka,
+    メイリオ, Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app_content_wrapper {
+  box-sizing: border-box;
+  display: block;
+  padding: 5vh 4vw;
+}
+
+.footerPosition {
+  width: 100vw;
+  margin-top: auto;
+}
+
+@media screen and (max-width: 550px) {
+  .app_content_wrapper {
+    padding: 2vh 4vw;
+    font-size: 1rem;
+  }
+}

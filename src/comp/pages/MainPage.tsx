@@ -1,5 +1,5 @@
 import * as React from "react";
-import "../../css/comp/pages/MainPage.css";
+import * as styles from "css/comp/pages/MainPage.module.css";
 
 import { PersonAdd, AccountCircle } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
@@ -7,22 +7,28 @@ import { Button } from "@material-ui/core";
 class MainPage extends React.Component {
   render() {
     return (
-      <div className="mainpage-wrapper">
-        <div className="mainpage-title">Devlaza</div>
-        <div className="mainpage-catchcopy">
+      <div className={styles.mainpage_wrapper}>
+        <div className={styles.mainpage_title}>Devlaza</div>
+        <div className={styles.mainpage_catchcopy}>
           「Devlaza」はすべての開発者のためのコミュニティーです。
           <br />
           あなたの開発欲をプロジェクトにぶつけてみませんか？
         </div>
-        <div className="mainpage-buttons">
-          <div className="mainpage-button-wrapper">
-            <Button variant="contained" size="large" startIcon={<PersonAdd />}>
+        <div className={styles.mainpage_buttons}>
+          <div className={styles.mainpage_button_wrapper}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              startIcon={<PersonAdd />}
+            >
               新規登録
             </Button>
           </div>
-          <div className="mainpage-button-wrapper">
+          <div className={styles.mainpage_button_wrapper}>
             <Button
-              variant="contained"
+              color="default"
+              variant="outlined"
               size="large"
               startIcon={<AccountCircle />}
             >
@@ -30,7 +36,7 @@ class MainPage extends React.Component {
             </Button>
           </div>
         </div>
-        <div className="mainpage-regist"></div>
+        {/* <div className={styles.mainpage_regist}></div> */}
       </div>
     );
   }

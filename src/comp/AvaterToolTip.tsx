@@ -1,5 +1,5 @@
 import * as React from "react";
-import "../css/comp/AvaterToolTip.css";
+import * as styles from "css/comp/AvaterToolTip.module.css";
 type AvaterToolTipProps = {
   uuid: string;
 };
@@ -21,7 +21,7 @@ class AvaterToolTip extends React.Component<
       name: "",
       id: "",
       picurl: "",
-      is_loaded: false
+      is_loaded: false,
     };
   }
 
@@ -31,7 +31,7 @@ class AvaterToolTip extends React.Component<
       name: this.props.uuid + "＠限界開発鯖",
       id: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      is_loaded: true
+      is_loaded: true,
     });
   }
 
@@ -41,17 +41,17 @@ class AvaterToolTip extends React.Component<
     }
 
     return (
-      <div className="avatertt-wrapper">
-        <span className="avatertt-pic">
+      <div className={styles.avatertt_wrapper}>
+        <span className={styles.avatertt_pic}>
           <img
             src={this.state.picurl}
             alt={`${this.state.name}'s icon`}
             height="48"
           />
         </span>
-        <div className="avatertt-name-wrapper">
-          <div className="avatertt-name">{this.state.name}</div>
-          <div className="avatertt-id">@{this.state.id}</div>
+        <div>
+          <div className={styles.avatertt_name}>{this.state.name}</div>
+          <div className={styles.avatertt_id}>@{this.state.id}</div>
         </div>
       </div>
     );

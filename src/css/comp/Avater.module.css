@@ -1,0 +1,14 @@
+.avater_wrapper {
+  position: relative;
+  margin: 3px;
+}
+
+.avater_pic {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.avater_name {
+  font-size: 16px;
+  font-family: monospace;
+}

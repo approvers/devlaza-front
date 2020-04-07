@@ -1,5 +1,5 @@
 import * as React from "react";
-import "../css/comp/Avater.css";
+import * as styles from "css/comp/Avater.module.css";
 
 import AvaterToolTip from "./AvaterToolTip";
 
@@ -20,7 +20,7 @@ type AvaterState = {
 
 class Avater extends React.Component<AvaterProps, AvaterState> {
   static defaultProps = {
-    hiddenName: false
+    hiddenName: false,
   };
 
   constructor(props: AvaterProps) {
@@ -28,7 +28,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.state = {
       name: "",
       picurl: "",
-      is_loaded: false
+      is_loaded: false,
     };
   }
 
@@ -37,7 +37,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     this.setState({
       name: this.props.uuid,
       picurl: `${process.env.PUBLIC_URL}/higuchi.png`,
-      is_loaded: true
+      is_loaded: true,
     });
   }
 
@@ -49,7 +49,9 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
     var nameElement = <></>;
 
     if (!this.props.hiddenName) {
-      nameElement = <span className="avater-name">{this.state.name}</span>;
+      nameElement = (
+        <span className={styles.avater_name}>{this.state.name}</span>
+      );
     }
 
     return (
@@ -61,8 +63,8 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
         interactive={true}
         theme="light"
       >
-        <span className="avater-wrapper">
-          <span className="avater-pic">
+        <span className={styles.avater_wrapper}>
+          <span className={styles.avater_pic}>
             <img
               src={this.state.picurl}
               alt={`${this.state.name}'s icon`}
