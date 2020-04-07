@@ -1,11 +1,11 @@
 import * as React from "react";
-import "./ProjectDetailPage.css";
+import * as styles from "css/comp/pages/ProjectDetailPage.module.css";
 
 import { RouteComponentProps } from "react-router-dom";
 
-import * as MaterialUI from "@material-ui/core";
+import { Button, Link, Divider } from "@material-ui/core";
 
-import * as Icons from "@material-ui/icons";
+import { PostAdd, Favorite } from "@material-ui/icons";
 import Loading from "../Loading";
 import Avater from "../Avater";
 import ProjectTag from "../ProjectTag";
@@ -85,75 +85,84 @@ class ProjectDetailPage extends React.Component<
       return <Loading />;
     }
 
-    let joinButton = (
-      <MaterialUI.Button
-        variant="contained"
-        size="large"
-        disabled
-        startIcon={<Icons.PostAdd />}
-      >
+    var joinButton = (
+      <Button variant="contained" size="large" disabled startIcon={<PostAdd />}>
         未募集
-      </MaterialUI.Button>
+      </Button>
     );
 
     if (this.state.recruiting) {
       joinButton = (
-        <MaterialUI.Button
+        <Button
           variant="contained"
           size="large"
-          color="primary"
-          startIcon={<Icons.PostAdd />}
+          color="secondary"
+          startIcon={<PostAdd />}
         >
           参加申込
-        </MaterialUI.Button>
+        </Button>
       );
     }
 
     return (
-      <>
-        <div className="pdetail-name-wrapper">
-          <div className="pdetail-name">{this.state.name}</div>
-        </div>
-        <div className="pdetail-content">
-          <div className="pdetail-introduction">
-            <div className="pdetail-property">
+      <React.Fragment>
+        <h1 className={styles.pdetail_name}>{this.state.name}</h1>
+        <Divider />
+        <div className={styles.pdetail_content}>
+          <div className={styles.pdetail_introduction}>
+            <div className={styles.pdetail_property}>
               {this.state.createdAt} 作成
-              <Icons.Favorite style={favIconStyle} />
+              <Favorite style={favIconStyle} />
               {this.state.favs}
             </div>
             {this.state.introduction}
           </div>
-          <div className="pdetail-property-wrapper">
-            <div className="pdetail-name-join">
-              <h3>参加を申し込む</h3>
+          <Divider orientation="vertical" flexItem />
+          <div className={styles.pdetail_property_wrapper}>
+            <h3>参加を申し込む</h3>
+            <Divider light />
+            <div className={styles.contents_wrapper + " " + styles.join_button}>
               {joinButton}
-
-              <h3>プロジェクト作成者</h3>
+            </div>
+            <h3>プロジェクト作成者</h3>
+            <Divider light />
+            <div className={styles.contents_wrapper}>
               <Avater uuid={this.state.createdUser} />
+            </div>
 
-              <h3>タグ</h3>
+            <h3>タグ</h3>
+            <Divider light />
+            <div className={styles.contents_wrapper}>
               {this.state.tags.map((tag, index) => (
                 <ProjectTag tag_id={tag} key={index} />
               ))}
+            </div>
 
-              <h3>参加者</h3>
+            <h3>参加者</h3>
+            <Divider light />
+            <div className={styles.contents_wrapper}>
               {this.state.member.map((people, index) => (
                 <Avater uuid={people} key={index} hiddenName />
               ))}
+            </div>
 
-              <h3>関連サイト</h3>
+            <h3>関連サイト</h3>
+            <Divider light />
+            <div className={styles.contents_wrapper}>
               {this.state.sites.map((site, index) => (
                 <div key={index}>
-                  <div className="pdetail-site-title">{site[0]}</div>
-                  <div className="pdetail-site-url">
-                    <a href={site[1]}>{site[1]}</a>
+                  <div className={styles.pdetail_site_title}>{site[0]}</div>
+                  <div className={styles.pdetail_site_url}>
+                    <Link color="secondary" href={site[1]}>
+                      {site[1]}
+                    </Link>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </>
+      </React.Fragment>
     );
   }
 }

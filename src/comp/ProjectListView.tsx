@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./ProjectListView.css";
+import * as styles from "css/comp/ProjectListView.module.css";
 
 import ProjectTag from "./ProjectTag";
 
@@ -12,14 +12,14 @@ export type ProjectListViewProp = {
 class ProjectListView extends React.Component<ProjectListViewProp, {}> {
   render() {
     return (
-      <div className="plv-wrapper">
-        <div className="plv-title">{this.props.name}</div>
-        <div className="plv-tags">
+      <div className={styles.plv_wrapper}>
+        <div className={styles.plv_title}>{this.props.name}</div>
+        <div className={styles.plv_tags}>
           {this.props.tag_id.map((id: string) => (
             <ProjectTag tag_id={id} />
           ))}
         </div>
-        <hr className="plv-hr" />
+        <hr className={styles.plv_hr} />
         {this.props.summary}
       </div>
     );

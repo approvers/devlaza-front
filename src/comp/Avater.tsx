@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Avater.css";
+import * as styles from "css/comp/Avater.module.css";
 
 import AvaterToolTip from "./AvaterToolTip";
 
@@ -46,10 +46,12 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
       return <></>;
     }
 
-    let nameElement = <></>;
+    var nameElement = <></>;
 
     if (!this.props.hiddenName) {
-      nameElement = <span className="avater-name">{this.state.name}</span>;
+      nameElement = (
+        <span className={styles.avater_name}>{this.state.name}</span>
+      );
     }
 
     return (
@@ -61,8 +63,8 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
         interactive={true}
         theme="light"
       >
-        <span className="avater-wrapper">
-          <span className="avater-pic">
+        <span className={styles.avater_wrapper}>
+          <span className={styles.avater_pic}>
             <img
               src={this.state.picurl}
               alt={`${this.state.name}'s icon`}

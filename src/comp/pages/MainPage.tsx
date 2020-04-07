@@ -1,40 +1,41 @@
 import * as React from "react";
-import "./MainPage.css";
+import * as styles from "css/comp/pages/MainPage.module.css";
 
-import * as Icons from "@material-ui/icons";
-import * as MaterialUI from "@material-ui/core";
+import { PersonAdd, AccountCircle } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
 
 class MainPage extends React.Component {
   render() {
     return (
-      <div className="mainpage-wrapper">
-        <div className="mainpage-title">Devlaza</div>
-        <div className="mainpage-catchcopy">
+      <div className={styles.mainpage_wrapper}>
+        <div className={styles.mainpage_title}>Devlaza</div>
+        <div className={styles.mainpage_catchcopy}>
           「Devlaza」はすべての開発者のためのコミュニティーです。
           <br />
           あなたの開発欲をプロジェクトにぶつけてみませんか？
         </div>
-        <div className="mainpage-buttons">
-          <div className="mainpage-button-wrapper">
-            <MaterialUI.Button
+        <div className={styles.mainpage_buttons}>
+          <div className={styles.mainpage_button_wrapper}>
+            <Button
+              color="primary"
               variant="contained"
               size="large"
-              startIcon={<Icons.PersonAdd />}
+              startIcon={<PersonAdd />}
             >
               新規登録
-            </MaterialUI.Button>
+            </Button>
           </div>
-          <div className="mainpage-button-wrapper">
-            <MaterialUI.Button
-              variant="contained"
+          <div className={styles.mainpage_button_wrapper}>
+            <Button
+              color="default"
+              variant="outlined"
               size="large"
-              startIcon={<Icons.AccountCircle />}
+              startIcon={<AccountCircle />}
             >
               ログイン
-            </MaterialUI.Button>
+            </Button>
           </div>
         </div>
-        <div className="mainpage-regist"></div>
       </div>
     );
   }

@@ -1,8 +1,8 @@
 import * as React from "react";
-import "./Loading.css";
+import * as styles from "css/comp/Loading.module.css";
 
 function Loading(): JSX.Element {
-  return <div className="loader" />;
+  return <div className={styles.loader} />;
 }
 
 export default Loading;

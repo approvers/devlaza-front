@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./AvaterToolTip.css";
+import * as styles from "css/comp/AvaterToolTip.module.css";
 type AvaterToolTipProps = {
   uuid: string;
 };
@@ -41,17 +41,17 @@ class AvaterToolTip extends React.Component<
     }
 
     return (
-      <div className="avatertt-wrapper">
-        <span className="avatertt-pic">
+      <div className={styles.avatertt_wrapper}>
+        <span className={styles.avatertt_pic}>
           <img
             src={this.state.picurl}
             alt={`${this.state.name}'s icon`}
             height="48"
           />
         </span>
-        <div className="avatertt-name-wrapper">
-          <div className="avatertt-name">{this.state.name}</div>
-          <div className="avatertt-id">@{this.state.id}</div>
+        <div>
+          <div className={styles.avatertt_name}>{this.state.name}</div>
+          <div className={styles.avatertt_id}>@{this.state.id}</div>
         </div>
       </div>
     );

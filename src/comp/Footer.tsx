@@ -1,35 +1,71 @@
 import * as React from "react";
-import "./Footer.css";
+import * as styles from "css/comp/Footer.module.css";
+import { Divider } from "@material-ui/core";
 
-class Footer extends React.Component {
-  render() {
-    return (
-      <div className="footer">
-        <div className="footer-row">
-          <div className="footer-row-title">プロジェクトを探す</div>
-          <ul className="footer-row-content">
-            <li>人気プロジェクト</li>
-            <li>条件を指定して検索</li>
-          </ul>
-        </div>
-        <div className="footer-row">
-          <div className="footer-row-title">プロジェクトを作る</div>
-          <ul className="footer-row-content">
-            <li>プロジェクトを作成</li>
-          </ul>
-        </div>
-        <div className="footer-row">
-          <div className="footer-row-title">ユーザーを探す</div>
-          <ul className="footer-row-content">
-            <li>名前から探す</li>
-          </ul>
-        </div>
-        <div className="copyright">
-          ©2020 Devlaza †Approvers† All rights reserved.
-        </div>
-      </div>
-    );
-  }
+interface footerListBase {
+  title: string;
+  contents: string[];
 }
+interface footerList {
+  list: footerListBase[];
+}
+
+const data: footerList = {
+  list: [
+    {
+      title: "プロジェクトを探す",
+      contents: ["人気プロジェクト", "条件を指定して検索"],
+    },
+    {
+      title: "プロジェクトを作る",
+      contents: ["プロジェクトを作成"],
+    },
+    {
+      title: "ユーザーを探す",
+      contents: ["名前から探す"],
+    },
+  ],
+};
+
+const unfoldingFooterList = (dataList: footerList) => {
+  return (
+    <React.Fragment>
+      {dataList.list.map((value: footerListBase, i: number) => {
+        return (
+          <div className={styles.footer_row} key={i}>
+            {unfoldingContents(value)}
+          </div>
+        );
+      })}
+    </React.Fragment>
+  );
+};
+
+const unfoldingContents = (value: footerListBase) => {
+  return (
+    <React.Fragment>
+      <div className={styles.footer_row_title}>{value.title}</div>
+      <Divider light />
+      <ul className={styles.footer_row_content}>
+        {value.contents?.map((contents: string, index: number) => {
+          return <li key={index}>・{contents}</li>;
+        })}
+      </ul>
+    </React.Fragment>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.footer_contents_wrapper}>
+        {unfoldingFooterList(data)}
+      </div>
+      <div className={styles.copyright}>
+        ©2020 Devlaza †Approvers† All rights reserved.
+      </div>
+    </footer>
+  );
+};
 
 export default Footer;

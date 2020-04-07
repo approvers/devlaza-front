@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import "./App.css";
+import * as styles from "css/App.module.css";
 import Header from "./comp/Header";
 import Footer from "./comp/Footer";
 
@@ -18,9 +18,9 @@ library.add(fas, far);
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
+      <div className={styles.App}>
         <Header />
-        <div className="app-content-wrapper">
+        <div className={styles.app_content_wrapper}>
           <Router>
             <Route exact path="/" component={Pages.MainPage} />
             <Route
@@ -29,7 +29,9 @@ function App() {
             />
           </Router>
         </div>
-        <Footer />
+        <div className={styles.footerPosition}>
+          <Footer />
+        </div>
       </div>
     </MuiThemeProvider>
   );

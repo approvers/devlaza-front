@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./ProjectTag.css";
+import * as styles from "css/comp/ProjectTag.module.css";
 
 export type ProjectTagProp = {
   tag_id: string;
@@ -19,7 +19,7 @@ class ProjectTag extends React.Component<ProjectTagProp, ProjectTagState> {
   }
 
   render() {
-    return <div className="ptag-wrapper">{this.state.name}</div>;
+    return <p className={styles.ptag_wrapper}>{this.state.name}</p>;
   }
 }
 
