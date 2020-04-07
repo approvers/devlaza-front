@@ -59,7 +59,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   );
 
   render() {
-    let menuContents, searchContent;
+    let menuContents: JSX.Element, searchContent: JSX.Element;
     let menuButtonList = (
       <HeaderMenu
         showMenuIcon={this.state.showMenuIcon}
@@ -69,9 +69,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       />
     );
 
-    this.state.showMenuIcon
-      ? (menuContents = this.menuButtonIcon)
-      : (menuContents = menuButtonList);
+    if (this.state.showMenuIcon) {
+      menuContents = this.menuButtonIcon;
+    } else {
+      menuContents = menuButtonList;
+    }
 
     if (!this.state.moveSearchContents) {
       searchContent = (
@@ -81,7 +83,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         />
       );
     } else {
-      searchContent = "";
+      searchContent = <></>;
     }
 
     return (

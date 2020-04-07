@@ -24,6 +24,7 @@ const data: footerList = {
     {
       title: "ユーザーを探す",
       contents: ["名前から探す"],
+      // 例↓
       inList: [
         {
           list: [

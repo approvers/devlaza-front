@@ -36,7 +36,6 @@ class MainPage extends React.Component {
             </Button>
           </div>
         </div>
-        {/* <div className={styles.mainpage_regist}></div> */}
       </div>
     );
   }

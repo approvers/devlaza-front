@@ -34,14 +34,16 @@ export const SearchContents = (props: searchProps) => {
 
 export const HeaderMenu = (props: menuProps) => {
   let searchContent: JSX.Element;
-  props.moveSearchContents
-    ? (searchContent = (
-        <SearchContents
-          handleSearchBoxChange={props.handleSearchBoxChange}
-          searchbox={props.searchbox}
-        />
-      ))
-    : (searchContent = <></>);
+  if (props.moveSearchContents) {
+    searchContent = (
+      <SearchContents
+        handleSearchBoxChange={props.handleSearchBoxChange}
+        searchbox={props.searchbox}
+      />
+    );
+  } else {
+    searchContent = <></>;
+  }
   return (
     <React.Fragment>
       <div className={styles.header_button_wrapper}>
