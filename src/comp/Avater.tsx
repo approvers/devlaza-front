@@ -46,7 +46,7 @@ class Avater extends React.Component<AvaterProps, AvaterState> {
       return <></>;
     }
 
-    var nameElement = <></>;
+    let nameElement = <></>;
 
     if (!this.props.hiddenName) {
       nameElement = (

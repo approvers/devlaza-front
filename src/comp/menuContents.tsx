@@ -35,7 +35,7 @@ const buttonData: buttonContents = {
 };
 
 const ButtonModel = (props: { showMenuIcon: boolean }) => {
-  let style = headerButton(props.showMenuIcon);
+  const style = headerButton(props.showMenuIcon);
   return (
     <React.Fragment>
       {buttonData.button.map((value: contents, index: number) => {

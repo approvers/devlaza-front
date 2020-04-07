@@ -85,7 +85,7 @@ class ProjectDetailPage extends React.Component<
       return <Loading />;
     }
 
-    var joinButton = (
+    let joinButton = (
       <Button variant="contained" size="large" disabled startIcon={<PostAdd />}>
         未募集
       </Button>

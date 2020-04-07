@@ -2,13 +2,13 @@ import * as React from "react";
 import * as styles from "css/comp/Footer.module.css";
 import { Divider } from "@material-ui/core";
 
-interface footerListBase {
+type footerListBase = {
   title: string;
   contents: string[];
-}
-interface footerList {
+};
+type footerList = {
   list: footerListBase[];
-}
+};
 
 const data: footerList = {
   list: [
@@ -27,20 +27,6 @@ const data: footerList = {
   ],
 };
 
-const unfoldingFooterList = (dataList: footerList) => {
-  return (
-    <React.Fragment>
-      {dataList.list.map((value: footerListBase, i: number) => {
-        return (
-          <div className={styles.footer_row} key={i}>
-            {unfoldingContents(value)}
-          </div>
-        );
-      })}
-    </React.Fragment>
-  );
-};
-
 const unfoldingContents = (value: footerListBase) => {
   return (
     <React.Fragment>
@@ -51,6 +37,20 @@ const unfoldingContents = (value: footerListBase) => {
           return <li key={index}>・{contents}</li>;
         })}
       </ul>
+    </React.Fragment>
+  );
+};
+
+const unfoldingFooterList = (dataList: footerList) => {
+  return (
+    <React.Fragment>
+      {dataList.list.map((value: footerListBase, i: number) => {
+        return (
+          <div className={styles.footer_row} key={i}>
+            {unfoldingContents(value)}
+          </div>
+        );
+      })}
     </React.Fragment>
   );
 };

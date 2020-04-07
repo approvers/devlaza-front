@@ -60,7 +60,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     let menuContents: JSX.Element, searchContent: JSX.Element;
-    let menuButtonList = (
+    const menuButtonList = (
       <HeaderMenu
         showMenuIcon={this.state.showMenuIcon}
         moveSearchContents={this.state.moveSearchContents}

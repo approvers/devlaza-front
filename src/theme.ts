@@ -45,7 +45,7 @@ export const theme = createMuiTheme({
 
 export const headerButton = (props: boolean) => {
   let styles;
-  let baseStyles = {
+  const baseStyles = {
     height: "100%",
     color: "#444",
     fontSize: "0.8rem",
