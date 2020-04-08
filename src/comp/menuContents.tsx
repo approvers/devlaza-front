@@ -4,9 +4,9 @@ import { headerButton } from "../theme";
 import { Button } from "@material-ui/core";
 import { AccountCircle, PersonAdd, Code } from "@material-ui/icons";
 
-export type searchProps = {
-  searchbox: string;
-  handleSearchBoxChange: (inputValue: string) => void;
+type buttonProps = {
+  changeMenuListStatus: (flag: boolean) => void;
+  showMenuIcon: boolean;
 };
 
 type contents = {
@@ -34,10 +34,10 @@ const buttonData: buttonContents = {
   ],
 };
 
-const ButtonModel = (props: { showMenuIcon: boolean }) => {
+const ButtonModel = (props: buttonProps) => {
   const style = headerButton(props.showMenuIcon);
   return (
-    <React.Fragment>
+    <>
       {buttonData.button.map((value: contents, index: number) => {
         return (
           <Button
@@ -46,12 +46,13 @@ const ButtonModel = (props: { showMenuIcon: boolean }) => {
             color="secondary"
             className={styles.header_btn}
             style={style}
+            onClick={() => props.changeMenuListStatus(false)}
           >
             {value.name}
           </Button>
         );
       })}
-    </React.Fragment>
+    </>
   );
 };
 

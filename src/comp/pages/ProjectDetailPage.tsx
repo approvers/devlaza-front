@@ -105,7 +105,7 @@ class ProjectDetailPage extends React.Component<
     }
 
     return (
-      <React.Fragment>
+      <>
         <h1 className={styles.pdetail_name}>{this.state.name}</h1>
         <Divider />
         <div className={styles.pdetail_content}>
@@ -162,7 +162,7 @@ class ProjectDetailPage extends React.Component<
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

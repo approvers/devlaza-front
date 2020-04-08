@@ -18,17 +18,17 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     super(props);
     this.state = {
       searchbox: "",
-      showMenuIcon: window.innerWidth <= 970 ? true : false,
+      showMenuIcon: window.innerWidth <= 970,
       showMenuList: false,
-      moveSearchContents: window.innerWidth <= 544 ? true : false,
+      moveSearchContents: window.innerWidth <= 544,
     };
   }
 
-  handleSearchBoxChange(inputValue: string) {
+  handleSearchBoxChange = (inputValue: string) => {
     this.setState({
       searchbox: inputValue,
     });
-  }
+  };
 
   handleResize = () => {
     if (window.innerWidth <= 970) {
@@ -39,11 +39,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         showMenuList: false,
       });
     }
-    if (window.innerWidth <= 544) {
-      this.setState({ moveSearchContents: true });
-    } else {
-      this.setState({ moveSearchContents: false });
-    }
+    this.setState({ moveSearchContents: window.innerWidth <= 544 });
   };
 
   changeMenuListStatus = (flag: boolean) => {
@@ -51,9 +47,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   };
 
   menuButtonIcon = (
-    <IconButton
-      onClick={() => this.changeMenuListStatus(!this.state.showMenuList)}
-    >
+    <IconButton onClick={() => this.changeMenuListStatus(true)}>
       <Menu className={styles.menuIcon} fontSize="large" />
     </IconButton>
   );
@@ -65,6 +59,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         showMenuIcon={this.state.showMenuIcon}
         moveSearchContents={this.state.moveSearchContents}
         handleSearchBoxChange={this.handleSearchBoxChange}
+        changeMenuListStatus={this.changeMenuListStatus}
         searchbox={this.state.searchbox}
       />
     );
@@ -87,7 +82,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     }
 
     return (
-      <React.Fragment>
+      <>
         <EventListener target="window" onResize={this.handleResize} />
         <AppBar color="secondary">
           <Toolbar className={styles.header}>
@@ -100,13 +95,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         </AppBar>
         <Toolbar />
         <Drawer
-          anchor={"right"}
+          anchor="right"
           open={this.state.showMenuList}
           onClose={() => this.changeMenuListStatus(false)}
         >
           <Paper className={styles.paper}>{menuButtonList}</Paper>
         </Drawer>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -29,7 +29,7 @@ const data: footerList = {
 
 const unfoldingContents = (value: footerListBase) => {
   return (
-    <React.Fragment>
+    <>
       <div className={styles.footer_row_title}>{value.title}</div>
       <Divider light />
       <ul className={styles.footer_row_content}>
@@ -37,13 +37,13 @@ const unfoldingContents = (value: footerListBase) => {
           return <li key={index}>・{contents}</li>;
         })}
       </ul>
-    </React.Fragment>
+    </>
   );
 };
 
 const unfoldingFooterList = (dataList: footerList) => {
   return (
-    <React.Fragment>
+    <>
       {dataList.list.map((value: footerListBase, i: number) => {
         return (
           <div className={styles.footer_row} key={i}>
@@ -51,7 +51,7 @@ const unfoldingFooterList = (dataList: footerList) => {
           </div>
         );
       })}
-    </React.Fragment>
+    </>
   );
 };
 

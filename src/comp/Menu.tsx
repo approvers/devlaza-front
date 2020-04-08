@@ -12,6 +12,7 @@ type searchProps = {
 type menuProps = {
   showMenuIcon: boolean;
   moveSearchContents: boolean;
+  changeMenuListStatus: (flag: boolean) => void;
 } & searchProps;
 
 export const SearchContents = (props: searchProps) => {
@@ -45,12 +46,15 @@ export const HeaderMenu = (props: menuProps) => {
     searchContent = <></>;
   }
   return (
-    <React.Fragment>
+    <>
       <div className={styles.header_button_wrapper}>
         {searchContent}
-        <ButtonModel showMenuIcon={props.showMenuIcon} />
+        <ButtonModel
+          showMenuIcon={props.showMenuIcon}
+          changeMenuListStatus={props.changeMenuListStatus}
+        />
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
