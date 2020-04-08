@@ -53,6 +53,11 @@
   padding: 2% 0;
 }
 
+.expand,
+.less {
+  position: absolute;
+}
+
 @media (max-width: 1030px) and (max-height: 1370px) {
   .footer_row_content {
     margin-top: 1vw;
@@ -74,8 +79,20 @@
   .footer_contents_wrapper {
     flex-direction: column;
   }
+  .footer_row_title {
+    position: relative;
+  }
+  .expand,
+  .less {
+    position: absolute;
+    right: 0;
+  }
+  .less {
+    transform: rotateX(180deg);
+  }
   .footer_row_content {
     margin-top: 1%;
+    overflow: hidden;
   }
   .footer_row_content li {
     padding: 1% 0;
