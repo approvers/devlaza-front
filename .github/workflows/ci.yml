@@ -1,6 +1,6 @@
 name: Lint
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   ci:
@@ -9,26 +9,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js 13.12.0
-        uses: actions/setup-node@v1
+      - name: eslint
+        uses: reviewdog/action-eslint@v1
         with:
-          node-version: 13.12.0
-
-      - name: Fetch cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.ref }}
-            ${{ runner.os }}
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Run linter
-        run: yarn lint
-
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          eslint_flags: 'src/**'
