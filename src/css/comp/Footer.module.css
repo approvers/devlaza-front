@@ -1,11 +1,10 @@
 a {
-  color: #555555;
+  color: #606060;
   text-decoration: none;
 }
 
 a:hover {
   color: black;
-  border-bottom: 1px solid black;
 }
 
 .footer {

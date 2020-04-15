@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import * as styles from "css/comp/pages/CreateProjectPage.module.css";
 import * as CommonStyles from "css/comp/Common.module.css";
-import { Button, TextField } from "@material-ui/core";
+import { Box, Button, TextField } from "@material-ui/core";
 
 type CreateProjectPageProps = {} & RouteComponentProps;
 type CreateProjectPageState = {
@@ -69,13 +69,9 @@ class CreateProjectPage extends React.Component<
 
     return (
       <>
-        <div
-          className={CommonStyles.content_title}
-          style={{ marginBottom: "1rem" }}
-        >
-          プロジェクト作成
-        </div>
         <div className={styles.form_wrapper}>
+          <div className={CommonStyles.content_title}>プロジェクト作成</div>
+          <Box m="0.75rem" />
           <form autoComplete="off">
             <TextField
               id="project-name"
@@ -90,6 +86,9 @@ class CreateProjectPage extends React.Component<
               value={this.state.name}
               helperText={nameHelperText}
             />
+            <div className={CommonStyles.for_computer}>
+              <Box m="1rem" />
+            </div>
             <TextField
               id="project-intro"
               label="プロジェクトの説明"
@@ -104,6 +103,9 @@ class CreateProjectPage extends React.Component<
               error={this.state.isIntroductionError}
               helperText={introductionHelperText}
             />
+            <div className={CommonStyles.for_computer}>
+              <Box m="1rem" />
+            </div>
             <Button
               variant="contained"
               color="secondary"

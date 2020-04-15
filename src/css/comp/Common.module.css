@@ -3,5 +3,19 @@
     font-weight: bold;
     line-height: 2.5rem;
     padding: 1vh 0;
-    border-bottom: 2px solid #eeeeee;
+}
+
+.for_smartphone {
+    display: none;
+}
+
+.for_computer {}
+
+@media screen and (max-width: 639px){
+    .for_smartphone {
+        display: unset;
+    }
+    .for_computer {
+        display: none;
+    }
 }
