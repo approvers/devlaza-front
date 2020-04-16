@@ -2,15 +2,19 @@
   font-size: 150%;
   font-weight: bold;
 
-  line-height: 1.4em;
-
+  line-height: 1.4rem;
   border-bottom: 1px solid #999999;
-
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 .form_wrapper {
   display: block;
   max-width: 30rem;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 639px) {
+  .form_wrapper {
+    padding: 2vw;
+  }
 }
