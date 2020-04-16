@@ -1,12 +1,9 @@
-.pdetail_name_wrapper {
-  border-bottom: 2px solid #eeeeee;
-}
-
 .pdetail_name {
   font-size: 2rem;
   font-weight: bold;
   line-height: 2.5rem;
   padding: 1vh 0;
+  border-bottom: 2px solid #eeeeee;
 }
 
 .pdetail_content {

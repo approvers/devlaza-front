@@ -4,9 +4,13 @@ import { Divider } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import EventListener from "react-event-listener";
 
+type footerContent = {
+  caption: string;
+  address: string;
+};
 type footerListBase = {
   title: string;
-  contents: string[];
+  contents: footerContent[];
 };
 type footerList = {
   list: footerListBase[];
@@ -16,15 +20,34 @@ const data: footerList = {
   list: [
     {
       title: "プロジェクトを探す",
-      contents: ["人気プロジェクト", "条件を指定して検索"],
+      contents: [
+        {
+          caption: "人気プロジェクト",
+          address: "/",
+        },
+        {
+          caption: "条件を指定して検索",
+          address: "/",
+        },
+      ],
     },
     {
       title: "プロジェクトを作る",
-      contents: ["プロジェクトを作成"],
+      contents: [
+        {
+          caption: "プロジェクトを作成",
+          address: "/projects/create",
+        },
+      ],
     },
     {
       title: "ユーザーを探す",
-      contents: ["名前から探す"],
+      contents: [
+        {
+          caption: "名前から探す",
+          address: "/",
+        },
+      ],
     },
   ],
 };
@@ -72,9 +95,15 @@ const Footer = () => {
               </div>
               <Divider light />
               <ul className={styles.footer_row_content} style={listStyle}>
-                {value.contents?.map((contents: string, index: number) => {
-                  return <li key={index}>・{contents}</li>;
-                })}
+                {value.contents?.map(
+                  (contents: footerContent, index: number) => {
+                    return (
+                      <li key={index}>
+                        <a href={contents.address}>・{contents.caption}</a>
+                      </li>
+                    );
+                  }
+                )}
               </ul>
             </div>
           );

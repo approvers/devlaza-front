@@ -1,5 +1,4 @@
 declare const styles: {
-  readonly pdetail_name_wrapper: string;
   readonly pdetail_name: string;
   readonly pdetail_content: string;
   readonly pdetail_introduction: string;

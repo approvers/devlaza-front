@@ -1,0 +1,21 @@
+.content_title {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 2.5rem;
+    padding: 1vh 0;
+}
+
+.for_smartphone {
+    display: none;
+}
+
+.for_computer {}
+
+@media screen and (max-width: 639px){
+    .for_smartphone {
+        display: unset;
+    }
+    .for_computer {
+        display: none;
+    }
+}

@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as styles from "css/comp/pages/ProjectDetailPage.module.css";
+import * as CommonStyle from "css/comp/Common.module.css";
 
 import { RouteComponentProps } from "react-router-dom";
 
@@ -106,7 +107,7 @@ class ProjectDetailPage extends React.Component<
 
     return (
       <>
-        <h1 className={styles.pdetail_name}>{this.state.name}</h1>
+        <h1 className={CommonStyle.content_title}>{this.state.name}</h1>
         <Divider />
         <div className={styles.pdetail_content}>
           <div className={styles.pdetail_introduction}>

@@ -24,6 +24,11 @@ function App() {
           <Router>
             <Route exact path="/" component={Pages.MainPage} />
             <Route
+              exact
+              path="/projects/create"
+              component={Pages.CreateProjectPage}
+            />
+            <Route
               path="/projects/detail/:uuid"
               component={Pages.ProjectDetailPage}
             />
