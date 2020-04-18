@@ -1,9 +1,9 @@
-a {
+.footerList a {
   color: #606060;
   text-decoration: none;
 }
 
-a:hover {
+.footerList a:hover {
   color: black;
 }
 
@@ -90,6 +90,7 @@ a:hover {
   }
   .footer_row_title {
     position: relative;
+    font-size: 0.8rem;
   }
   .expand,
   .less {
@@ -105,5 +106,6 @@ a:hover {
   }
   .footer_row_content li {
     padding: 1% 0;
+    font-size: 0.7rem;
   }
 }

@@ -14,4 +14,8 @@
   .createProjectContentsBox {
     padding-bottom: 1vh;
   }
+  .content_title {
+    line-height: 2rem;
+    font-size: 1.6rem;
+  }
 }

@@ -45,7 +45,7 @@ const data: footerList = {
       contents: [
         {
           caption: "名前から探す",
-          address: "/",
+          address: "/user/detail",
         },
       ],
     },
@@ -98,7 +98,7 @@ const Footer = () => {
                 {value.contents?.map(
                   (contents: footerContent, index: number) => {
                     return (
-                      <li key={index}>
+                      <li className={styles.footerList} key={index}>
                         <a href={contents.address}>・{contents.caption}</a>
                       </li>
                     );

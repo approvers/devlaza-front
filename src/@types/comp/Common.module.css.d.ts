@@ -1,6 +1,5 @@
 declare const styles: {
-  readonly "content_title": string;
-  readonly "createProjectContentsBox": string;
+  readonly content_title: string;
+  readonly createProjectContentsBox: string;
 };
 export = styles;
-

@@ -1,4 +1,4 @@
 declare const styles: {
-  readonly ptag_wrapper: string;
+  readonly buttonContentsWrapper: string;
 };
 export = styles;
