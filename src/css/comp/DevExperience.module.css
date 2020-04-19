@@ -1,0 +1,91 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.wrapper .card:nth-child(odd) {
+  margin-right: 2%;
+}
+.card {
+  position: relative;
+  box-sizing: border-box;
+  width: 49%;
+  margin-top: 2%;
+}
+.action {
+  height: 100%;
+}
+.action > div {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+}
+.projectTitle {
+  font-size: 1.1rem;
+  line-height: 1.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.createAt {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  color: #555;
+  display: flex;
+  align-items: baseline;
+  padding: 1.5% 0;
+  justify-content: flex-end;
+}
+.createAt p:first-of-type {
+  padding-right: 1rem;
+}
+.createAt p svg {
+  line-height: 0.65rem;
+  font-size: 0.65rem;
+}
+.typography p {
+  font-size: 0.95rem;
+}
+.chipWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+.chipWrapper div {
+  height: 1.3rem;
+}
+.chip {
+  min-width: 2.5rem;
+  padding: 0 0.5rem;
+  margin: 1.5%;
+  margin-bottom: 0;
+}
+.chip span {
+  font-size: 0.7rem;
+}
+@media (max-width: 1100px) and (max-height: 1380px) {
+  .card {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .card {
+    width: 100%;
+  }
+  .wrapper .card:nth-child(odd) {
+    margin-right: 0;
+  }
+}
+@media screen and (max-width: 700px) {
+  .projectTitle {
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+  .card {
+    width: 100%;
+    margin-top: 4%;
+  }
+  .typography p {
+    font-size: 0.8rem;
+  }
+}

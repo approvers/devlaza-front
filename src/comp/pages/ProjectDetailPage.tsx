@@ -77,7 +77,7 @@ class ProjectDetailPage extends React.Component<
     });
 
     this.setState({
-      name: "【React】Webサービス フロンドエンド",
+      name: "【React】Webサービス フロントエンド",
     });
   }
 

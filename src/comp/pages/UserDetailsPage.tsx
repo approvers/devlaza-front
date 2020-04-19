@@ -2,6 +2,7 @@ import * as React from "react";
 import { Twitter, GitHub, Mail } from "@material-ui/icons";
 import FollowButton from "../FollowButton";
 import UserDetailsComponent from "../UserDetailsComponent";
+import DevExperience from "../DevExperience";
 import { Link, Divider } from "@material-ui/core";
 import EventListener from "react-event-listener";
 import * as styles from "css/comp/pages/UserDetailsPage.module.css";
@@ -146,8 +147,22 @@ class UserDetailsPage extends React.Component<
             <div className={styles.bio}>
               <p>{this.state.bio}</p>
             </div>
+            {this.state.isPhone ? (
+              <></>
+            ) : (
+              <DevExperience
+              // developmentExperienceId={this.state.developmentExperienceId}
+              />
+            )}
           </div>
         </div>
+        {this.state.isPhone ? (
+          <DevExperience
+          // developmentExperienceId={this.state.developmentExperienceId}
+          />
+        ) : (
+          <></>
+        )}
       </>
     );
   }
