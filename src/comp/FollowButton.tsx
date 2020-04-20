@@ -9,7 +9,7 @@ type userDetailsProps = {
 
 const FollowButton = (props: userDetailsProps) => {
   const buttonContents = (isFollow: boolean) => {
-    let followButtonText = "follow";
+    let followButtonText = "Follow";
     if (isFollow) {
       followButtonText = "Unfollow";
     }

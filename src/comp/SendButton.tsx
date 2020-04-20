@@ -23,9 +23,9 @@ const handleSendButton = (props: RouteComponentProps) => {
 };
 
 const CreateSendButton = (props: SendButtonProps) => {
-  const ableSend =
+  const canSend =
     !checkBlankSpace(props.name) && !checkBlankSpace(props.introduction);
-  const ableSendButton = (
+  const enabledButton = (
     <Button
       variant="contained"
       color="secondary"
@@ -35,12 +35,12 @@ const CreateSendButton = (props: SendButtonProps) => {
       作成
     </Button>
   );
-  const disableSendButton = (
+  const disabledButton = (
     <Button variant="contained" size="large" disabled>
       作成
     </Button>
   );
-  return ableSend ? ableSendButton : disableSendButton;
+  return canSend ? enabledButton : disabledButton;
 };
 
 export default CreateSendButton;
