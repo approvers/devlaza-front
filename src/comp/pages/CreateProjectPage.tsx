@@ -2,9 +2,9 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import * as styles from "css/comp/pages/CreateProjectPage.module.css";
 import * as CommonStyles from "css/comp/Common.module.css";
-import { Button, TextField } from "@material-ui/core";
+import CreateSendButton from "../SendButton";
+import { TextField } from "@material-ui/core";
 
-type CreateProjectPageProps = RouteComponentProps;
 type CreateProjectPageState = {
   name: string;
   introduction: string;
@@ -12,11 +12,15 @@ type CreateProjectPageState = {
   isIntroductionError: boolean;
 };
 
+const checkBlankSpace = (value: string) => {
+  return !value.match(/\S/g);
+};
+
 class CreateProjectPage extends React.Component<
-  CreateProjectPageProps,
+  RouteComponentProps,
   CreateProjectPageState
 > {
-  constructor(props: CreateProjectPageProps) {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
       name: "",
@@ -26,18 +30,10 @@ class CreateProjectPage extends React.Component<
     };
   }
 
-  checkBlankSpace = (value: string) => {
-    let isError = true;
-    if (value.match(/\S/g)) {
-      isError = false;
-    }
-    return isError;
-  };
-
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
     if (e.target.value.endsWith("\n")) return;
-    const isError = this.checkBlankSpace(e.target.value);
+    const isError = checkBlankSpace(e.target.value);
     this.setState({
       name: e.target.value,
       isNameError: isError,
@@ -45,7 +41,7 @@ class CreateProjectPage extends React.Component<
   };
 
   handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isError = this.checkBlankSpace(e.target.value);
+    const isError = checkBlankSpace(e.target.value);
     this.setState({
       introduction: e.target.value,
       isIntroductionError: isError,
@@ -56,32 +52,6 @@ class CreateProjectPage extends React.Component<
     // TODO: ここでAPIに情報をぶん投げる
     const projectId = "7438921";
     this.props.history.push(`/projects/detail/${projectId}`);
-  };
-
-  changeButtonType = () => {
-    const ableSendFlag =
-      !this.checkBlankSpace(this.state.name) &&
-      !this.checkBlankSpace(this.state.introduction);
-    const ableSend = (
-      <Button
-        variant="contained"
-        color="secondary"
-        size="large"
-        onClick={this.handleSendButton}
-      >
-        作成
-      </Button>
-    );
-    const disableSend = (
-      <Button variant="contained" size="large" disabled>
-        作成
-      </Button>
-    );
-    if (ableSendFlag) {
-      return ableSend;
-    } else {
-      return disableSend;
-    }
   };
 
   render() {
@@ -132,7 +102,11 @@ class CreateProjectPage extends React.Component<
               />
             </div>
             <div className={CommonStyles.createProjectContentsBox}>
-              {this.changeButtonType()}
+              <CreateSendButton
+                name={this.state.name}
+                introduction={this.state.introduction}
+                props={this.props}
+              />
             </div>
           </form>
         </div>

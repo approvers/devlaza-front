@@ -1,67 +1,43 @@
 import * as React from "react";
-import { Twitter, GitHub, Mail } from "@material-ui/icons";
 import FollowButton from "../FollowButton";
 import UserDetailsComponent from "../UserDetailsComponent";
 import DevExperience from "../DevExperience";
-import { Link, Divider } from "@material-ui/core";
+import { AccountLink, AccountType } from "../AccountLink";
+import { Divider } from "@material-ui/core";
 import EventListener from "react-event-listener";
 import * as styles from "css/comp/pages/UserDetailsPage.module.css";
 
-type accountType = {
-  github: string;
-  twitter: string;
-  mailAddress: string;
-};
-
-type accountTypeOfElement = {
-  github: JSX.Element;
-  twitter: JSX.Element;
-  mailAddress: JSX.Element;
-};
-
 // 表示するユーザーの情報
-type userDetailsState = {
+type UserDetailsState = {
   userId: number;
   name: string;
-  birthDay: number;
+  birthDay: string;
   bio: string;
   favoriteLanguage: string;
   profileImageUrl: string;
-  accounts: accountType;
-  showList: Array<keyof accountType>;
+  accounts: AccountType;
+  showList: Array<keyof AccountType>;
   developmentExperienceId: number[];
   followingIdList: number[];
   followerIdList: number[];
   isPhone: boolean;
 };
 
-type userDetailsProps = {
+type UserDetailsProps = {
   loginUserFollowingIdList: number[];
   updateFollowingList: (followingIndex: number, userId: number) => void;
 };
 
-const accountsIcons: accountTypeOfElement = {
-  twitter: <Twitter fontSize="small" />,
-  github: <GitHub fontSize="small" />,
-  mailAddress: <Mail fontSize="small" />,
-};
-
-const url: accountType = {
-  twitter: "https://twitter.com/",
-  github: "https://github.com/",
-  mailAddress: "mailto:",
-};
-
 class UserDetailsPage extends React.Component<
-  userDetailsProps,
-  userDetailsState
+  UserDetailsProps,
+  UserDetailsState
 > {
-  constructor(props: userDetailsProps) {
+  constructor(props: UserDetailsProps) {
     super(props);
     this.state = {
       userId: 103,
       name: "unios103",
-      birthDay: 20200415,
+      birthDay: "2020/04/15",
       bio: "unios103だよ！Reactべんつよします。",
       favoriteLanguage: "TypeScript",
       profileImageUrl: "https://github.com/unios103.png",
@@ -77,29 +53,6 @@ class UserDetailsPage extends React.Component<
       isPhone: window.innerWidth <= 600,
     };
   }
-
-  returnAccount = () => {
-    const accounts: accountType = this.state.accounts;
-    const accountElement = this.state.showList.map(
-      (
-        accountName: keyof accountType | keyof accountTypeOfElement,
-        i: number
-      ) => {
-        return (
-          <Link
-            className={styles.iconAndText}
-            color="secondary"
-            key={i}
-            href={url[accountName] + accounts[accountName]}
-          >
-            <p>{accountsIcons[accountName]}</p>
-            {this.state.isPhone ? <></> : <p>{accounts[accountName]}</p>}
-          </Link>
-        );
-      }
-    );
-    return accountElement;
-  };
 
   handleResize = () => {
     this.setState({ isPhone: window.innerWidth <= 600 });
@@ -118,6 +71,20 @@ class UserDetailsPage extends React.Component<
   };
 
   render() {
+    const element = {
+      contentment: {
+        userDetails: this.userDetails(),
+        devExperience: <DevExperience />,
+      },
+      empty: { userDetails: <></>, devExperience: <></> },
+    };
+    let phoneElement = element.empty,
+      pcElement = element.empty;
+    if (this.state.isPhone) {
+      phoneElement = element.contentment;
+    } else {
+      pcElement = element.contentment;
+    }
     return (
       <>
         <EventListener target="window" onResize={this.handleResize} />
@@ -134,35 +101,31 @@ class UserDetailsPage extends React.Component<
               <FollowButton
                 userId={this.state.userId}
                 loginUserFollowingIdList={this.props.loginUserFollowingIdList}
-                updateFollowingList={this.props.updateFollowingList}
+                updateFollowingList={(followingIndex, userId) =>
+                  this.props.updateFollowingList(followingIndex, userId)
+                }
               />
             </div>
-            {this.state.isPhone ? <></> : this.userDetails()}
-            <div className={styles.accountWrapper}>{this.returnAccount()}</div>
+            {pcElement.userDetails}
+            <div className={styles.accountWrapper}>
+              <AccountLink
+                accounts={this.state.accounts}
+                showList={this.state.showList}
+                isPhone={this.state.isPhone}
+              />
+            </div>
           </div>
           <div className={styles.profileDetailsWrapper}>
             <h1>{this.state.name}</h1>
             <Divider />
-            {this.state.isPhone ? this.userDetails() : <></>}
+            {phoneElement.userDetails}
             <div className={styles.bio}>
               <p>{this.state.bio}</p>
             </div>
-            {this.state.isPhone ? (
-              <></>
-            ) : (
-              <DevExperience
-              // developmentExperienceId={this.state.developmentExperienceId}
-              />
-            )}
+            {pcElement.devExperience}
           </div>
         </div>
-        {this.state.isPhone ? (
-          <DevExperience
-          // developmentExperienceId={this.state.developmentExperienceId}
-          />
-        ) : (
-          <></>
-        )}
+        {phoneElement.devExperience}
       </>
     );
   }

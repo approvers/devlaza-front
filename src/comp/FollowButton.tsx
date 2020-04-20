@@ -28,33 +28,24 @@ const FollowButton = (props: userDetailsProps) => {
   };
 
   const buttonContents = () => {
+    let followButtonText = "follow";
     if (followingState.isFollowing) {
-      return (
-        <Button
-          size="small"
-          variant="outlined"
-          className={styles.buttonContentsWrapper}
-          color="secondary"
-          onClick={() => changeFollowingState()}
-        >
-          <p>Unfollow</p>
-        </Button>
-      );
+      followButtonText = "Unfollow";
     }
-    return (
-      <Button
-        size="small"
-        variant="outlined"
-        className={styles.buttonContentsWrapper}
-        color="secondary"
-        onClick={() => changeFollowingState()}
-      >
-        <p>follow</p>
-      </Button>
-    );
+    return <p>{followButtonText}</p>;
   };
 
-  return <>{buttonContents()}</>;
+  return (
+    <Button
+      size="small"
+      variant="outlined"
+      className={styles.buttonContentsWrapper}
+      color="secondary"
+      onClick={() => changeFollowingState()}
+    >
+      {buttonContents()}
+    </Button>
+  );
 };
 
 export default FollowButton;

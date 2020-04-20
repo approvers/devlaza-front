@@ -20,8 +20,10 @@ type AppStatus = {
   loginUserFollowingIdList: number[];
 };
 
-class App extends React.Component<{}, AppStatus> {
-  constructor(props: {}) {
+type AppProps = {};
+
+class App extends React.Component<AppProps, AppStatus> {
+  constructor(props: AppProps) {
     super(props);
     this.state = {
       loginUserFollowingIdList: [10, 220],
@@ -29,12 +31,13 @@ class App extends React.Component<{}, AppStatus> {
   }
 
   updateFollowingList = (followingIndex: number, userId: number) => {
-    const { loginUserFollowingIdList } = this.state;
+    const list = this.state.loginUserFollowingIdList;
     if (followingIndex === -1) {
-      loginUserFollowingIdList.push(userId);
+      list.push(userId);
     } else {
-      loginUserFollowingIdList.splice(followingIndex, 1);
+      list.splice(followingIndex, 1);
     }
+    this.setState({ loginUserFollowingIdList: list });
   };
 
   render() {

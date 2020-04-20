@@ -10,10 +10,6 @@ import {
 import { Favorite } from "@material-ui/icons";
 import * as styles from "css/comp/DevExperience.module.css";
 
-// type devExperienceProps = {
-//   developmentExperienceId: number[];
-// };
-
 type projectDataType = {
   id: number;
   name: string;
@@ -87,85 +83,76 @@ const projectDataList = [
 ];
 // ↑消してね
 
-const DevExperience = (/*props: devExperienceProps*/) => {
-  const link = (id: number) => {
-    window.location.href = "/projects/detail/" + id;
-  };
-
+const DevExperience = () => {
   const returnChipContents = (tagList: string[]) => {
     if (tagList.length > 3) {
       tagList.splice(3);
     }
     return (
       <>
-        {tagList.map((tag: string, i: number) => {
-          return (
-            <Chip
-              className={styles.chip}
-              variant="outlined"
-              size="small"
-              label={tag}
-              key={i}
-            />
-          );
-        })}
+        {tagList.map((tag: string, i: number) => (
+          <Chip
+            className={styles.chip}
+            variant="outlined"
+            size="small"
+            label={tag}
+            key={i}
+          />
+        ))}
       </>
     );
   };
 
   const changeIntroductionStyle = (introduction: string) => {
     let intro = introduction;
-    if (introduction.length > 80) {
-      intro = intro.substr(0, 80);
+    const sentenceLengthLimits = 80;
+    if (introduction.length > sentenceLengthLimits) {
+      intro = intro.substr(0, sentenceLengthLimits);
       intro += "...";
     }
     return intro;
   };
 
-  const returnDevProjectList = (projectData: projectDataListType) => {
+  const projectData = () => {
+    let projectData = projectDataList;
     if (projectData.length > 4) {
-      projectData = projectData.splice(0, 4);
+      projectData = projectDataList.splice(0, 4);
     }
-    return (
-      <>
-        {projectData.map((projectDetails: projectDataType, i: number) => {
-          return (
-            <Card className={styles.card} variant="outlined" key={i}>
-              <CardActionArea
-                className={styles.action}
-                onClick={() => {
-                  link(projectDetails.id);
-                }}
-              >
-                <CardContent>
-                  <h2 className={styles.projectTitle}>{projectDetails.name}</h2>
-                  <Divider />
-                  <div className={styles.createAt}>
-                    <p>{projectDetails.createdAt} 作成</p>
-                    <p>
-                      <Favorite />
-                      {projectDetails.favs}
-                    </p>
-                  </div>
-                  <div className={styles.typography}>
-                    <Typography>
-                      {changeIntroductionStyle(projectDetails.introduction)}
-                    </Typography>
-                  </div>
-                  <div className={styles.chipWrapper}>
-                    {returnChipContents(projectDetails.tags)}
-                  </div>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          );
-        })}
-      </>
-    );
+    return projectData;
   };
+
   return (
     <div className={styles.wrapper}>
-      {returnDevProjectList(projectDataList)}
+      {projectData().map((projectDetails: projectDataType, i: number) => (
+        <Card className={styles.card} variant="outlined" key={i}>
+          <CardActionArea
+            className={styles.action}
+            onClick={() => {
+              window.location.href = "/projects/detail/" + projectDetails.id;
+            }}
+          >
+            <CardContent>
+              <h2 className={styles.projectTitle}>{projectDetails.name}</h2>
+              <Divider />
+              <div className={styles.createAt}>
+                <p>{projectDetails.createdAt} 作成</p>
+                <p>
+                  <Favorite />
+                  {projectDetails.favs}
+                </p>
+              </div>
+              <div className={styles.typography}>
+                <Typography>
+                  {changeIntroductionStyle(projectDetails.introduction)}
+                </Typography>
+              </div>
+              <div className={styles.chipWrapper}>
+                {returnChipContents(projectDetails.tags)}
+              </div>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      ))}
     </div>
   );
 };

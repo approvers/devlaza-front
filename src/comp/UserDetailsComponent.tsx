@@ -11,31 +11,21 @@ type accountType = {
 
 // 表示するユーザーの情報
 type userDetailsState = {
-  birthDay: number;
+  birthDay: string;
   favoriteLanguage: string;
   profileImageUrl: string;
   followingIdList: number[];
   followerIdList: number[];
 };
 
+const changeDisplayStyle = (numberOfFollow: number) => {
+  if (numberOfFollow >= 1000) {
+    return Math.floor(numberOfFollow / 1000) + "k";
+  }
+  return numberOfFollow;
+};
+
 const UserDetailsComponent = (props: userDetailsState) => {
-  const conversionBirthdayFormat = () => {
-    const birthDay =
-      Math.floor(props.birthDay / 1e4) +
-      "/" +
-      Math.floor((props.birthDay % 1e4) / 1e2) +
-      "/" +
-      Math.floor(props.birthDay % 1e2);
-    return birthDay;
-  };
-
-  const changeDisplayStyle = (numberOfFollow: number) => {
-    if (numberOfFollow >= 1000) {
-      return Math.floor(numberOfFollow / 1000) + "k";
-    }
-    return numberOfFollow;
-  };
-
   return (
     <div className={styles.detailsWrapper}>
       <div className={styles.userDetails + " " + styles.iconBase}>
@@ -54,7 +44,7 @@ const UserDetailsComponent = (props: userDetailsState) => {
         </div>
         <div className={styles.iconBaseLine}>
           <Cake className={styles.icon} fontSize="small" />
-          <p>{conversionBirthdayFormat()}</p>
+          <p>{props.birthDay}</p>
         </div>
       </div>
     </div>
