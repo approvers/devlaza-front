@@ -89,7 +89,7 @@ class UserDetailsPage extends React.Component<
 
   render() {
     const element = {
-      contentment: {
+      content: {
         userDetails: this.userDetails(),
         devExperience: <DevExperience />,
       },
@@ -98,9 +98,9 @@ class UserDetailsPage extends React.Component<
     let phoneElement = element.empty,
       pcElement = element.empty;
     if (this.state.isPhone) {
-      phoneElement = element.contentment;
+      phoneElement = element.content;
     } else {
-      pcElement = element.contentment;
+      pcElement = element.content;
     }
     return (
       <>

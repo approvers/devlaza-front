@@ -103,9 +103,11 @@ class CreateProjectPage extends React.Component<
             </div>
             <div className={CommonStyles.createProjectContentsBox}>
               <CreateSendButton
-                name={this.state.name}
-                introduction={this.state.introduction}
-                props={this.props}
+                canSend={
+                  !checkBlankSpace(this.state.name) &&
+                  !checkBlankSpace(this.state.introduction)
+                }
+                handleSendButton={this.handleSendButton}
               />
             </div>
           </form>
