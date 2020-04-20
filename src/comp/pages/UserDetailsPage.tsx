@@ -70,6 +70,23 @@ class UserDetailsPage extends React.Component<
     );
   };
 
+  updateList = () => {
+    this.props.updateFollowingList(
+      this.checkFollowing().followIndex,
+      this.state.userId
+    );
+  };
+
+  checkFollowing = () => {
+    let followInfo = { isFollow: false, followIndex: -1 };
+    this.props.loginUserFollowingIdList.forEach((value: number, i: number) => {
+      if (value === this.state.userId) {
+        followInfo = { isFollow: true, followIndex: i };
+      }
+    });
+    return followInfo;
+  };
+
   render() {
     const element = {
       contentment: {
@@ -99,11 +116,8 @@ class UserDetailsPage extends React.Component<
             </div>
             <div className={styles.followButton}>
               <FollowButton
-                userId={this.state.userId}
-                loginUserFollowingIdList={this.props.loginUserFollowingIdList}
-                updateFollowingList={(followingIndex, userId) =>
-                  this.props.updateFollowingList(followingIndex, userId)
-                }
+                isFollow={this.checkFollowing().isFollow}
+                updateFollowingList={this.updateList}
               />
             </div>
             {pcElement.userDetails}

@@ -3,33 +3,14 @@ import { Button } from "@material-ui/core";
 import * as styles from "css/comp/FollowButton.module.css";
 
 type userDetailsProps = {
-  userId: number;
-  loginUserFollowingIdList: number[];
-  updateFollowingList: (followingIndex: number, userId: number) => void;
+  isFollow: boolean;
+  updateFollowingList: () => void;
 };
 
 const FollowButton = (props: userDetailsProps) => {
-  const checkFollowing = () => {
-    const following = { isFollowing: false, followingIndex: -1 };
-    props.loginUserFollowingIdList.forEach((followingId: number, i: number) => {
-      if (followingId === props.userId) {
-        following.isFollowing = true;
-        following.followingIndex = i;
-      }
-    });
-    return following;
-  };
-
-  const [followingState, changeState] = React.useState(checkFollowing());
-
-  const changeFollowingState = () => {
-    props.updateFollowingList(followingState.followingIndex, props.userId);
-    changeState(checkFollowing());
-  };
-
-  const buttonContents = () => {
+  const buttonContents = (isFollow: boolean) => {
     let followButtonText = "follow";
-    if (followingState.isFollowing) {
+    if (isFollow) {
       followButtonText = "Unfollow";
     }
     return <p>{followButtonText}</p>;
@@ -41,9 +22,9 @@ const FollowButton = (props: userDetailsProps) => {
       variant="outlined"
       className={styles.buttonContentsWrapper}
       color="secondary"
-      onClick={() => changeFollowingState()}
+      onClick={() => props.updateFollowingList()}
     >
-      {buttonContents()}
+      {buttonContents(props.isFollow)}
     </Button>
   );
 };
