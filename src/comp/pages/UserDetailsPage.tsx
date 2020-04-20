@@ -78,13 +78,10 @@ class UserDetailsPage extends React.Component<
   };
 
   checkFollowing = () => {
-    let followInfo = { isFollow: false, followIndex: -1 };
-    this.props.loginUserFollowingIdList.forEach((value: number, i: number) => {
-      if (value === this.state.userId) {
-        followInfo = { isFollow: true, followIndex: i };
-      }
-    });
-    return followInfo;
+    const followingIndex = this.props.loginUserFollowingIdList.indexOf(
+      this.state.userId
+    );
+    return { isFollow: followingIndex !== -1, followIndex: followingIndex };
   };
 
   render() {
@@ -112,7 +109,7 @@ class UserDetailsPage extends React.Component<
                 src={this.state.profileImageUrl}
                 alt={this.state.name}
                 className={styles.profileImage}
-              ></img>
+              />
             </div>
             <div className={styles.followButton}>
               <FollowButton

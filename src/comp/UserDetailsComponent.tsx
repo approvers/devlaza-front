@@ -18,7 +18,7 @@ type userDetailsState = {
   followerIdList: number[];
 };
 
-const changeDisplayStyle = (numberOfFollow: number) => {
+const simplifyNumberStyle = (numberOfFollow: number) => {
   if (numberOfFollow >= 1000) {
     return Math.floor(numberOfFollow / 1000) + "k";
   }
@@ -31,10 +31,10 @@ const UserDetailsComponent = (props: userDetailsState) => {
       <div className={styles.userDetails + " " + styles.iconBase}>
         <PeopleAlt className={styles.icon} fontSize="small" />
         <Link className={styles.followLink} color="inherit" href="/user/detail">
-          <p>following {changeDisplayStyle(props.followingIdList.length)}</p>
+          <p>following {simplifyNumberStyle(props.followingIdList.length)}</p>
         </Link>
         <Link className={styles.followLink} color="inherit" href="/user/detail">
-          <p>followers {changeDisplayStyle(props.followerIdList.length)}</p>
+          <p>followers {simplifyNumberStyle(props.followerIdList.length)}</p>
         </Link>
       </div>
       <div className={styles.userDetails}>
