@@ -4,16 +4,15 @@ import * as styles from "css/comp/FollowButton.module.css";
 
 type userDetailsProps = {
   isFollow: boolean;
-  updateFollowingList: () => void;
+  updateFollowingList: (isFollow: boolean) => void;
 };
 
 const FollowButton = (props: userDetailsProps) => {
   const buttonContents = (isFollow: boolean) => {
-    let followButtonText = "Follow";
     if (isFollow) {
-      followButtonText = "Unfollow";
+      return <p>Unfollow</p>;
     }
-    return <p>{followButtonText}</p>;
+    return <p>Follow</p>;
   };
 
   return (
@@ -22,7 +21,7 @@ const FollowButton = (props: userDetailsProps) => {
       variant="outlined"
       className={styles.buttonContentsWrapper}
       color="secondary"
-      onClick={() => props.updateFollowingList()}
+      onClick={() => props.updateFollowingList(props.isFollow)}
     >
       {buttonContents(props.isFollow)}
     </Button>

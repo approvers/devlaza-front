@@ -30,13 +30,16 @@ class App extends React.Component<AppProps, AppStatus> {
     };
   }
 
-  updateFollowingList = (followingIndex: number, userId: number) => {
+  userIdToFollow = (userId: number) => {
     const list = this.state.loginUserFollowingIdList;
-    if (followingIndex === -1) {
-      list.push(userId);
-    } else {
-      list.splice(followingIndex, 1);
-    }
+    list.push(userId);
+    this.setState({ loginUserFollowingIdList: list });
+  };
+
+  userIdUnfollow = (userId: number) => {
+    const list = this.state.loginUserFollowingIdList.filter((id: number) => {
+      return id !== userId;
+    });
     this.setState({ loginUserFollowingIdList: list });
   };
 
@@ -60,7 +63,8 @@ class App extends React.Component<AppProps, AppStatus> {
                     loginUserFollowingIdList={
                       this.state.loginUserFollowingIdList
                     }
-                    updateFollowingList={this.updateFollowingList}
+                    userIdToFollow={this.userIdToFollow}
+                    userIdUnFollow={this.userIdUnfollow}
                   />
                 )}
               />

@@ -25,7 +25,8 @@ type UserDetailsState = {
 
 type UserDetailsProps = {
   loginUserFollowingIdList: number[];
-  updateFollowingList: (followingIndex: number, userId: number) => void;
+  userIdToFollow: (userId: number) => void;
+  userIdUnFollow: (userId: number) => void;
 };
 
 class UserDetailsPage extends React.Component<
@@ -70,18 +71,19 @@ class UserDetailsPage extends React.Component<
     );
   };
 
-  updateList = () => {
-    this.props.updateFollowingList(
-      this.checkFollowing().followIndex,
-      this.state.userId
-    );
+  updateList = (isFollow: boolean) => {
+    if (isFollow) {
+      this.props.userIdUnFollow(this.state.userId);
+    } else {
+      this.props.userIdToFollow(this.state.userId);
+    }
   };
 
   checkFollowing = () => {
     const followingIndex = this.props.loginUserFollowingIdList.indexOf(
       this.state.userId
     );
-    return { isFollow: followingIndex !== -1, followIndex: followingIndex };
+    return followingIndex !== -1;
   };
 
   render() {
@@ -113,7 +115,7 @@ class UserDetailsPage extends React.Component<
             </div>
             <div className={styles.followButton}>
               <FollowButton
-                isFollow={this.checkFollowing().isFollow}
+                isFollow={this.checkFollowing()}
                 updateFollowingList={this.updateList}
               />
             </div>
