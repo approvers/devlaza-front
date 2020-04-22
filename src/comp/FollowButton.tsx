@@ -16,7 +16,7 @@ const FollowButton = (props: userDetailsProps) => {
       color="secondary"
       onClick={() => props.updateFollowingList(props.isFollowing)}
     >
-      {props.isFollowing ? <p>UnFollow</p> : <p>Follow</p>}
+      {props.isFollowing ? <p>Unfollow</p> : <p>Follow</p>}
     </Button>
   );
 };

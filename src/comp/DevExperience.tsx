@@ -83,12 +83,9 @@ const projectDataList = [
 
 const DevExperience = () => {
   const returnChipContents = (tagList: string[]) => {
-    if (tagList.length > 3) {
-      tagList.splice(3);
-    }
     return (
       <>
-        {tagList.map((tag: string, i: number) => (
+        {tagList.slice(0, 3).map((tag: string, i: number) => (
           <Chip
             className={styles.chip}
             variant="outlined"
@@ -101,7 +98,7 @@ const DevExperience = () => {
     );
   };
 
-  const changeIntroductionStyle = (introduction: string) => {
+  const omitIntroduction = (introduction: string) => {
     let intro = introduction;
     const sentenceLengthLimits = 80;
     if (introduction.length > sentenceLengthLimits) {
@@ -111,13 +108,7 @@ const DevExperience = () => {
     return intro;
   };
 
-  const projectData = () => {
-    let projectData = projectDataList;
-    if (projectData.length > 4) {
-      projectData = projectDataList.splice(0, 4);
-    }
-    return projectData;
-  };
+  const projectData = () => projectDataList.slice(0, 4);
 
   return (
     <div className={styles.wrapper}>
@@ -141,7 +132,7 @@ const DevExperience = () => {
               </div>
               <div className={styles.typography}>
                 <Typography>
-                  {changeIntroductionStyle(projectDetails.introduction)}
+                  {omitIntroduction(projectDetails.introduction)}
                 </Typography>
               </div>
               <div className={styles.chipWrapper}>
