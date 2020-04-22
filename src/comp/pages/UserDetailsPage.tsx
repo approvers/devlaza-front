@@ -120,7 +120,7 @@ class UserDetailsPage extends React.Component<
             </div>
             <div className={styles.followButton}>
               <FollowButton
-                isFollow={this.checkFollowing()}
+                isFollowing={this.checkFollowing()}
                 updateFollowingList={this.updateList}
               />
             </div>
