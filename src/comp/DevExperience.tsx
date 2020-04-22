@@ -24,8 +24,6 @@ type projectDataType = {
   isLoaded: boolean;
 };
 
-type projectDataListType = projectDataType[];
-
 // よくわからんのでdevelopmentExperienceIdに一致するデータを
 // ↓に突っ込みました
 const projectDataList = [

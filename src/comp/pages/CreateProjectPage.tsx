@@ -12,9 +12,7 @@ type CreateProjectPageState = {
   isIntroductionError: boolean;
 };
 
-const checkBlankSpace = (value: string) => {
-  return !value.match(/\S/g);
-};
+const checkBlankSpace = (value: string) => !!value.match(/\S/g);
 
 class CreateProjectPage extends React.Component<
   RouteComponentProps,
@@ -33,7 +31,7 @@ class CreateProjectPage extends React.Component<
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
     if (e.target.value.endsWith("\n")) return;
-    const isError = checkBlankSpace(e.target.value);
+    const isError = checkBlankSpace(e.target.value) === false;
     this.setState({
       name: e.target.value,
       isNameError: isError,
@@ -41,7 +39,7 @@ class CreateProjectPage extends React.Component<
   };
 
   handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isError = checkBlankSpace(e.target.value);
+    const isError = checkBlankSpace(e.target.value) === false;
     this.setState({
       introduction: e.target.value,
       isIntroductionError: isError,
@@ -104,8 +102,8 @@ class CreateProjectPage extends React.Component<
             <div className={CommonStyles.createProjectContentsBox}>
               <CreateSendButton
                 canSend={
-                  !checkBlankSpace(this.state.name) &&
-                  !checkBlankSpace(this.state.introduction)
+                  checkBlankSpace(this.state.name) &&
+                  checkBlankSpace(this.state.introduction)
                 }
                 handleSendButton={this.handleSendButton}
               />

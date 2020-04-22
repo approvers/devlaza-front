@@ -4,20 +4,20 @@ import { headerButton } from "../theme";
 import { Button } from "@material-ui/core";
 import { AccountCircle, PersonAdd, Code } from "@material-ui/icons";
 
-type buttonProps = {
+type ButtonProps = {
   changeMenuListStatus: (flag: boolean) => void;
   showMenuIcon: boolean;
 };
 
-type contents = {
+type Contents = {
   icon: React.ReactNode;
   name: string;
 };
-type buttonContents = {
-  button: contents[];
+type ButtonContents = {
+  button: Contents[];
 };
 
-const buttonData: buttonContents = {
+const buttonData: ButtonContents = {
   button: [
     {
       icon: <Code fontSize="small" />,
@@ -34,11 +34,11 @@ const buttonData: buttonContents = {
   ],
 };
 
-const ButtonModel = (props: buttonProps) => {
+const ButtonModel = (props: ButtonProps) => {
   const style = headerButton(props.showMenuIcon);
   return (
     <>
-      {buttonData.button.map((value: contents, index: number) => {
+      {buttonData.button.map((value: Contents, index: number) => {
         return (
           <Button
             key={index}

@@ -3,12 +3,6 @@ import { Cake, Code, PeopleAlt } from "@material-ui/icons";
 import { Link } from "@material-ui/core";
 import * as styles from "css/comp/UserDetailsComponent.module.css";
 
-type accountType = {
-  github: string;
-  twitter: string;
-  mailAddress: string;
-};
-
 // 表示するユーザーの情報
 type userDetailsState = {
   birthDay: string;

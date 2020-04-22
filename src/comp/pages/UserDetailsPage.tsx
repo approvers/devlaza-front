@@ -2,7 +2,7 @@ import * as React from "react";
 import FollowButton from "../FollowButton";
 import UserDetailsComponent from "../UserDetailsComponent";
 import DevExperience from "../DevExperience";
-import { AccountLink, AccountType } from "../AccountLink";
+import { LinkedAccounts, AccountType } from "../AccountLink";
 import { Divider } from "@material-ui/core";
 import EventListener from "react-event-listener";
 import * as styles from "css/comp/pages/UserDetailsPage.module.css";
@@ -16,7 +16,7 @@ type UserDetailsState = {
   favoriteLanguage: string;
   profileImageUrl: string;
   accounts: AccountType;
-  showList: Array<keyof AccountType>;
+  linkedAccountsList: Array<keyof AccountType>;
   developmentExperienceId: number[];
   followingIdList: number[];
   followerIdList: number[];
@@ -26,7 +26,12 @@ type UserDetailsState = {
 type UserDetailsProps = {
   loginUserFollowingIdList: number[];
   userIdToFollow: (userId: number) => void;
-  userIdUnFollow: (userId: number) => void;
+  userIdToUnFollow: (userId: number) => void;
+};
+
+type Element = {
+  userDetails: JSX.Element;
+  devExperience: JSX.Element;
 };
 
 class UserDetailsPage extends React.Component<
@@ -47,7 +52,7 @@ class UserDetailsPage extends React.Component<
         twitter: "unios103",
         mailAddress: "unios103@gmail.com",
       },
-      showList: ["github", "twitter", "mailAddress"],
+      linkedAccountsList: ["github", "twitter", "mailAddress"],
       developmentExperienceId: [7438921],
       followingIdList: [11, 33],
       followerIdList: [112],
@@ -73,7 +78,7 @@ class UserDetailsPage extends React.Component<
 
   updateList = (isFollow: boolean) => {
     if (isFollow) {
-      this.props.userIdUnFollow(this.state.userId);
+      this.props.userIdToUnFollow(this.state.userId);
     } else {
       this.props.userIdToFollow(this.state.userId);
     }
@@ -87,19 +92,19 @@ class UserDetailsPage extends React.Component<
   };
 
   render() {
-    const element = {
-      content: {
-        userDetails: this.userDetails(),
-        devExperience: <DevExperience />,
-      },
-      empty: { userDetails: <></>, devExperience: <></> },
+    const insertContent = {
+      userDetails: this.userDetails(),
+      devExperience: <DevExperience />,
     };
-    let phoneElement = element.empty,
-      pcElement = element.empty;
+    const empty = { userDetails: <></>, devExperience: <></> };
+    let phoneElement: Element;
+    let pcElement: Element;
     if (this.state.isPhone) {
-      phoneElement = element.content;
+      phoneElement = insertContent;
+      pcElement = empty;
     } else {
-      pcElement = element.content;
+      pcElement = insertContent;
+      phoneElement = empty;
     }
     return (
       <>
@@ -121,9 +126,9 @@ class UserDetailsPage extends React.Component<
             </div>
             {pcElement.userDetails}
             <div className={styles.accountWrapper}>
-              <AccountLink
+              <LinkedAccounts
                 accounts={this.state.accounts}
-                showList={this.state.showList}
+                linkedAccountsList={this.state.linkedAccountsList}
                 isPhone={this.state.isPhone}
               />
             </div>

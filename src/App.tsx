@@ -36,7 +36,7 @@ class App extends React.Component<AppProps, AppStatus> {
     this.setState({ loginUserFollowingIdList: list });
   };
 
-  userIdUnfollow = (userId: number) => {
+  userIdToUnfollow = (userId: number) => {
     const list = this.state.loginUserFollowingIdList.filter((id: number) => {
       return id !== userId;
     });
@@ -64,7 +64,7 @@ class App extends React.Component<AppProps, AppStatus> {
                       this.state.loginUserFollowingIdList
                     }
                     userIdToFollow={this.userIdToFollow}
-                    userIdUnFollow={this.userIdUnfollow}
+                    userIdToUnFollow={this.userIdToUnfollow}
                   />
                 )}
               />

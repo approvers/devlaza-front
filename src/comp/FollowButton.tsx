@@ -8,13 +8,6 @@ type userDetailsProps = {
 };
 
 const FollowButton = (props: userDetailsProps) => {
-  const buttonContents = (isFollow: boolean) => {
-    if (isFollow) {
-      return <p>Unfollow</p>;
-    }
-    return <p>Follow</p>;
-  };
-
   return (
     <Button
       size="small"
@@ -23,7 +16,7 @@ const FollowButton = (props: userDetailsProps) => {
       color="secondary"
       onClick={() => props.updateFollowingList(props.isFollow)}
     >
-      {buttonContents(props.isFollow)}
+      {props.isFollow ? <p>UnFollow</p> : <p>Follow</p>}
     </Button>
   );
 };
