@@ -4,18 +4,18 @@ import ButtonModel from "./menuContents";
 import { InputBase, IconButton } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 
-type searchProps = {
+type SearchProps = {
   searchbox: string;
   handleSearchBoxChange: (inputValue: string) => void;
 };
 
-type menuProps = {
+type MenuProps = {
   showMenuIcon: boolean;
   moveSearchContents: boolean;
   changeMenuListStatus: (flag: boolean) => void;
-} & searchProps;
+} & SearchProps;
 
-export const SearchContents = (props: searchProps) => {
+export const SearchContents = (props: SearchProps) => {
   return (
     <div className={styles.header_search}>
       <InputBase
@@ -33,7 +33,7 @@ export const SearchContents = (props: searchProps) => {
   );
 };
 
-export const HeaderMenu = (props: menuProps) => {
+export const HeaderMenu = (props: MenuProps) => {
   let searchContent: JSX.Element;
   if (props.moveSearchContents) {
     searchContent = (

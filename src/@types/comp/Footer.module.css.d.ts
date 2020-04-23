@@ -1,4 +1,5 @@
 declare const styles: {
+  readonly footerList: string;
   readonly footer: string;
   readonly copyright: string;
   readonly footer_contents_wrapper: string;

@@ -1,0 +1,12 @@
+.buttonContentsWrapper {
+  width: 100%;
+}
+.buttonContentsWrapper span p {
+  font-size: 1rem;
+}
+@media screen and (max-width: 550px) {
+  .buttonContentsWrapper span p {
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+  }
+}

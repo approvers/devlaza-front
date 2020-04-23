@@ -2,9 +2,9 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import * as styles from "css/comp/pages/CreateProjectPage.module.css";
 import * as CommonStyles from "css/comp/Common.module.css";
-import { Box, Button, TextField } from "@material-ui/core";
+import CreateSendButton from "../SendButton";
+import { TextField } from "@material-ui/core";
 
-type CreateProjectPageProps = {} & RouteComponentProps;
 type CreateProjectPageState = {
   name: string;
   introduction: string;
@@ -12,11 +12,13 @@ type CreateProjectPageState = {
   isIntroductionError: boolean;
 };
 
+const checkBlankSpace = (value: string) => !!value.match(/\S/g);
+
 class CreateProjectPage extends React.Component<
-  CreateProjectPageProps,
+  RouteComponentProps,
   CreateProjectPageState
 > {
-  constructor(props: CreateProjectPageProps) {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
       name: "",
@@ -29,28 +31,22 @@ class CreateProjectPage extends React.Component<
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
     if (e.target.value.endsWith("\n")) return;
+    const isError = checkBlankSpace(e.target.value) === false;
     this.setState({
       name: e.target.value,
-      isNameError: e.target.value.length === 0,
+      isNameError: isError,
     });
   };
 
   handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isError = checkBlankSpace(e.target.value) === false;
     this.setState({
       introduction: e.target.value,
-      isIntroductionError: e.target.value.length === 0,
+      isIntroductionError: isError,
     });
   };
 
   handleSendButton = () => {
-    const isNameError = this.state.name.length === 0;
-    const isIntroductionError = this.state.introduction.length === 0;
-    this.setState({
-      isNameError: isNameError,
-      isIntroductionError: isIntroductionError,
-    });
-    if (isNameError || isIntroductionError) return;
-
     // TODO: ここでAPIに情報をぶん投げる
     const projectId = "7438921";
     this.props.history.push(`/projects/detail/${projectId}`);
@@ -71,49 +67,47 @@ class CreateProjectPage extends React.Component<
       <>
         <div className={styles.form_wrapper}>
           <div className={CommonStyles.content_title}>プロジェクト作成</div>
-          <Box m="0.75rem" />
           <form autoComplete="off">
-            <TextField
-              id="project-name"
-              label="名前"
-              margin="normal"
-              multiline
-              variant="outlined"
-              fullWidth
-              required
-              onChange={this.handleNameInputChange}
-              error={this.state.isNameError}
-              value={this.state.name}
-              helperText={nameHelperText}
-            />
-            <div className={CommonStyles.for_computer}>
-              <Box m="1rem" />
+            <div className={CommonStyles.createProjectContentsBox}>
+              <TextField
+                id="project-name"
+                label="名前"
+                margin="normal"
+                multiline
+                variant="outlined"
+                fullWidth
+                required
+                onChange={this.handleNameInputChange}
+                error={this.state.isNameError}
+                value={this.state.name}
+                helperText={nameHelperText}
+              />
             </div>
-            <TextField
-              id="project-intro"
-              label="プロジェクトの説明"
-              margin="normal"
-              multiline
-              rows={4}
-              variant="outlined"
-              style={{ marginBottom: "1rem" }}
-              fullWidth
-              required
-              onChange={this.handleIntroductionInputChange}
-              error={this.state.isIntroductionError}
-              helperText={introductionHelperText}
-            />
-            <div className={CommonStyles.for_computer}>
-              <Box m="1rem" />
+            <div className={CommonStyles.createProjectContentsBox}>
+              <TextField
+                id="project-intro"
+                label="プロジェクトの説明"
+                margin="normal"
+                multiline
+                rows={4}
+                variant="outlined"
+                style={{ marginBottom: "1rem" }}
+                fullWidth
+                required
+                onChange={this.handleIntroductionInputChange}
+                error={this.state.isIntroductionError}
+                helperText={introductionHelperText}
+              />
             </div>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              onClick={this.handleSendButton}
-            >
-              作成
-            </Button>
+            <div className={CommonStyles.createProjectContentsBox}>
+              <CreateSendButton
+                canSend={
+                  checkBlankSpace(this.state.name) &&
+                  checkBlankSpace(this.state.introduction)
+                }
+                handleSendButton={this.handleSendButton}
+              />
+            </div>
           </form>
         </div>
       </>

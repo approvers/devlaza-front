@@ -1,0 +1,99 @@
+.detailsWrapper {
+  padding-top: 1%;
+}
+.followLink,
+.userDetails {
+  display: flex;
+}
+.userDetails,
+.iconBase {
+  padding-left: 0.5vh;
+  flex-wrap: wrap;
+  width: 100%;
+  color: #333;
+}
+.followLink {
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 1.2rem;
+}
+.followLink p {
+  padding-right: 1rem;
+  display: inline;
+}
+.userDetails {
+  font-size: 0.8em;
+  color: #333;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.iconBaseLine {
+  white-space: nowrap;
+  padding: 1% 0;
+}
+.iconBaseLine p {
+  padding-right: 1rem;
+  line-height: 1.1rem;
+}
+.icon {
+  padding-right: 0.5rem;
+}
+.iconBaseLine {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+  .detailsWrapper {
+    padding-top: 1.7%;
+    padding-bottom: 1.6%;
+  }
+  .userDetails {
+    font-size: 0.7rem;
+    line-height: 0.8rem;
+  }
+  .followLink p {
+    padding-right: 0;
+  }
+  .followLink:first-of-type p {
+    padding-right: 0.5rem;
+  }
+  .iconBaseLine p {
+    padding-right: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .detailsWrapper {
+    padding-top: 2%;
+    padding-bottom: 2%;
+  }
+  .followLink {
+    line-height: 1.1rem;
+  }
+  .iconBaseLine:first-child {
+    padding-right: 0.8rem;
+  }
+  .iconBaseLine {
+    padding: 0;
+  }
+  .iconBaseLine p {
+    padding-right: 0;
+    line-height: 0.9rem;
+  }
+  .iconBaseLine svg,
+  .iconBase svg {
+    padding-right: 0.2rem;
+    font-size: 0.9rem;
+  }
+  .userDetails {
+    font-size: 0.6rem;
+    line-height: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .followLink:first-of-type p {
+    padding-right: 0.3rem;
+  }
+}

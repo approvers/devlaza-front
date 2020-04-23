@@ -1,0 +1,143 @@
+.accountWrapper,
+.profilePageWrapper {
+  display: flex;
+}
+.profileDetailsWrapper,
+.profileWrapper {
+  padding: 1.6vh;
+}
+.profileWrapper {
+  width: 33vh;
+  font-size: 0.9rem;
+}
+.profileImageWrapper {
+  box-sizing: border-box;
+  position: relative;
+  height: 33vh;
+  width: 33vh;
+  outline: 1px solid #aaa;
+  outline-offset: -1vh;
+}
+.profileImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 30vh;
+  width: 30vh;
+  object-fit: cover;
+}
+.profileDetailsWrapper {
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+}
+.profileDetailsWrapper h1 {
+  font-size: 2rem;
+  line-height: 2.3rem;
+}
+.followButton {
+  margin: 0.5vh;
+  color: #fad481;
+}
+.iconAndText {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.iconAndText p {
+  padding-right: 0.5rem;
+}
+.accountWrapper {
+  padding-left: 0.6vh;
+  font-size: 0.8rem;
+  flex-wrap: wrap;
+  text-align: center;
+  line-height: 0.9rem;
+}
+.bio {
+  padding-top: 1.5%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media screen and (max-width: 1030px) and (min-height: 1000px) {
+  .profileWrapper {
+    width: 35vw;
+    padding: 1.5vw;
+    font-size: 1rem;
+  }
+  .profileImageWrapper {
+    height: 35vw;
+    width: 35vw;
+    outline-offset: -1vw;
+  }
+  .profileImage {
+    height: 31vw;
+    width: 31vw;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .profileWrapper {
+    width: 31vw;
+    padding: 1vw;
+    padding-top: 2vw;
+    font-size: 0.8rem;
+  }
+  .profileImageWrapper {
+    height: 31vw;
+    width: 31vw;
+    outline-offset: -1vw;
+  }
+  .profileImage {
+    height: 28vw;
+    width: 28vw;
+  }
+  .profileDetailsWrapper {
+    padding: 0.8vh;
+    padding-top: 1.5vh;
+  }
+  .profileDetailsWrapper h1 {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+  .accountWrapper {
+    padding-top: 2.5%;
+  }
+  .iconAndText p svg {
+    font-size: 1.2rem;
+  }
+  .iconAndText p {
+    padding-right: 1rem;
+  }
+  .bio {
+    padding-top: 0;
+  }
+  .bio p {
+    font-size: 0.8rem;
+    line-height: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .profileWrapper {
+    font-size: 0.7rem;
+    padding-top: 2.5vw;
+  }
+}
+@media screen and (max-width: 350px) {
+  .profileDetailsWrapper h1 {
+    font-size: 1.4rem;
+    line-height: 1.7rem;
+  }
+  .accountWrapper {
+    padding-top: 2.5%;
+  }
+  .iconAndText p svg {
+    font-size: 1rem;
+  }
+  .iconAndText p {
+    padding-right: 0.6rem;
+  }
+}
