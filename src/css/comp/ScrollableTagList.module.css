@@ -1,0 +1,26 @@
+.tag_list_wrapper {
+    border: 1px solid #b0b0b0;
+    padding: 0.1rem;
+
+    white-space: nowrap;
+    overflow: scroll hidden;
+}
+
+.tag_list {
+    /* XXX: TagListに要素がないときも高さを維持する方法を模索する */
+    height: 2.3rem;
+}
+
+.tag_list_wrapper::-webkit-scrollbar{
+    height: 0.5rem;
+}
+
+.tag_list_wrapper::-webkit-scrollbar-track{
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.tag_list_wrapper::-webkit-scrollbar-thumb{
+    background-color: #c6c6c6;
+    border-radius: 10px;
+}

@@ -6,6 +6,14 @@
   padding-bottom: 0.5vh;
 }
 
+.content_subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  padding-top: 1.5vh;
+  padding-bottom: 0.5vh;
+}
+
 .createProjectContentsBox {
   padding-bottom: 2vh;
 }
