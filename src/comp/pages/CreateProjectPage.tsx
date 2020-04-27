@@ -106,7 +106,9 @@ class CreateProjectPage extends React.Component<
                   checkBlankSpace(this.state.introduction)
                 }
                 handleSendButton={this.handleSendButton}
-              />
+              >
+                送信
+              </CreateSendButton>
             </div>
           </form>
         </div>

@@ -6,7 +6,7 @@ type SendButtonProps = {
   handleSendButton: () => void;
 };
 
-const CreateSendButton = (props: SendButtonProps) => {
+const CreateSendButton: React.FunctionComponent<SendButtonProps> = (props) => {
   const enabledButton = (
     <Button
       variant="contained"
@@ -14,12 +14,12 @@ const CreateSendButton = (props: SendButtonProps) => {
       size="large"
       onClick={() => props.handleSendButton()}
     >
-      作成
+      {props.children}
     </Button>
   );
   const disabledButton = (
     <Button variant="contained" size="large" disabled>
-      作成
+      {props.children}
     </Button>
   );
   return props.canSend ? enabledButton : disabledButton;
