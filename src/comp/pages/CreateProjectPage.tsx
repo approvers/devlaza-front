@@ -88,7 +88,7 @@ class CreateProjectPage extends React.Component<
     // 存在しない場合は新しく作成してIDをもらって、そのIDを結合します
     const tagID = "tag-" + this.state.addingTagName;
 
-    if (this.state.tagIDs.indexOf(tagID) != -1) {
+    if (this.state.tagIDs.indexOf(tagID) !== -1) {
       this.setState({
         tagIDErrorCode: CreateProjectPage.TAG_ERROR_DUPLICATE,
       });
