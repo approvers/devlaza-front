@@ -74,7 +74,7 @@
     "*.{js,ts}": [
       "yarn fix",
       "yarn lint",
-      "git add"
+      "git add ."
     ]
   }
 }
