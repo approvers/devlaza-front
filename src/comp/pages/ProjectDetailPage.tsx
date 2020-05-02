@@ -10,6 +10,7 @@ import { PostAdd, Favorite } from "@material-ui/icons";
 import Loading from "../Loading";
 import Avater from "../Avater";
 import ProjectTag from "../ProjectTag";
+import ShareButtons from "../ShareButton";
 
 /* --- ボタンのスタイル --- */
 
@@ -163,6 +164,7 @@ class ProjectDetailPage extends React.Component<
             </div>
           </div>
         </div>
+        <ShareButtons introduction={this.state.introduction} />
       </>
     );
   }
