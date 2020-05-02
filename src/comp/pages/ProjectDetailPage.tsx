@@ -14,7 +14,7 @@ import ShareButtons from "../ShareButton";
 
 /* --- ボタンのスタイル --- */
 
-type ProjectDetailPageProps = {} & RouteComponentProps<{ uuid: string }>;
+type ProjectDetailPageProps = RouteComponentProps<{ uuid: string; id: string }>;
 
 type ProjectDetailPageState = {
   name: string;
@@ -164,7 +164,10 @@ class ProjectDetailPage extends React.Component<
             </div>
           </div>
         </div>
-        <ShareButtons introduction={this.state.introduction} />
+        <ShareButtons
+          route={this.props}
+          introduction={this.state.introduction}
+        />
       </>
     );
   }

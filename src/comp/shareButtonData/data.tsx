@@ -29,8 +29,8 @@ export type IconUrl = {
 };
 export type IconName = Array<keyof Icon>;
 
-export const mainIconName: IconName = ["Twitter", "Facebook", "LINE"];
-export const subIconName: IconName = ["Mail", "Pocket", "Copy"];
+export const mainIconName: IconName = ["Twitter", "Facebook"];
+export const subIconName: IconName = ["LINE", "Mail", "Pocket"];
 export const icons: Icon = {
   Twitter: faTwitter,
   Facebook: faFacebookF,
@@ -46,8 +46,10 @@ type UrlProps = {
   title: string;
 };
 export const Url = (props: UrlProps) => {
+  const sentenceLengthLimits = 40;
+  const intro = props.introduction.substr(0, sentenceLengthLimits);
   const iconsUrl: IconUrl = {
-    Twitter: `https://twiter.com/share?url=${props.url}&text=${props.introduction}`,
+    Twitter: `https://twitter.com/share?url=${props.url}&text=${intro}`,
     Facebook: `http://www.facebook.com/share.php?u=${props.url}`,
     LINE: `https://social-plugins.line.me/lineit/share?url=${props.url}`,
     Mail: `mailto:body=${props.url}`,

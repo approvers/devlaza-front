@@ -1,14 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Button,
-  Dialog,
-  Divider,
-  List,
-  ButtonGroup,
-  Typography,
-} from "@material-ui/core";
+import { Button, ButtonGroup, Tooltip, Zoom } from "@material-ui/core";
 import EventListener from "react-event-listener";
+import { RouteComponentProps } from "react-router-dom";
 import OtherShareButton from "./OtherShareButton";
 import {
   Icon,
@@ -20,17 +14,20 @@ import {
   Url,
   otherIcon,
 } from "./shareButtonData/data";
+import ShareDialog from "./ShareDialog";
+import CopyUrl from "./CopyUrl";
 import * as styles from "css/comp/ShareButton.module.css";
 
 type ShareButtonProps = {
   introduction: string;
+  route: RouteComponentProps<{ id: string }>;
 };
 
 const ShareButton = (props: ShareButtonProps) => {
   const [isPhone, changeState] = React.useState(window.innerWidth <= 600);
   const [open, setOpen] = React.useState(false);
   const pageData = {
-    url: "#",
+    url: "ここに https:// とかを入れる" + props.route.location.pathname,
     title: document.title,
     introduction: props.introduction,
   };
@@ -71,26 +68,25 @@ const ShareButton = (props: ShareButtonProps) => {
         color="secondary"
         aria-label="share button"
       >
+        <Button>
+          <CopyUrl url={pageData.url}>
+            <FontAwesomeIcon icon={icons["Copy"]} />
+          </CopyUrl>
+        </Button>
         {iconList.map((icon: keyof Icon | keyof IconUrl, key: number) => (
-          <Button key={key} href={iconsUrl[icon]}>
-            <FontAwesomeIcon icon={icons[icon]} />
-          </Button>
+          <Tooltip key={key} TransitionComponent={Zoom} title={icon} arrow>
+            <Button href={iconsUrl[icon]}>
+              <FontAwesomeIcon icon={icons[icon]} />
+            </Button>
+          </Tooltip>
         ))}
-        {otherButtonIcon}
+        <Tooltip TransitionComponent={Zoom} title="Share" arrow>
+          {otherButtonIcon}
+        </Tooltip>
       </ButtonGroup>
-      <Dialog onClose={handleClose} open={open}>
-        <div className={styles.dialogTitle}>
-          <Typography className={styles.otherTitle}>Share</Typography>
-        </div>
-        <Divider />
-        <List>
-          <OtherShareButton
-            icons={child}
-            iconsList={icons}
-            iconsUrl={iconsUrl}
-          />
-        </List>
-      </Dialog>
+      <ShareDialog open={open} handleClose={handleClose}>
+        <OtherShareButton icons={child} iconsList={icons} iconsUrl={iconsUrl} />
+      </ShareDialog>
     </>
   );
 };
