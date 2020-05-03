@@ -1,41 +1,35 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, ButtonGroup, Tooltip, Zoom } from "@material-ui/core";
-import EventListener from "react-event-listener";
-import { RouteComponentProps } from "react-router-dom";
+import { Button, Tooltip, Zoom } from "@material-ui/core";
+import { Context } from "../App";
 import OtherShareButton from "./OtherShareButton";
 import {
   Icon,
   IconName,
-  IconUrl,
   mainIconName,
   subIconName,
-  icons,
   Url,
   otherIcon,
 } from "./shareButtonData/data";
 import ShareDialog from "./ShareDialog";
 import CopyUrl from "./CopyUrl";
+import ShareButtonComp from "./ShareButtonComp";
 import * as styles from "css/comp/ShareButton.module.css";
 
 type ShareButtonProps = {
   introduction: string;
-  route: RouteComponentProps<{ id: string }>;
+  pathName: string;
 };
 
 const ShareButton = (props: ShareButtonProps) => {
-  const [isPhone, changeState] = React.useState(window.innerWidth <= 600);
   const [open, setOpen] = React.useState(false);
   const pageData = {
-    url: "ここに https:// とかを入れる" + props.route.location.pathname,
+    url: "ここに https:// とかを入れる" + props.pathName,
     title: document.title,
     introduction: props.introduction,
   };
   const iconsUrl = Url(pageData);
 
-  const handleResize = () => {
-    changeState(window.innerWidth <= 600);
-  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -44,50 +38,54 @@ const ShareButton = (props: ShareButtonProps) => {
   };
 
   let otherButtonIcon: JSX.Element;
-  let iconList: IconName;
-  let child: IconName;
-  if (isPhone) {
-    iconList = mainIconName;
-    otherButtonIcon = (
-      <Button onClick={handleClickOpen}>
-        <FontAwesomeIcon icon={otherIcon} />
-      </Button>
-    );
-    child = subIconName;
-  } else {
-    iconList = mainIconName.concat(subIconName);
-    otherButtonIcon = <></>;
-    child = [];
-  }
+  let iconList: IconName[];
+  let child: IconName[];
+  const createElements = (isPhone: boolean) => {
+    if (isPhone) {
+      iconList = mainIconName;
+      otherButtonIcon = (
+        <Button color="secondary" onClick={handleClickOpen}>
+          <FontAwesomeIcon icon={otherIcon} />
+        </Button>
+      );
+      child = subIconName;
+    } else {
+      iconList = mainIconName.concat(subIconName);
+      otherButtonIcon = <></>;
+      child = [];
+    }
+  };
 
   return (
-    <>
-      <EventListener target="window" onResize={handleResize} />
-      <ButtonGroup
-        className={styles.buttonGroup}
-        color="secondary"
-        aria-label="share button"
-      >
-        <Button>
-          <CopyUrl url={pageData.url}>
-            <FontAwesomeIcon icon={icons["Copy"]} />
-          </CopyUrl>
-        </Button>
-        {iconList.map((icon: keyof Icon | keyof IconUrl, key: number) => (
-          <Tooltip key={key} TransitionComponent={Zoom} title={icon} arrow>
-            <Button href={iconsUrl[icon]}>
-              <FontAwesomeIcon icon={icons[icon]} />
-            </Button>
-          </Tooltip>
-        ))}
-        <Tooltip TransitionComponent={Zoom} title="Share" arrow>
-          {otherButtonIcon}
-        </Tooltip>
-      </ButtonGroup>
-      <ShareDialog open={open} handleClose={handleClose}>
-        <OtherShareButton icons={child} iconsList={icons} iconsUrl={iconsUrl} />
-      </ShareDialog>
-    </>
+    <Context.Consumer>
+      {(isPhone) => {
+        createElements(isPhone);
+        return (
+          <>
+            <div className={styles.buttonGroup}>
+              <CopyUrl url={pageData.url}>
+                <FontAwesomeIcon icon={iconsUrl["Copy"].definition} />
+              </CopyUrl>
+              {iconList.map((icon: keyof Icon, key: number) => (
+                <ShareButtonComp
+                  key={key}
+                  iconName={icon}
+                  url={iconsUrl[icon].url}
+                >
+                  <FontAwesomeIcon icon={iconsUrl[icon].definition} />
+                </ShareButtonComp>
+              ))}
+              <Tooltip TransitionComponent={Zoom} title="Share" arrow>
+                {otherButtonIcon}
+              </Tooltip>
+            </div>
+            <ShareDialog open={open} handleClose={handleClose}>
+              <OtherShareButton iconsName={child} icons={iconsUrl} />
+            </ShareDialog>
+          </>
+        );
+      }}
+    </Context.Consumer>
   );
 };
 

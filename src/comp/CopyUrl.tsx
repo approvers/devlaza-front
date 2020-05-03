@@ -1,7 +1,6 @@
 import React from "react";
-import { Tooltip, Zoom } from "@material-ui/core";
+import { Button, Tooltip, Zoom } from "@material-ui/core";
 import ClipboardJs from "clipboard";
-import * as styles from "css/comp/ShareButton.module.css";
 
 type CopyUrlProps = {
   url: string;
@@ -20,9 +19,13 @@ const CopyUrl = (props: CopyUrlProps) => {
 
   return (
     <Tooltip TransitionComponent={Zoom} title="Copy" arrow>
-      <span className={"btn " + styles.copyUrl} data-clipboard-text={props.url}>
+      <Button
+        color="secondary"
+        className={"btn"}
+        data-clipboard-text={props.url}
+      >
         {props.children}
-      </span>
+      </Button>
     </Tooltip>
   );
 };

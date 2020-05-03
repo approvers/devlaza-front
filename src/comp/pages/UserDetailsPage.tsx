@@ -4,7 +4,7 @@ import UserDetailsComponent from "../UserDetailsComponent";
 import DevExperience from "../DevExperience";
 import { LinkedAccounts, AccountType } from "../AccountLink";
 import { Divider } from "@material-ui/core";
-import EventListener from "react-event-listener";
+import { Context } from "../../App";
 import * as styles from "css/comp/pages/UserDetailsPage.module.css";
 
 // 表示するユーザーの情報
@@ -20,7 +20,6 @@ type UserDetailsState = {
   developmentExperienceId: number[];
   followingIdList: number[];
   followerIdList: number[];
-  isPhone: boolean;
 };
 
 type UserDetailsProps = {
@@ -56,13 +55,8 @@ class UserDetailsPage extends React.Component<
       developmentExperienceId: [7438921],
       followingIdList: [11, 33],
       followerIdList: [112],
-      isPhone: window.innerWidth <= 600,
     };
   }
-
-  handleResize = () => {
-    this.setState({ isPhone: window.innerWidth <= 600 });
-  };
 
   userDetails = () => {
     return (
@@ -99,52 +93,60 @@ class UserDetailsPage extends React.Component<
     const empty = { userDetails: <></>, devExperience: <></> };
     let phoneElement: Element;
     let pcElement: Element;
-    if (this.state.isPhone) {
-      phoneElement = insertContent;
-      pcElement = empty;
-    } else {
-      pcElement = insertContent;
-      phoneElement = empty;
-    }
+    const createElements = (isPhone: boolean) => {
+      if (isPhone) {
+        phoneElement = insertContent;
+        pcElement = empty;
+      } else {
+        pcElement = insertContent;
+        phoneElement = empty;
+      }
+    };
     return (
-      <>
-        <EventListener target="window" onResize={this.handleResize} />
-        <div className={styles.profilePageWrapper}>
-          <div className={styles.profileWrapper}>
-            <div className={styles.profileImageWrapper}>
-              <img
-                src={this.state.profileImageUrl}
-                alt={this.state.name}
-                className={styles.profileImage}
-              />
-            </div>
-            <div className={styles.followButton}>
-              <FollowButton
-                isFollowing={this.checkFollowing()}
-                updateFollowingList={this.updateList}
-              />
-            </div>
-            {pcElement.userDetails}
-            <div className={styles.accountWrapper}>
-              <LinkedAccounts
-                accounts={this.state.accounts}
-                linkedAccountsList={this.state.linkedAccountsList}
-                isPhone={this.state.isPhone}
-              />
-            </div>
-          </div>
-          <div className={styles.profileDetailsWrapper}>
-            <h1>{this.state.name}</h1>
-            <Divider />
-            {phoneElement.userDetails}
-            <div className={styles.bio}>
-              <p>{this.state.bio}</p>
-            </div>
-            {pcElement.devExperience}
-          </div>
-        </div>
-        {phoneElement.devExperience}
-      </>
+      <Context.Consumer>
+        {(isPhone) => {
+          createElements(isPhone);
+          return (
+            <>
+              <div className={styles.profilePageWrapper}>
+                <div className={styles.profileWrapper}>
+                  <div className={styles.profileImageWrapper}>
+                    <img
+                      src={this.state.profileImageUrl}
+                      alt={this.state.name}
+                      className={styles.profileImage}
+                    />
+                  </div>
+                  <div className={styles.followButton}>
+                    <FollowButton
+                      isFollowing={this.checkFollowing()}
+                      updateFollowingList={this.updateList}
+                    />
+                  </div>
+                  {pcElement.userDetails}
+                  <div className={styles.accountWrapper}>
+                    <LinkedAccounts
+                      accounts={this.state.accounts}
+                      linkedAccountsList={this.state.linkedAccountsList}
+                      isPhone={isPhone}
+                    />
+                  </div>
+                </div>
+                <div className={styles.profileDetailsWrapper}>
+                  <h1>{this.state.name}</h1>
+                  <Divider />
+                  {phoneElement.userDetails}
+                  <div className={styles.bio}>
+                    <p>{this.state.bio}</p>
+                  </div>
+                  {pcElement.devExperience}
+                </div>
+              </div>
+              {phoneElement.devExperience}
+            </>
+          );
+        }}
+      </Context.Consumer>
     );
   }
 }
