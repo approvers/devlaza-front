@@ -34,7 +34,7 @@ type UrlProps = {
   introduction: string;
   title: string;
 };
-export const Url = ({url,introduction,title}: UrlProps) => {
+export const Url = ({ url, introduction, title }: UrlProps) => {
   const sentenceLengthLimits = 40;
   const intro = introduction.substr(0, sentenceLengthLimits);
   const iconsUrl: Icon = {
