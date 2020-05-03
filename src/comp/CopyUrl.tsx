@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Tooltip, Zoom } from "@material-ui/core";
+import { Button, Tooltip, Zoom, Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import ClipboardJs from "clipboard";
 
 type CopyUrlProps = {
@@ -17,16 +18,40 @@ const CopyUrl = (props: CopyUrlProps) => {
     console.error("Trigger:", e.trigger);
   });
 
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
-    <Tooltip TransitionComponent={Zoom} title="Copy" arrow>
-      <Button
-        color="secondary"
-        className={"btn"}
-        data-clipboard-text={props.url}
-      >
-        {props.children}
-      </Button>
-    </Tooltip>
+    <>
+      <Tooltip TransitionComponent={Zoom} title="Copy" arrow>
+        <Button
+          color="secondary"
+          className={"btn"}
+          data-clipboard-text={props.url}
+          onClick={handleClick}
+        >
+          {props.children}
+        </Button>
+      </Tooltip>
+      <Snackbar open={open} autoHideDuration={1500} onClose={handleClose}>
+        <Alert
+          elevation={6}
+          variant="filled"
+          onClose={handleClose}
+          severity="success"
+        >
+          Copied!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

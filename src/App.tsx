@@ -24,7 +24,7 @@ type AppStatus = {
 
 type AppProps = {};
 
-export const Context = React.createContext(window.innerWidth <= 600);
+export const PhoneContext = React.createContext(window.innerWidth <= 600);
 
 class App extends React.Component<AppProps, AppStatus> {
   constructor(props: AppProps) {
@@ -55,7 +55,7 @@ class App extends React.Component<AppProps, AppStatus> {
     return (
       <MuiThemeProvider theme={theme}>
         <EventListener target="window" onResize={this.handleResize} />
-        <Context.Provider value={this.state.isPhone}>
+        <PhoneContext.Provider value={this.state.isPhone}>
           <div className={styles.App}>
             <Header />
             <div className={styles.app_content_wrapper}>
@@ -88,7 +88,7 @@ class App extends React.Component<AppProps, AppStatus> {
               <Footer />
             </div>
           </div>
-        </Context.Provider>
+        </PhoneContext.Provider>
       </MuiThemeProvider>
     );
   }

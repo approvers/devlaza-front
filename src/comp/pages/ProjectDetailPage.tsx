@@ -22,13 +22,10 @@ type ProjectDetailPageState = {
   createdUser: string;
   recruiting: boolean;
   introduction: string;
-
   sites: string[][];
   tags: string[];
   member: string[];
-
   favs: number;
-
   isLoaded: boolean;
 };
 

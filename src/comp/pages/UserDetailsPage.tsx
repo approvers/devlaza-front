@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 import FollowButton from "../FollowButton";
 import UserDetailsComponent from "../UserDetailsComponent";
 import DevExperience from "../DevExperience";
 import { LinkedAccounts, AccountType } from "../AccountLink";
 import { Divider } from "@material-ui/core";
-import { Context } from "../../App";
+import { PhoneContext } from "../../App";
 import * as styles from "css/comp/pages/UserDetailsPage.module.css";
 
 // 表示するユーザーの情報
@@ -103,7 +103,7 @@ class UserDetailsPage extends React.Component<
       }
     };
     return (
-      <Context.Consumer>
+      <PhoneContext.Consumer>
         {(isPhone) => {
           createElements(isPhone);
           return (
@@ -146,7 +146,7 @@ class UserDetailsPage extends React.Component<
             </>
           );
         }}
-      </Context.Consumer>
+      </PhoneContext.Consumer>
     );
   }
 }
