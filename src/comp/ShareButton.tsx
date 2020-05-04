@@ -4,7 +4,6 @@ import { Button, Tooltip, Zoom } from "@material-ui/core";
 import { PhoneContext } from "../App";
 import OtherShareButton from "./OtherShareButton";
 import {
-  Icon,
   IconName,
   mainIconName,
   subIconName,
@@ -59,9 +58,9 @@ const ShareButton = (props: ShareButtonProps) => {
     <>
       <div className={styles.buttonGroup}>
         <CopyUrl url={pageData.url}>
-          <FontAwesomeIcon icon={iconsUrl["Copy"].definition} />
+          <FontAwesomeIcon icon={iconsUrl.Copy.definition} />
         </CopyUrl>
-        {iconList.map((icon: keyof Icon, key: number) => (
+        {iconList.map((icon: IconName, key: number) => (
           <ShareButtonComp key={key} iconName={icon} url={iconsUrl[icon].url}>
             <FontAwesomeIcon icon={iconsUrl[icon].definition} />
           </ShareButtonComp>
@@ -71,7 +70,9 @@ const ShareButton = (props: ShareButtonProps) => {
         </Tooltip>
       </div>
       <ShareDialog open={open} handleClose={handleClose}>
-        <OtherShareButton shareButtonType={child} icons={iconsUrl} />
+        {child?.map((icon: IconName, key: number) => (
+          <OtherShareButton key={key} shareSet={iconsUrl[icon]} />
+        ))}
       </ShareDialog>
     </>
   );
