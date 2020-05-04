@@ -18,6 +18,12 @@
   padding-bottom: 2vh;
 }
 
+.form_wrapper {
+  display: block;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
 @media screen and (max-width: 639px) {
   .createProjectContentsBox {
     padding-bottom: 1vh;

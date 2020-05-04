@@ -57,6 +57,10 @@ class App extends React.Component<AppProps, AppStatus> {
                 component={Pages.CreateProjectPage}
               />
               <Route
+                path="/projects/create/invite/:uuid"
+                component={Pages.UserInvitePage}
+              />
+              <Route
                 path="/user/detail"
                 render={() => (
                   <Pages.UserDetailsPage

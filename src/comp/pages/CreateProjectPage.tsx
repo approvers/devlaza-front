@@ -1,6 +1,5 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import * as styles from "css/comp/pages/CreateProjectPage.module.css";
 import * as CommonStyles from "css/comp/Common.module.css";
 import CreateSendButton from "../SendButton";
 import { Divider, TextField } from "@material-ui/core";
@@ -60,7 +59,7 @@ class CreateProjectPage extends React.Component<
   handleSendButton = () => {
     // TODO: ここでAPIに情報をぶん投げる
     const projectId = "7438921";
-    this.props.history.push(`/projects/detail/${projectId}`);
+    this.props.history.push(`/projects/create/invite/${projectId}`);
   };
 
   handleTagNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,7 +136,7 @@ class CreateProjectPage extends React.Component<
 
     return (
       <>
-        <div className={styles.form_wrapper}>
+        <div className={CommonStyles.form_wrapper}>
           <div className={CommonStyles.content_title}>プロジェクト作成</div>
           <form autoComplete="off">
             <div className={CommonStyles.createProjectContentsBox}>

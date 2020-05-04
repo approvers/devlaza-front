@@ -1,0 +1,18 @@
+.user_image {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.user_name {
+    vertical-align: middle;
+}
+
+.user_id {
+    color: #777;
+    font-family: Consolas, Source Code Pro, monospace;
+    margin-left: 0.5rem;
+    vertical-align: middle
+}
