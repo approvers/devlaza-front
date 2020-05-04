@@ -72,7 +72,7 @@ class UserInvitePage extends React.Component<
             プロジェクトの初期メンバーを明確にするために、ユーザーを招待しましょう。
           </div>
         </div>
-        <form autoComplete="off">
+        <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
           <UserInputField onChange={this.handleInviteUserChange} />
         </form>
 
