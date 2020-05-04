@@ -13,13 +13,13 @@ import {
 
 export type IconName = "Twitter" | "Facebook" | "LINE" | "Mail" | "Pocket";
 
-export type ShareButtonSet = {
+export type ShareButton = {
   name: IconName;
   definition: IconDefinition;
   url: string;
 };
 
-export type Icon = Record<IconName, ShareButtonSet>;
+type ShareButtonSet = Record<IconName, ShareButton>;
 
 export const mainIconName: IconName[] = ["Twitter", "Facebook"];
 export const subIconName: IconName[] = ["LINE", "Mail", "Pocket"];
@@ -30,14 +30,20 @@ type UrlProps = {
   introduction: string;
   title: string;
 };
-const ShareSet = ({ url, introduction, title }: UrlProps) => {
-  const sentenceLengthLimits = 40;
-  const intro = introduction.substr(0, sentenceLengthLimits);
-  const iconsData: Icon = {
+const shareSet = ({ url, introduction, title }: UrlProps) => {
+  const sentenceLengthLimits = 30;
+  const twitterIndention = "%0a";
+  const introEnd = introduction.length > 30 ? "..." : "";
+  const intro =
+    twitterIndention +
+    introduction.substr(0, sentenceLengthLimits) +
+    introEnd +
+    twitterIndention;
+  const iconsData: ShareButtonSet = {
     Twitter: {
       name: "Twitter",
       definition: faTwitter,
-      url: `https://twitter.com/share?url=${url}&text=${intro}`,
+      url: `https://twitter.com/intent/tweet?url=${url}&text=${title + intro}`,
     },
     Facebook: {
       name: "Facebook",
@@ -63,22 +69,18 @@ const ShareSet = ({ url, introduction, title }: UrlProps) => {
   return iconsData;
 };
 export const ReturnShareSet = (props: UrlProps) => (needed: NeededIcon) => {
-  const returnSet: ShareButtonSet[] = [];
-  const iconsData = ShareSet(props);
+  let returnSet: ShareButton[] = [];
+  const iconsData = shareSet(props);
   if (needed === "main") {
-    mainIconName.map((iconName: IconName) =>
-      returnSet.push(iconsData[iconName])
-    );
+    returnSet = mainIconName.map((iconName: IconName) => iconsData[iconName]);
   }
   if (needed === "sub") {
-    subIconName.map((iconName: IconName) =>
-      returnSet.push(iconsData[iconName])
-    );
+    returnSet = subIconName.map((iconName: IconName) => iconsData[iconName]);
   }
   if (needed === "both") {
-    mainIconName
+    returnSet = mainIconName
       .concat(subIconName)
-      .map((iconName: IconName) => returnSet.push(iconsData[iconName]));
+      .map((iconName: IconName) => iconsData[iconName]);
   }
   return returnSet;
 };

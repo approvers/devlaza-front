@@ -1,11 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ListItem } from "@material-ui/core";
-import { ShareButtonSet } from "./shareButtonData/data";
+import { ShareButton } from "./shareButtonData/data";
 import * as styles from "css/comp/ShareButton.module.css";
 
 type ShareButtonProps = {
-  shareSet: ShareButtonSet;
+  shareSet: ShareButton;
 };
 
 const OtherShareButton = (props: ShareButtonProps) => {

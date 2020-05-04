@@ -164,6 +164,7 @@ class ProjectDetailPage extends React.Component<
         <ShareButtons
           pathName={this.props.location.pathname}
           introduction={this.state.introduction}
+          projectName={this.state.name}
         />
       </>
     );

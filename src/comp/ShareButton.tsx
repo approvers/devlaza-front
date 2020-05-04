@@ -3,11 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Tooltip, Zoom } from "@material-ui/core";
 import { PhoneContext } from "../App";
 import OtherShareButton from "./OtherShareButton";
-import {
-  ReturnShareSet,
-  otherIcon,
-  ShareButtonSet,
-} from "./shareButtonData/data";
+import { ReturnShareSet, otherIcon, ShareButton } from "./shareButtonData/data";
 import ShareDialog from "./ShareDialog";
 import CopyUrl from "./CopyUrl";
 import ShareButtonComp from "./ShareButtonComp";
@@ -15,10 +11,11 @@ import * as styles from "css/comp/ShareButton.module.css";
 
 type ShareButtonProps = {
   introduction: string;
+  projectName: string;
   pathName: string;
 };
 
-const ShareButton = (props: ShareButtonProps) => {
+const ShareButtons = (props: ShareButtonProps) => {
   const isPhone = useContext(PhoneContext);
   const [open, setOpen] = React.useState(false);
 
@@ -30,11 +27,11 @@ const ShareButton = (props: ShareButtonProps) => {
   };
 
   let otherButtonIcon: JSX.Element;
-  let iconList: ShareButtonSet[];
-  let children: ShareButtonSet[];
+  let iconList: ShareButton[];
+  let children: ShareButton[];
   const pageData = {
     url: "ここに https:// とかを入れる" + props.pathName,
-    title: document.title,
+    title: props.projectName,
     introduction: props.introduction,
   };
   const ShareSet = ReturnShareSet(pageData);
@@ -58,7 +55,7 @@ const ShareButton = (props: ShareButtonProps) => {
         <CopyUrl url={pageData.url}>
           <FontAwesomeIcon icon={otherIcon.copy} />
         </CopyUrl>
-        {iconList.map((icon: ShareButtonSet, key: number) => (
+        {iconList.map((icon: ShareButton, key: number) => (
           <ShareButtonComp key={key} iconName={icon.name} url={icon.url}>
             <FontAwesomeIcon icon={icon.definition} />
           </ShareButtonComp>
@@ -68,7 +65,7 @@ const ShareButton = (props: ShareButtonProps) => {
         </Tooltip>
       </div>
       <ShareDialog open={open} handleClose={handleClose}>
-        {children?.map((icon: ShareButtonSet, key: number) => (
+        {children?.map((icon: ShareButton, key: number) => (
           <OtherShareButton key={key} shareSet={icon} />
         ))}
       </ShareDialog>
@@ -76,4 +73,4 @@ const ShareButton = (props: ShareButtonProps) => {
   );
 };
 
-export default ShareButton;
+export default ShareButtons;
