@@ -58,10 +58,7 @@ class UserInputField extends React.Component<
         onChange={(_, value) => {
           this.props.onChange(value.map((e) => e.id));
         }}
-        options={this.state.suggestedUser.filter(
-          (value) =>
-            this.state.selectedUser.map((e) => e.id).indexOf(value.id) == -1
-        )}
+        options={this.state.suggestedUser}
         getOptionLabel={(option) => option.name}
         noOptionsText="該当するユーザーは存在しません"
         renderTags={(value: User[], getTagProps) => (
