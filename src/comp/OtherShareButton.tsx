@@ -5,7 +5,7 @@ import { ShareButton } from "./shareButtonData/data";
 import * as styles from "css/comp/ShareButton.module.css";
 
 type ShareButtonProps = {
-  shareSet: ShareButton;
+  share: ShareButton;
 };
 
 const OtherShareButton = (props: ShareButtonProps) => {
@@ -13,11 +13,11 @@ const OtherShareButton = (props: ShareButtonProps) => {
     <ListItem className={styles.listItem}>
       <Button
         color="secondary"
-        href={props.shareSet.url}
+        href={props.share.url}
         className={styles.otherButton}
       >
-        <FontAwesomeIcon icon={props.shareSet.definition} />
-        <p>{props.shareSet.name}</p>
+        <FontAwesomeIcon icon={props.share.definition} />
+        <p>{props.share.name}</p>
       </Button>
     </ListItem>
   );

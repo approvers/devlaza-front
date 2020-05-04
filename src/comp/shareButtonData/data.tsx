@@ -33,7 +33,7 @@ type UrlProps = {
 const shareSet = ({ url, introduction, title }: UrlProps) => {
   const sentenceLengthLimits = 30;
   const twitterIndention = "%0a";
-  const introEnd = introduction.length > 30 ? "..." : "";
+  const introEnd = introduction.length > sentenceLengthLimits ? "..." : "";
   const intro =
     twitterIndention +
     introduction.substr(0, sentenceLengthLimits) +
@@ -43,7 +43,7 @@ const shareSet = ({ url, introduction, title }: UrlProps) => {
     Twitter: {
       name: "Twitter",
       definition: faTwitter,
-      url: `https://twitter.com/intent/tweet?url=${url}&text=${title + intro}`,
+      url: `https://twitter.com/intent/tweet?url=${url}&text=${title}${intro}`,
     },
     Facebook: {
       name: "Facebook",

@@ -66,7 +66,7 @@ const ShareButtons = (props: ShareButtonProps) => {
       </div>
       <ShareDialog open={open} handleClose={handleClose}>
         {children?.map((icon: ShareButton, key: number) => (
-          <OtherShareButton key={key} shareSet={icon} />
+          <OtherShareButton key={key} share={icon} />
         ))}
       </ShareDialog>
     </>

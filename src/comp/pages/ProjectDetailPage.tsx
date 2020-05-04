@@ -10,7 +10,7 @@ import { PostAdd, Favorite } from "@material-ui/icons";
 import Loading from "../Loading";
 import Avater from "../Avater";
 import ProjectTag from "../ProjectTag";
-import ShareButtons from "../ShareButton";
+import ShareButtons from "../ShareButtons";
 
 /* --- ボタンのスタイル --- */
 
