@@ -10,10 +10,11 @@ import { PostAdd, Favorite } from "@material-ui/icons";
 import Loading from "../Loading";
 import Avater from "../Avater";
 import ProjectTag from "../ProjectTag";
+import ShareButtons from "../ShareButtons";
 
 /* --- ボタンのスタイル --- */
 
-type ProjectDetailPageProps = {} & RouteComponentProps<{ uuid: string }>;
+type ProjectDetailPageProps = RouteComponentProps<{ uuid: string }>;
 
 type ProjectDetailPageState = {
   name: string;
@@ -21,13 +22,10 @@ type ProjectDetailPageState = {
   createdUser: string;
   recruiting: boolean;
   introduction: string;
-
   sites: string[][];
   tags: string[];
   member: string[];
-
   favs: number;
-
   isLoaded: boolean;
 };
 
@@ -163,6 +161,11 @@ class ProjectDetailPage extends React.Component<
             </div>
           </div>
         </div>
+        <ShareButtons
+          pathName={this.props.location.pathname}
+          introduction={this.state.introduction}
+          projectName={this.state.name}
+        />
       </>
     );
   }
