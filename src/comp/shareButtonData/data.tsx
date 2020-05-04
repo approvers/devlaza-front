@@ -11,13 +11,7 @@ import {
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
-export type IconName =
-  | "Twitter"
-  | "Facebook"
-  | "LINE"
-  | "Mail"
-  | "Pocket"
-  | "Copy";
+export type IconName = "Twitter" | "Facebook" | "LINE" | "Mail" | "Pocket";
 
 export type ShareButtonSet = {
   name: IconName;
@@ -30,15 +24,16 @@ export type Icon = Record<IconName, ShareButtonSet>;
 export const mainIconName: IconName[] = ["Twitter", "Facebook"];
 export const subIconName: IconName[] = ["LINE", "Mail", "Pocket"];
 
+type NeededIcon = "main" | "sub" | "both";
 type UrlProps = {
   url: string;
   introduction: string;
   title: string;
 };
-export const Url = ({ url, introduction, title }: UrlProps) => {
+const ShareSet = ({ url, introduction, title }: UrlProps) => {
   const sentenceLengthLimits = 40;
   const intro = introduction.substr(0, sentenceLengthLimits);
-  const iconsUrl: Icon = {
+  const iconsData: Icon = {
     Twitter: {
       name: "Twitter",
       definition: faTwitter,
@@ -64,13 +59,28 @@ export const Url = ({ url, introduction, title }: UrlProps) => {
       definition: faGetPocket,
       url: `http://getpocket.com/edit?url=${url}&title=${title}`,
     },
-    Copy: {
-      name: "Copy",
-      definition: faLink,
-      url: url,
-    },
   };
-  return iconsUrl;
+  return iconsData;
+};
+export const ReturnShareSet = (props: UrlProps) => (needed: NeededIcon) => {
+  const returnSet: ShareButtonSet[] = [];
+  const iconsData = ShareSet(props);
+  if (needed === "main") {
+    mainIconName.map((iconName: IconName) =>
+      returnSet.push(iconsData[iconName])
+    );
+  }
+  if (needed === "sub") {
+    subIconName.map((iconName: IconName) =>
+      returnSet.push(iconsData[iconName])
+    );
+  }
+  if (needed === "both") {
+    mainIconName
+      .concat(subIconName)
+      .map((iconName: IconName) => returnSet.push(iconsData[iconName]));
+  }
+  return returnSet;
 };
 
-export const otherIcon = faShareAlt;
+export const otherIcon = { other: faShareAlt, copy: faLink };

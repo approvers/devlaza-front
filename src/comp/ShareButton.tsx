@@ -4,11 +4,9 @@ import { Button, Tooltip, Zoom } from "@material-ui/core";
 import { PhoneContext } from "../App";
 import OtherShareButton from "./OtherShareButton";
 import {
-  IconName,
-  mainIconName,
-  subIconName,
-  Url,
+  ReturnShareSet,
   otherIcon,
+  ShareButtonSet,
 } from "./shareButtonData/data";
 import ShareDialog from "./ShareDialog";
 import CopyUrl from "./CopyUrl";
@@ -23,12 +21,6 @@ type ShareButtonProps = {
 const ShareButton = (props: ShareButtonProps) => {
   const isPhone = useContext(PhoneContext);
   const [open, setOpen] = React.useState(false);
-  const pageData = {
-    url: "ここに https:// とかを入れる" + props.pathName,
-    title: document.title,
-    introduction: props.introduction,
-  };
-  const iconsUrl = Url(pageData);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,31 +30,37 @@ const ShareButton = (props: ShareButtonProps) => {
   };
 
   let otherButtonIcon: JSX.Element;
-  let iconList: IconName[];
-  let child: IconName[];
+  let iconList: ShareButtonSet[];
+  let children: ShareButtonSet[];
+  const pageData = {
+    url: "ここに https:// とかを入れる" + props.pathName,
+    title: document.title,
+    introduction: props.introduction,
+  };
+  const ShareSet = ReturnShareSet(pageData);
   if (isPhone) {
-    iconList = mainIconName;
+    iconList = ShareSet("main");
     otherButtonIcon = (
       <Button color="secondary" onClick={handleClickOpen}>
-        <FontAwesomeIcon icon={otherIcon} />
+        <FontAwesomeIcon icon={otherIcon.other} />
       </Button>
     );
-    child = subIconName;
+    children = ShareSet("sub");
   } else {
-    iconList = mainIconName.concat(subIconName);
+    iconList = ShareSet("both");
     otherButtonIcon = <></>;
-    child = [];
+    children = [];
   }
 
   return (
     <>
       <div className={styles.buttonGroup}>
         <CopyUrl url={pageData.url}>
-          <FontAwesomeIcon icon={iconsUrl.Copy.definition} />
+          <FontAwesomeIcon icon={otherIcon.copy} />
         </CopyUrl>
-        {iconList.map((icon: IconName, key: number) => (
-          <ShareButtonComp key={key} iconName={icon} url={iconsUrl[icon].url}>
-            <FontAwesomeIcon icon={iconsUrl[icon].definition} />
+        {iconList.map((icon: ShareButtonSet, key: number) => (
+          <ShareButtonComp key={key} iconName={icon.name} url={icon.url}>
+            <FontAwesomeIcon icon={icon.definition} />
           </ShareButtonComp>
         ))}
         <Tooltip TransitionComponent={Zoom} title="Share" arrow>
@@ -70,8 +68,8 @@ const ShareButton = (props: ShareButtonProps) => {
         </Tooltip>
       </div>
       <ShareDialog open={open} handleClose={handleClose}>
-        {child?.map((icon: IconName, key: number) => (
-          <OtherShareButton key={key} shareSet={iconsUrl[icon]} />
+        {children?.map((icon: ShareButtonSet, key: number) => (
+          <OtherShareButton key={key} shareSet={icon} />
         ))}
       </ShareDialog>
     </>
