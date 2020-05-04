@@ -19,7 +19,7 @@ const ShareButtons = (props: ShareButtonProps) => {
   const isPhone = useContext(PhoneContext);
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
@@ -38,7 +38,7 @@ const ShareButtons = (props: ShareButtonProps) => {
   if (isPhone) {
     iconList = ShareSet("main");
     otherButtonIcon = (
-      <Button color="secondary" onClick={handleClickOpen}>
+      <Button color="secondary" onClick={handleOpen}>
         <FontAwesomeIcon icon={otherIcon.other} />
       </Button>
     );
