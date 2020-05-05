@@ -1,9 +1,11 @@
 import * as React from "react";
+import { Chip } from "@material-ui/core";
 import * as styles from "css/comp/ProjectTag.module.css";
 
 export type ProjectTagProp = {
   tag_id: string;
-  onClick: (e: React.MouseEvent<HTMLParagraphElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLParagraphElement>) => void;
+  onDelete?: (e: React.MouseEvent<HTMLParagraphElement>) => void;
 };
 
 type ProjectTagState = {
@@ -11,12 +13,6 @@ type ProjectTagState = {
 };
 
 class ProjectTag extends React.Component<ProjectTagProp, ProjectTagState> {
-  static defaultProps = {
-    onClick: () => {
-      /* do nothing as default */
-    },
-  };
-
   constructor(props: ProjectTagProp) {
     super(props);
 
@@ -27,9 +23,14 @@ class ProjectTag extends React.Component<ProjectTagProp, ProjectTagState> {
 
   render() {
     return (
-      <p className={styles.ptag_wrapper} onClick={this.props.onClick}>
-        {this.state.name}
-      </p>
+      <span className={styles.ptag_wrapper}>
+        <Chip
+          variant="outlined"
+          label={this.state.name}
+          onClick={this.props.onClick}
+          onDelete={this.props.onDelete}
+        />
+      </span>
     );
   }
 }

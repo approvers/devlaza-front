@@ -4,12 +4,15 @@ import { Button } from "@material-ui/core";
 type SendButtonProps = {
   canSend: boolean;
   handleSendButton: () => void;
+  outline?: boolean;
 };
 
 const CreateSendButton: React.FunctionComponent<SendButtonProps> = (props) => {
+  const isOutlineSelected: boolean = props.outline ?? false;
+
   const enabledButton = (
     <Button
-      variant="contained"
+      variant={isOutlineSelected ? "outlined" : "contained"}
       color="secondary"
       size="large"
       onClick={() => props.handleSendButton()}
@@ -18,11 +21,19 @@ const CreateSendButton: React.FunctionComponent<SendButtonProps> = (props) => {
     </Button>
   );
   const disabledButton = (
-    <Button variant="contained" size="large" disabled>
+    <Button
+      variant={isOutlineSelected ? "outlined" : "contained"}
+      size="large"
+      disabled
+    >
       {props.children}
     </Button>
   );
   return props.canSend ? enabledButton : disabledButton;
+};
+
+CreateSendButton.defaultProps = {
+  outline: false,
 };
 
 export default CreateSendButton;

@@ -87,7 +87,7 @@ class UserInvitePage extends React.Component<
           </span>
           <span className={style.nav_button}>
             <Button
-              variant="contained"
+              variant="outlined"
               size="large"
               onClick={this.handleSkipButton}
             >

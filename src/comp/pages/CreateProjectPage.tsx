@@ -10,6 +10,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  Box,
 } from "@material-ui/core";
 import { ScrollableTagList } from "../ScrollableTagList";
 import CloseIcon from "@material-ui/icons/Close";
@@ -30,8 +31,8 @@ type CreateProjectPageState = {
   isNameError: boolean;
   isIntroductionError: boolean;
   isSiteNameError: boolean;
+  siteUrlInvalid: boolean;
   tagIDErrorCode: number;
-  siteURLErrorCode: number;
 };
 
 const checkBlankSpace = (value: string) => !!value.match(/\S/g);
@@ -61,8 +62,8 @@ class CreateProjectPage extends React.Component<
       isNameError: false,
       isIntroductionError: false,
       isSiteNameError: false,
+      siteUrlInvalid: false,
       tagIDErrorCode: 0,
-      siteURLErrorCode: 0,
     };
   }
 
@@ -150,18 +151,12 @@ class CreateProjectPage extends React.Component<
   handleSiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.endsWith("\n")) return;
 
-    let errorCode = 0;
-
-    if (!checkIsUrl(e.target.value)) {
-      errorCode = CreateProjectPage.SITE_URL_NOT_URL;
-    }
-    if (!checkBlankSpace(e.target.value)) {
-      errorCode = CreateProjectPage.SITE_URL_BLANK;
-    }
+    const isError =
+      checkBlankSpace(e.target.value) && !checkIsUrl(e.target.value);
 
     this.setState({
       siteURLText: e.target.value,
-      siteURLErrorCode: errorCode,
+      siteUrlInvalid: isError,
     });
   };
 
@@ -177,7 +172,7 @@ class CreateProjectPage extends React.Component<
       siteNameText: "",
       siteURLText: "",
       isSiteNameError: false,
-      siteURLErrorCode: 0,
+      siteUrlInvalid: false,
     });
   };
 
@@ -194,7 +189,6 @@ class CreateProjectPage extends React.Component<
     let nameHelperText = "";
     let introductionHelperText = "";
     let tagIDHelperText = "";
-    let siteNameHelperText = "";
     let siteUrlHelperText = "";
 
     if (this.state.isNameError) {
@@ -203,8 +197,8 @@ class CreateProjectPage extends React.Component<
     if (this.state.isIntroductionError) {
       introductionHelperText = "プロジェクトの説明を入力してください";
     }
-    if (this.state.isSiteNameError) {
-      siteNameHelperText = "サイト名は空白にできません";
+    if (this.state.siteUrlInvalid) {
+      siteUrlHelperText = "正しい形式で入力されていません";
     }
 
     switch (this.state.tagIDErrorCode) {
@@ -219,21 +213,12 @@ class CreateProjectPage extends React.Component<
         break;
     }
 
-    switch (this.state.siteURLErrorCode) {
-      case CreateProjectPage.SITE_URL_BLANK:
-        siteUrlHelperText = "サイトのURLは空白に出来ません";
-        break;
-      case CreateProjectPage.SITE_URL_NOT_URL:
-        siteUrlHelperText = "正しい形式で入力されていません";
-        break;
-    }
-
     return (
       <>
         <div className={CommonStyles.form_wrapper}>
-          <div className={CommonStyles.content_title}>プロジェクト作成</div>
           <form autoComplete="off">
             <div className={CommonStyles.createProjectContentsBox}>
+              <div className={CommonStyles.content_title}>プロジェクト作成</div>
               <TextField
                 id="project-name"
                 label="名前"
@@ -247,8 +232,6 @@ class CreateProjectPage extends React.Component<
                 value={this.state.name}
                 helperText={nameHelperText}
               />
-            </div>
-            <div className={CommonStyles.createProjectContentsBox}>
               <TextField
                 id="project-intro"
                 label="プロジェクトの説明"
@@ -264,14 +247,12 @@ class CreateProjectPage extends React.Component<
                 helperText={introductionHelperText}
               />
             </div>
-            <div className={CommonStyles.content_subtitle}>タグ</div>
             <div className={CommonStyles.createProjectContentsBox}>
+              <div className={CommonStyles.content_subtitle}>タグ</div>
               <ScrollableTagList
                 tagIDs={this.state.tagIDs}
                 onTagClick={this.handleTagListClick}
               />
-            </div>
-            <div className={CommonStyles.createProjectContentsBox}>
               <TextField
                 id="add_tag_name"
                 label="追加するタグの名前"
@@ -284,36 +265,37 @@ class CreateProjectPage extends React.Component<
                 value={this.state.addingTagName}
                 helperText={tagIDHelperText}
               />
-            </div>
-            <div className={CommonStyles.createProjectContentsBox}>
+              <Box m={1} />
               <CreateSendButton
                 canSend={
                   checkBlankSpace(this.state.addingTagName) &&
                   this.state.tagIDErrorCode === 0
                 }
                 handleSendButton={this.handleAddTagClick}
+                outline
               >
                 追加
               </CreateSendButton>
             </div>
-            <div className={CommonStyles.content_subtitle}>関連サイト</div>
-            <List>
-              {this.state.sites.map((site, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={site.title} secondary={site.url} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() => {
-                        this.handleSiteRemoveButton(index);
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
+            <Box m={2} />
             <div className={CommonStyles.createProjectContentsBox}>
+              <div className={CommonStyles.content_subtitle}>関連サイト</div>
+              <List style={{ padding: 0 }}>
+                {this.state.sites.map((site, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={site.title} secondary={site.url} />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        onClick={() => {
+                          this.handleSiteRemoveButton(index);
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
               <TextField
                 id="site_name"
                 label="サイトの名前"
@@ -322,9 +304,7 @@ class CreateProjectPage extends React.Component<
                 variant="outlined"
                 fullWidth
                 onChange={this.handleSiteNameChange}
-                error={this.state.isSiteNameError}
                 value={this.state.siteNameText}
-                helperText={siteNameHelperText}
               />
               <TextField
                 id="site_url"
@@ -334,19 +314,19 @@ class CreateProjectPage extends React.Component<
                 variant="outlined"
                 fullWidth
                 onChange={this.handleSiteUrlChange}
-                error={this.state.siteURLErrorCode !== 0}
+                error={this.state.siteUrlInvalid}
                 value={this.state.siteURLText}
                 helperText={siteUrlHelperText}
               />
-            </div>
-            <div className={CommonStyles.createProjectContentsBox}>
+              <Box m={1} />
               <CreateSendButton
                 canSend={
                   checkBlankSpace(this.state.siteNameText) &&
                   checkBlankSpace(this.state.siteURLText) &&
-                  this.state.siteURLErrorCode === 0
+                  !this.state.siteUrlInvalid
                 }
                 handleSendButton={this.handleSiteAddButton}
+                outline
               >
                 追加
               </CreateSendButton>
