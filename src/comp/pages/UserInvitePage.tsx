@@ -3,7 +3,7 @@ import * as React from "react";
 import UserInputField from "comp/UserInputField";
 import * as style from "css/comp/pages/UserInvitePage.module.css";
 import * as CommonStyle from "css/comp/Common.module.css";
-import CreateSendButton from "../SendButton";
+import CreateSendButton from "comp/SendButton";
 import {
   Button,
   Dialog,
@@ -15,8 +15,8 @@ import {
 import { RouteComponentProps } from "react-router-dom";
 
 type UserInvitePageState = {
-  selectedUserId: string[];
-  isConfirmDialogOpen: boolean;
+  selectedUserIds: string[];
+  openedConfirmDialog: boolean;
 };
 
 class UserInvitePage extends React.Component<
@@ -27,14 +27,14 @@ class UserInvitePage extends React.Component<
     super(props);
 
     this.state = {
-      selectedUserId: [],
-      isConfirmDialogOpen: false,
+      selectedUserIds: [],
+      openedConfirmDialog: false,
     };
   }
 
   handleInviteUserChange = (newUserIds: string[]) => {
     this.setState({
-      selectedUserId: newUserIds,
+      selectedUserIds: newUserIds,
     });
   };
 
@@ -44,9 +44,9 @@ class UserInvitePage extends React.Component<
   };
 
   handleSkipButton = () => {
-    if (this.state.selectedUserId.length > 0) {
+    if (this.state.selectedUserIds.length > 0) {
       this.setState({
-        isConfirmDialogOpen: true,
+        openedConfirmDialog: true,
       });
       return;
     }
@@ -59,7 +59,7 @@ class UserInvitePage extends React.Component<
 
   handleConfirmDialogClose = () => {
     this.setState({
-      isConfirmDialogOpen: false,
+      openedConfirmDialog: false,
     });
   };
 
@@ -79,7 +79,7 @@ class UserInvitePage extends React.Component<
         <div className={style.nav_button_wrapper}>
           <span className={style.nav_button}>
             <CreateSendButton
-              canSend={this.state.selectedUserId.length > 0}
+              canSend={this.state.selectedUserIds.length > 0}
               handleSendButton={this.handleInviteButton}
             >
               招待する
@@ -96,7 +96,7 @@ class UserInvitePage extends React.Component<
           </span>
         </div>
         <Dialog
-          open={this.state.isConfirmDialogOpen}
+          open={this.state.openedConfirmDialog}
           onClose={this.handleConfirmDialogClose}
         >
           <DialogTitle>招待せずに移動しますか?</DialogTitle>

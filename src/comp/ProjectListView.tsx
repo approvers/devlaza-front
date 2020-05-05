@@ -16,7 +16,7 @@ class ProjectListView extends React.Component<ProjectListViewProp, {}> {
         <div className={styles.plv_title}>{this.props.name}</div>
         <div className={styles.plv_tags}>
           {this.props.tag_id.map((id: string, index: number) => (
-            <ProjectTag key={index} tag_id={id} />
+            <ProjectTag key={index} tagId={id} />
           ))}
         </div>
         <hr className={styles.plv_hr} />

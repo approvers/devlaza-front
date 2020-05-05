@@ -7,7 +7,7 @@ type SendButtonProps = {
   outline?: boolean;
 };
 
-const CreateSendButton: React.FunctionComponent<SendButtonProps> = (props) => {
+const CreateSendButton: React.FC<SendButtonProps> = (props) => {
   const isOutlineSelected: boolean = props.outline ?? false;
 
   const enabledButton = (

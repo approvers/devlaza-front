@@ -21,7 +21,7 @@ export class ScrollableTagList extends React.Component<
         <div className={style.tag_list}>
           {this.props.tagIDs.map((name) => (
             <ProjectTag
-              tag_id={name}
+              tagId={name}
               key={name}
               onDelete={(e: React.MouseEvent<HTMLParagraphElement>) => {
                 if (typeof this.props.onTagClick !== "undefined") {

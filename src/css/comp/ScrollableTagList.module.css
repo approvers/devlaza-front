@@ -9,7 +9,7 @@
 
 .tag_list {
     /* XXX: TagListに要素がないときも高さを維持する方法を模索する */
-    height: 2.3rem;
+    min-height: 2.3rem;
 }
 
 .tag_list_wrapper::-webkit-scrollbar{
@@ -28,6 +28,6 @@
 
 @media screen and (max-width: 550px){
     .tag_list {
-        height: 2em;
+        min-height: 2em;
     }
 }

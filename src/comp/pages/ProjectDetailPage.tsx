@@ -7,9 +7,9 @@ import { RouteComponentProps } from "react-router-dom";
 import { Button, Link, Divider } from "@material-ui/core";
 
 import { PostAdd, Favorite } from "@material-ui/icons";
-import Loading from "../Loading";
-import Avater from "../Avater";
-import ProjectTag from "../ProjectTag";
+import Loading from "comp/Loading";
+import Avater from "comp/Avater";
+import ProjectTag from "comp/ProjectTag";
 
 /* --- ボタンのスタイル --- */
 
@@ -135,7 +135,7 @@ class ProjectDetailPage extends React.Component<
             <Divider light />
             <div className={styles.contents_wrapper}>
               {this.state.tags.map((tag, index) => (
-                <ProjectTag tag_id={tag} key={index} />
+                <ProjectTag tagId={tag} key={index} />
               ))}
             </div>
 

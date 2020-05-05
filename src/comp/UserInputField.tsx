@@ -1,15 +1,10 @@
 import * as React from "react";
-import { Chip, TextField } from "@material-ui/core";
+import { Chip, TextField, Avatar } from "@material-ui/core";
 import { Autocomplete, createFilterOptions } from "@material-ui/lab";
-import Avatar from "@material-ui/core/Avatar";
 
 import * as styles from "css/comp/UserInputField.module.css";
-
-type User = {
-  id: string;
-  name: string;
-  imageUrl: string;
-};
+import { GetTagProps } from "@material-ui/lab/Autocomplete/Autocomplete";
+import { User } from "api/User";
 
 type UserInputFieldProps = {
   onChange: (newSelectedUserIds: string[]) => void;
@@ -17,7 +12,7 @@ type UserInputFieldProps = {
 
 type UserInputFieldState = {
   pendingUsername: string;
-  suggestedUser: User[];
+  suggestedUsers: User[];
   loading: boolean;
 };
 
@@ -32,7 +27,7 @@ class UserInputField extends React.Component<
 
     this.state = {
       pendingUsername: "",
-      suggestedUser: [],
+      suggestedUsers: [],
       loading: false,
     };
     this.pendingRequestTimerId = null;
@@ -40,7 +35,7 @@ class UserInputField extends React.Component<
 
   handleUserSelectChange = (value: User[]) => {
     this.setState({
-      suggestedUser: [],
+      suggestedUsers: [],
     });
     this.props.onChange(value.map((e) => e.id));
   };
@@ -56,7 +51,7 @@ class UserInputField extends React.Component<
 
     if (value.length === 0 || this.state.loading) {
       this.setState({
-        suggestedUser: [],
+        suggestedUsers: [],
       });
       return;
     }
@@ -71,14 +66,14 @@ class UserInputField extends React.Component<
   launchSuggestionRequest = () => {
     this.setState({
       loading: true,
-      suggestedUser: [],
+      suggestedUsers: [],
     });
     (async () => {
       // TODO: ここでAPIをぶっ叩いて、候補となるユーザーを提示してもらう
       await new Promise((resolve) => setTimeout(resolve, 500));
       this.setState({
         loading: false,
-        suggestedUser: [
+        suggestedUsers: [
           {
             id: "unlimit-highchi",
             name: "H.ichiyo",
@@ -93,6 +88,38 @@ class UserInputField extends React.Component<
       });
     })();
   };
+
+  getChipsFromUsers = (users: User[], otherProps: GetTagProps) => {
+    return users.map((option: User, index) => (
+      <Chip
+        avatar={<Avatar src={option.imageUrl} alt={`${option.name}'s icon`} />}
+        key={option.id}
+        variant="outlined"
+        label={option.name}
+        {...otherProps({ index })}
+      />
+    ));
+  };
+
+  getOptionFromUser = (user: User) => {
+    return (
+      <>
+        <img
+          className={styles.user_image}
+          src={user.imageUrl}
+          alt={`${user.name}'s icon`}
+        />
+        <span className={styles.user_name}>{user.name}</span>
+        <span className={styles.user_id}>@{user.id}</span>
+      </>
+    );
+  };
+
+  componentWillUnmount(): void {
+    if (this.pendingRequestTimerId != null) {
+      clearTimeout(this.pendingRequestTimerId);
+    }
+  }
 
   render() {
     const isSearchingById = this.state.pendingUsername.startsWith("@");
@@ -123,33 +150,9 @@ class UserInputField extends React.Component<
         onChange={(_, value) => {
           this.handleUserSelectChange(value);
         }}
-        options={this.state.suggestedUser}
-        renderTags={(value: User[], getTagProps) => (
-          <>
-            {value.map((option: User, index: number) => (
-              <Chip
-                avatar={
-                  <Avatar src={option.imageUrl} alt={`${option.name}'s icon`} />
-                }
-                key={option.id}
-                variant="outlined"
-                label={option.name}
-                {...getTagProps({ index })}
-              />
-            ))}
-          </>
-        )}
-        renderOption={(option) => (
-          <>
-            <img
-              className={styles.user_image}
-              src={option.imageUrl}
-              alt={`${option.name}'s icon`}
-            />
-            <span className={styles.user_name}>{option.name}</span>
-            <span className={styles.user_id}>@{option.id}</span>
-          </>
-        )}
+        options={this.state.suggestedUsers}
+        renderTags={this.getChipsFromUsers}
+        renderOption={this.getOptionFromUser}
         renderInput={(params) => (
           <TextField
             {...params}
