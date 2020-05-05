@@ -2,28 +2,51 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import * as CommonStyles from "css/comp/Common.module.css";
 import CreateSendButton from "../SendButton";
-import { Divider, TextField } from "@material-ui/core";
+import {
+  Divider,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+} from "@material-ui/core";
 import { ScrollableTagList } from "../ScrollableTagList";
+import CloseIcon from "@material-ui/icons/Close";
+
+type Site = {
+  title: string;
+  url: string;
+};
 
 type CreateProjectPageState = {
   name: string;
   introduction: string;
   addingTagName: string;
+  siteNameText: string;
+  siteURLText: string;
   tagIDs: string[];
+  sites: Site[];
   isNameError: boolean;
   isIntroductionError: boolean;
+  isSiteNameError: boolean;
   tagIDErrorCode: number;
+  siteURLErrorCode: number;
 };
 
 const checkBlankSpace = (value: string) => !!value.match(/\S/g);
+const checkIsUrl = (value: string) => !!value.match(/^https?:\/\/.+$/g);
 
 class CreateProjectPage extends React.Component<
   RouteComponentProps,
   CreateProjectPageState
 > {
-  static readonly TAG_ERROR_ONLY_SPACE = 1;
+  static readonly TAG_ERROR_BLANK = 1;
   static readonly TAG_ERROR_DUPLICATE = 2;
   static readonly TAG_ERROR_UNUSABLE_CHAR = 3;
+
+  static readonly SITE_URL_BLANK = 1;
+  static readonly SITE_URL_NOT_URL = 2;
 
   constructor(props: RouteComponentProps) {
     super(props);
@@ -31,10 +54,15 @@ class CreateProjectPage extends React.Component<
       name: "",
       introduction: "",
       addingTagName: "",
+      siteNameText: "",
+      siteURLText: "",
       tagIDs: [],
+      sites: [],
       isNameError: false,
       isIntroductionError: false,
+      isSiteNameError: false,
       tagIDErrorCode: 0,
+      siteURLErrorCode: 0,
     };
   }
 
@@ -68,7 +96,7 @@ class CreateProjectPage extends React.Component<
 
     let errorCode = 0;
     if (!checkBlankSpace(e.target.value)) {
-      errorCode = CreateProjectPage.TAG_ERROR_ONLY_SPACE;
+      errorCode = CreateProjectPage.TAG_ERROR_BLANK;
     }
     if (e.target.value.indexOf("+") !== -1) {
       // +は使用できない(APIリクエストのときに区切り文字に使う)
@@ -110,10 +138,64 @@ class CreateProjectPage extends React.Component<
     }
   };
 
+  handleSiteNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.endsWith("\n")) return;
+    const isError = !checkBlankSpace(e.target.value);
+    this.setState({
+      siteNameText: e.target.value,
+      isSiteNameError: isError,
+    });
+  };
+
+  handleSiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.endsWith("\n")) return;
+
+    let errorCode = 0;
+
+    if (!checkIsUrl(e.target.value)) {
+      errorCode = CreateProjectPage.SITE_URL_NOT_URL;
+    }
+    if (!checkBlankSpace(e.target.value)) {
+      errorCode = CreateProjectPage.SITE_URL_BLANK;
+    }
+
+    this.setState({
+      siteURLText: e.target.value,
+      siteURLErrorCode: errorCode,
+    });
+  };
+
+  handleSiteAddButton = () => {
+    this.setState({
+      sites: [
+        ...this.state.sites,
+        {
+          title: this.state.siteNameText,
+          url: this.state.siteURLText,
+        },
+      ],
+      siteNameText: "",
+      siteURLText: "",
+      isSiteNameError: false,
+      siteURLErrorCode: 0,
+    });
+  };
+
+  handleSiteRemoveButton = (index: number) => {
+    const isUserDecided = window.confirm(`本当に削除しますか?`);
+    if (isUserDecided) {
+      this.setState({
+        sites: this.state.sites.filter((_, elemIndex) => elemIndex !== index),
+      });
+    }
+  };
+
   render() {
     let nameHelperText = "";
     let introductionHelperText = "";
     let tagIDHelperText = "";
+    let siteNameHelperText = "";
+    let siteUrlHelperText = "";
 
     if (this.state.isNameError) {
       nameHelperText = "プロジェクト名を入力してください";
@@ -121,9 +203,12 @@ class CreateProjectPage extends React.Component<
     if (this.state.isIntroductionError) {
       introductionHelperText = "プロジェクトの説明を入力してください";
     }
+    if (this.state.isSiteNameError) {
+      siteNameHelperText = "サイト名は空白にできません";
+    }
 
     switch (this.state.tagIDErrorCode) {
-      case CreateProjectPage.TAG_ERROR_ONLY_SPACE:
+      case CreateProjectPage.TAG_ERROR_BLANK:
         tagIDHelperText = "タグの名前は空白にはできません";
         break;
       case CreateProjectPage.TAG_ERROR_DUPLICATE:
@@ -131,6 +216,15 @@ class CreateProjectPage extends React.Component<
         break;
       case CreateProjectPage.TAG_ERROR_UNUSABLE_CHAR:
         tagIDHelperText = "使用できない文字が含まれています";
+        break;
+    }
+
+    switch (this.state.siteURLErrorCode) {
+      case CreateProjectPage.SITE_URL_BLANK:
+        siteUrlHelperText = "サイトのURLは空白に出来ません";
+        break;
+      case CreateProjectPage.SITE_URL_NOT_URL:
+        siteUrlHelperText = "正しい形式で入力されていません";
         break;
     }
 
@@ -198,6 +292,61 @@ class CreateProjectPage extends React.Component<
                   this.state.tagIDErrorCode === 0
                 }
                 handleSendButton={this.handleAddTagClick}
+              >
+                追加
+              </CreateSendButton>
+            </div>
+            <div className={CommonStyles.content_subtitle}>関連サイト</div>
+            <List>
+              {this.state.sites.map((site, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={site.title} secondary={site.url} />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      onClick={() => {
+                        this.handleSiteRemoveButton(index);
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+            <div className={CommonStyles.createProjectContentsBox}>
+              <TextField
+                id="site_name"
+                label="サイトの名前"
+                margin="normal"
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={this.handleSiteNameChange}
+                error={this.state.isSiteNameError}
+                value={this.state.siteNameText}
+                helperText={siteNameHelperText}
+              />
+              <TextField
+                id="site_url"
+                label="サイトのURL"
+                margin="normal"
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={this.handleSiteUrlChange}
+                error={this.state.siteURLErrorCode !== 0}
+                value={this.state.siteURLText}
+                helperText={siteUrlHelperText}
+              />
+            </div>
+            <div className={CommonStyles.createProjectContentsBox}>
+              <CreateSendButton
+                canSend={
+                  checkBlankSpace(this.state.siteNameText) &&
+                  checkBlankSpace(this.state.siteURLText) &&
+                  this.state.siteURLErrorCode === 0
+                }
+                handleSendButton={this.handleSiteAddButton}
               >
                 追加
               </CreateSendButton>
