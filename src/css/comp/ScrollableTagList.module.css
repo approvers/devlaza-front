@@ -24,3 +24,9 @@
     background-color: #c6c6c6;
     border-radius: 10px;
 }
+
+@media screen and (max-width: 550px){
+    .tag_list {
+        height: 2em;
+    }
+}
