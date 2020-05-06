@@ -12,16 +12,20 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace, checkIsUrl } from "utils/ValidationUtil";
-import { Site } from "api/Sites";
+
+type PendingSite = {
+  description: string;
+  url: string;
+};
 
 type ProjectSiteFormProps = {
-  onSitesChange: (tagIDs: Site[]) => void;
+  onSitesChange: (tagIDs: PendingSite[]) => void;
 };
 
 type ProjectSiteFormState = {
   siteName: string;
   siteUrl: string;
-  sites: Site[];
+  sites: PendingSite[];
   isUrlInvalid: boolean;
 };
 
@@ -61,10 +65,10 @@ class ProjectSiteForm extends React.Component<
   };
 
   handleSiteAddButton = () => {
-    const newSites = [
+    const newSites: PendingSite[] = [
       ...this.state.sites,
       {
-        title: this.state.siteName,
+        description: this.state.siteName,
         url: this.state.siteUrl,
       },
     ];
@@ -105,7 +109,7 @@ class ProjectSiteForm extends React.Component<
         <List style={{ padding: 0 }}>
           {this.state.sites.map((site, index) => (
             <ListItem key={index}>
-              <ListItemText primary={site.title} secondary={site.url} />
+              <ListItemText primary={site.description} secondary={site.url} />
               <ListItemSecondaryAction>
                 <IconButton
                   onClick={() => {

@@ -4,7 +4,8 @@ import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 
 import * as styles from "css/comp/UserInputField.module.css";
 import { GetTagProps } from "@material-ui/lab/Autocomplete/Autocomplete";
-import { User } from "api/User";
+import { User } from "lib/model/User";
+import { UserAPI, UserAPIResult } from "../lib/api/UserAPI";
 
 type UserInputFieldProps = {
   onChange: (newSelectedUserIds: string[]) => void;
@@ -37,7 +38,7 @@ class UserInputField extends React.Component<
     this.setState({
       suggestedUsers: [],
     });
-    this.props.onChange(value.map((e) => e.id));
+    this.props.onChange(value.map((e) => e.showId));
   };
 
   handlePendingInputChange = (value: string) => {
@@ -63,37 +64,33 @@ class UserInputField extends React.Component<
     );
   };
 
-  launchSuggestionRequest = () => {
+  launchSuggestionRequest = async () => {
     this.setState({
       loading: true,
       suggestedUsers: [],
     });
-    (async () => {
-      // TODO: ここでAPIをぶっ叩いて、候補となるユーザーを提示してもらう
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      this.setState({
-        loading: false,
-        suggestedUsers: [
-          {
-            id: "unlimit-highchi",
-            name: "H.ichiyo",
-            imageUrl: `${process.env.PUBLIC_URL}/higuchi.png`,
-          },
-          {
-            id: "dev-ichiyo",
-            name: "Ichiyo.h",
-            imageUrl: `${process.env.PUBLIC_URL}/higuchi.png`,
-          },
-        ],
-      });
-    })();
+    let apiResult: UserAPIResult;
+    if (this.state.pendingUsername.startsWith("@")) {
+      apiResult = await UserAPI.searchUserFromName(this.state.pendingUsername);
+    } else {
+      apiResult = await UserAPI.searchUserFromShowId(
+        this.state.pendingUsername
+      );
+    }
+
+    this.setState({
+      loading: false,
+      suggestedUsers: apiResult.received,
+    });
   };
 
   getChipsFromUsers = (users: User[], otherProps: GetTagProps) => {
     return users.map((option: User, index) => (
       <Chip
-        avatar={<Avatar src={option.imageUrl} alt={`${option.name}'s icon`} />}
-        key={option.id}
+        avatar={
+          <Avatar src={option.pictureUrl} alt={`${option.name}'s icon`} />
+        }
+        key={option.showId}
         variant="outlined"
         label={option.name}
         {...otherProps({ index })}
@@ -106,11 +103,11 @@ class UserInputField extends React.Component<
       <>
         <img
           className={styles.user_image}
-          src={user.imageUrl}
+          src={user.pictureUrl}
           alt={`${user.name}'s icon`}
         />
         <span className={styles.user_name}>{user.name}</span>
-        <span className={styles.user_id}>@{user.id}</span>
+        <span className={styles.user_id}>@{user.showId}</span>
       </>
     );
   };
@@ -128,7 +125,7 @@ class UserInputField extends React.Component<
       ignoreCase: true,
       matchFrom: "start",
       stringify: (option: User) =>
-        isSearchingById ? "@" + option.id : option.name,
+        isSearchingById ? "@" + option.showId : option.name,
     });
 
     return (
@@ -143,7 +140,7 @@ class UserInputField extends React.Component<
         noOptionsText="見つかりませんでした"
         filterOptions={filterOptions}
         getOptionLabel={(option) => option.name}
-        getOptionSelected={(option, value) => option.id === value.id}
+        getOptionSelected={(option, value) => option.uuid === value.uuid}
         onInputChange={(_, value) => {
           this.handlePendingInputChange(value);
         }}

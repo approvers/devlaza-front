@@ -4,6 +4,7 @@ import { ScrollableTagList } from "comp/ScrollableTagList";
 import { Box, TextField } from "@material-ui/core";
 import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace } from "utils/ValidationUtil";
+import { TagList } from "lib/util/TagList";
 
 type ErrorType = "tagBlank" | "tagDuplicate" | "tagUnusableChar";
 
@@ -13,7 +14,7 @@ type ProjectTagFormProps = {
 
 type ProjectTagFormState = {
   addingTagName: string;
-  tagIDs: string[];
+  tags: TagList;
   errors: Set<ErrorType>;
 };
 
@@ -32,7 +33,7 @@ class ProjectTagForm extends React.Component<
 
     this.state = {
       addingTagName: "",
-      tagIDs: [],
+      tags: new TagList(),
       errors: new Set<ErrorType>([]),
     };
   }
@@ -67,6 +68,7 @@ class ProjectTagForm extends React.Component<
       "tagUnusableChar",
       e.target.value.indexOf("+") !== -1
     );
+    newErrors.delete("tagDuplicate");
 
     this.setState({
       addingTagName: e.target.value,
@@ -74,38 +76,36 @@ class ProjectTagForm extends React.Component<
     });
   };
 
-  handleAddTagClick = () => {
-    // TODO: APIをぶっ叩く
-    // タグがすでに存在する場合はそのIDを結合します
-    // 存在しない場合は新しく作成してIDをもらって、そのIDを結合します
-    const tagID = "tag-" + this.state.addingTagName;
+  handleAddTagClick = async () => {
+    const newTags = await this.state.tags.concatFromName(
+      this.state.addingTagName
+    );
 
-    if (this.state.tagIDs.indexOf(tagID) !== -1) {
+    if (newTags.length === this.state.tags.length) {
       this.setState({
-        errors: this.errors(this.state.errors, "tagUnusableChar", true),
+        errors: this.errors(this.state.errors, "tagDuplicate", true),
       });
       return;
     }
 
-    const newTagIDs = [...this.state.tagIDs, tagID];
-
     this.setState({
-      tagIDs: newTagIDs,
+      tags: newTags,
       addingTagName: "",
     });
 
-    this.props.onTagsChange(newTagIDs);
+    this.props.onTagsChange(Array.from(newTags).map((value) => value.uuid));
   };
 
   handleTagListClick = (id: string) => {
     const isUserDecided = window.confirm(`本当に削除しますか?`);
     if (!isUserDecided) return;
 
-    const newTagsId: string[] = this.state.tagIDs.filter((e) => e !== id);
+    const newTagsId = this.state.tags.deleteFromId(id);
     this.setState({
-      tagIDs: newTagsId,
+      tags: newTagsId,
     });
-    this.props.onTagsChange(newTagsId);
+
+    this.props.onTagsChange(Array.from(newTagsId).map((value) => value.uuid));
   };
 
   render() {
@@ -125,7 +125,7 @@ class ProjectTagForm extends React.Component<
       <div className={CommonStyles.createProjectContentsBox}>
         <div className={CommonStyles.content_subtitle}>タグ</div>
         <ScrollableTagList
-          tagIDs={this.state.tagIDs}
+          tagIDs={Array.from(this.state.tags).map((value) => value.uuid)}
           onTagClick={this.handleTagListClick}
         />
         <TextField

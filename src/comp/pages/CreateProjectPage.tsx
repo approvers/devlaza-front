@@ -8,7 +8,14 @@ import { checkBlankSpace } from "utils/ValidationUtil";
 import ProjectBasicInfoForm from "comp/createProjPage/ProjectBasicInfoForm";
 import ProjectTagForm from "comp/createProjPage/ProjectTagForm";
 import ProjectSiteForm from "comp/createProjPage/ProjectSiteForm";
-import { Site } from "api/Sites";
+import { ProjectAPI } from "lib/api/ProjectAPI";
+import { SiteAPI } from "lib/api/SiteAPI";
+import { TagAPI } from "lib/api/TagAPI";
+
+type PendingSite = {
+  description: string;
+  url: string;
+};
 
 type ProjectError = "name" | "introduction" | "invalidUrl" | TagError;
 type TagError = "tagBlank" | "tagDuplicate" | "tagUnusableChar";
@@ -17,8 +24,9 @@ type CreateProjectPageState = {
   name: string;
   introduction: string;
   tagIDs: string[];
-  sites: Site[];
+  sites: PendingSite[];
   errors: Set<ProjectError>;
+  isSending: boolean;
 };
 
 class CreateProjectPage extends React.Component<
@@ -33,6 +41,7 @@ class CreateProjectPage extends React.Component<
       tagIDs: [],
       sites: [],
       errors: new Set<ProjectError>([]),
+      isSending: false,
     };
   }
 
@@ -72,15 +81,29 @@ class CreateProjectPage extends React.Component<
     });
   };
 
-  handleSitesChange = (sites: Site[]) => {
+  handleSitesChange = (sites: PendingSite[]) => {
     this.setState({
       sites: sites,
     });
   };
 
-  handleSendButton = () => {
-    // TODO: ここでAPIに情報をぶん投げる
-    const projectId = "7438921";
+  handleSendButton = async () => {
+    this.setState({
+      isSending: true,
+    });
+
+    const projectAPIResult = await ProjectAPI.create(
+      this.state.name,
+      this.state.introduction
+    );
+    const projectId = projectAPIResult.received[0].uuid;
+
+    for (const tagID of this.state.tagIDs) {
+      await TagAPI.belongToProject(tagID, projectId);
+    }
+    for (const site of this.state.sites) {
+      await SiteAPI.create(site.description, site.url, projectId);
+    }
     this.props.history.push(`/projects/create/invite/${projectId}`);
   };
 
@@ -103,11 +126,12 @@ class CreateProjectPage extends React.Component<
               <CreateSendButton
                 canSend={
                   checkBlankSpace(this.state.name) &&
-                  checkBlankSpace(this.state.introduction)
+                  checkBlankSpace(this.state.introduction) &&
+                  !this.state.isSending
                 }
                 handleSendButton={this.handleSendButton}
               >
-                送信
+                {this.state.isSending ? "作成中" : "作成"}
               </CreateSendButton>
             </div>
           </form>
