@@ -6,7 +6,7 @@ import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace } from "utils/ValidationUtil";
 import { TagList } from "lib/util/TagList";
 
-type ErrorType = "tagBlank" | "tagDuplicate" | "tagUnusableChar";
+type ErrorType = "tagBlank" | "tagDuplicate";
 
 type ProjectTagFormProps = {
   onTagsChange: (tagIDs: string[]) => void;
@@ -25,7 +25,6 @@ class ProjectTagForm extends React.Component<
   private errorMessages: { [name in ErrorType]: string } = {
     tagBlank: "タグの名前は空白にはできません",
     tagDuplicate: "重複しているタグがあります",
-    tagUnusableChar: "使用できない文字が含まれています",
   };
 
   constructor(props: ProjectTagFormProps) {
@@ -58,15 +57,10 @@ class ProjectTagForm extends React.Component<
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
     if (e.target.value.endsWith("\n")) return;
 
-    let newErrors = this.errors(
+    const newErrors = this.errors(
       this.state.errors,
       "tagBlank",
       !checkBlankSpace(e.target.value)
-    );
-    newErrors = this.errors(
-      newErrors,
-      "tagUnusableChar",
-      e.target.value.indexOf("+") !== -1
     );
     newErrors.delete("tagDuplicate");
 
@@ -117,9 +111,6 @@ class ProjectTagForm extends React.Component<
     if (this.state.errors.has("tagDuplicate")) {
       tagIDHelperText = this.errorMessages["tagDuplicate"];
     }
-    if (this.state.errors.has("tagUnusableChar")) {
-      tagIDHelperText = this.errorMessages["tagUnusableChar"];
-    }
 
     return (
       <div className={CommonStyles.createProjectContentsBox}>
@@ -138,7 +129,6 @@ class ProjectTagForm extends React.Component<
           onChange={this.handleTagNameInputChange}
           error={
             this.state.errors.has("tagBlank") ||
-            this.state.errors.has("tagUnusableChar") ||
             this.state.errors.has("tagDuplicate")
           }
           value={this.state.addingTagName}
@@ -149,7 +139,6 @@ class ProjectTagForm extends React.Component<
           canSend={
             checkBlankSpace(this.state.addingTagName) &&
             !this.state.errors.has("tagBlank") &&
-            !this.state.errors.has("tagUnusableChar") &&
             !this.state.errors.has("tagDuplicate")
           }
           handleSendButton={this.handleAddTagClick}

@@ -17,8 +17,7 @@ type PendingSite = {
   url: string;
 };
 
-type ProjectError = "name" | "introduction" | "invalidUrl" | TagError;
-type TagError = "tagBlank" | "tagDuplicate" | "tagUnusableChar";
+type ProjectError = "name" | "introduction";
 
 type CreateProjectPageState = {
   name: string;
