@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Chip, TextField, Avatar } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 
 import * as styles from "css/comp/UserInputField.module.css";
-import { GetTagProps } from "@material-ui/lab/Autocomplete/Autocomplete";
 import { User } from "lib/model/User";
 import { UserAPI, UserAPIResult } from "../lib/api/UserAPI";
+import ListElementTag from "./ListElementTag";
 
 type UserInputFieldProps = {
   onChange: (newSelectedUserIds: string[]) => void;
@@ -14,6 +14,7 @@ type UserInputFieldProps = {
 type UserInputFieldState = {
   pendingUsername: string;
   suggestedUsers: User[];
+  selectedUsers: User[];
   loading: boolean;
 };
 
@@ -29,6 +30,7 @@ class UserInputField extends React.Component<
     this.state = {
       pendingUsername: "",
       suggestedUsers: [],
+      selectedUsers: [],
       loading: false,
     };
     this.pendingRequestTimerId = null;
@@ -37,8 +39,16 @@ class UserInputField extends React.Component<
   handleUserSelectChange = (value: User[]) => {
     this.setState({
       suggestedUsers: [],
+      selectedUsers: value,
     });
-    this.props.onChange(value.map((e) => e.showId));
+    this.props.onChange(value.map((e) => e.uuid));
+  };
+
+  handleUserRemoved = (removedUser: User) => {
+    const newUsers = this.state.selectedUsers.filter(
+      (value) => removedUser.uuid !== value.uuid
+    );
+    this.handleUserSelectChange(newUsers);
   };
 
   handlePendingInputChange = (value: string) => {
@@ -50,7 +60,7 @@ class UserInputField extends React.Component<
       clearTimeout(this.pendingRequestTimerId);
     }
 
-    if (value.length === 0 || this.state.loading) {
+    if (value.length < 2 || this.state.loading) {
       this.setState({
         suggestedUsers: [],
       });
@@ -84,20 +94,6 @@ class UserInputField extends React.Component<
     });
   };
 
-  getChipsFromUsers = (users: User[], otherProps: GetTagProps) => {
-    return users.map((option: User, index) => (
-      <Chip
-        avatar={
-          <Avatar src={option.pictureUrl} alt={`${option.name}'s icon`} />
-        }
-        key={option.showId}
-        variant="outlined"
-        label={option.name}
-        {...otherProps({ index })}
-      />
-    ));
-  };
-
   getOptionFromUser = (user: User) => {
     return (
       <>
@@ -129,36 +125,52 @@ class UserInputField extends React.Component<
     });
 
     return (
-      <Autocomplete
-        id="user-name"
-        filterSelectedOptions
-        fullWidth
-        multiple
-        forcePopupIcon={false}
-        loading={this.state.loading}
-        loadingText="読み込み中です…"
-        noOptionsText="見つかりませんでした"
-        filterOptions={filterOptions}
-        getOptionLabel={(option) => option.name}
-        getOptionSelected={(option, value) => option.uuid === value.uuid}
-        onInputChange={(_, value) => {
-          this.handlePendingInputChange(value);
-        }}
-        onChange={(_, value) => {
-          this.handleUserSelectChange(value);
-        }}
-        options={this.state.suggestedUsers}
-        renderTags={this.getChipsFromUsers}
-        renderOption={this.getOptionFromUser}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="招待するユーザー名"
-            placeholder="@をつけるとユーザーIDで検索することもできます。"
-            variant="outlined"
+      <>
+        {this.state.selectedUsers.map((value, index) => (
+          <ListElementTag
+            caption={value.name}
+            imageUrl={value.pictureUrl}
+            onDelete={() => {
+              this.handleUserRemoved(value);
+            }}
+            key={index}
           />
-        )}
-      />
+        ))}
+        <div className={styles.textbox_wrapper}>
+          <Autocomplete
+            id="user-name"
+            disableClearable
+            filterSelectedOptions
+            fullWidth
+            multiple
+            forcePopupIcon={false}
+            value={this.state.selectedUsers}
+            loading={this.state.loading}
+            loadingText="読み込み中です…"
+            noOptionsText="見つかりませんでした"
+            filterOptions={filterOptions}
+            getOptionLabel={(option) => option.name}
+            getOptionSelected={(option, value) => option.uuid === value.uuid}
+            onInputChange={(_, value) => {
+              this.handlePendingInputChange(value);
+            }}
+            onChange={(_, value) => {
+              this.handleUserSelectChange(value);
+            }}
+            options={this.state.suggestedUsers}
+            renderTags={() => null}
+            renderOption={this.getOptionFromUser}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="招待するユーザー名"
+                placeholder="@をつけるとユーザーIDで検索することもできます。"
+                variant="outlined"
+              />
+            )}
+          />
+        </div>
+      </>
     );
   }
 }

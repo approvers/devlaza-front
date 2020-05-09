@@ -4,15 +4,9 @@ import UserInputField from "comp/UserInputField";
 import * as style from "css/comp/pages/UserInvitePage.module.css";
 import * as CommonStyle from "css/comp/Common.module.css";
 import CreateSendButton from "comp/SendButton";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { RouteComponentProps } from "react-router-dom";
+import { InviteSkipConfirmDialog } from "../userInvitePage/InviteSkipConfirmDialog";
 
 type UserInvitePageState = {
   selectedUserIds: string[];
@@ -53,14 +47,14 @@ class UserInvitePage extends React.Component<
     this.gotoNextPage();
   };
 
-  gotoNextPage = () => {
-    this.props.history.push(`/projects/detail/${this.props.match.params.uuid}`);
-  };
-
-  handleConfirmDialogClose = () => {
+  handleDialogClosed = () => {
     this.setState({
       openedConfirmDialog: false,
     });
+  };
+
+  gotoNextPage = () => {
+    this.props.history.push(`/projects/detail/${this.props.match.params.uuid}`);
   };
 
   render() {
@@ -72,19 +66,12 @@ class UserInvitePage extends React.Component<
             プロジェクトの初期メンバーを明確にするために、ユーザーを招待しましょう。
           </div>
         </div>
-        <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
-          <UserInputField onChange={this.handleInviteUserChange} />
-        </form>
-
+        <div className={style.user_form_wrapper}>
+          <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+            <UserInputField onChange={this.handleInviteUserChange} />
+          </form>
+        </div>
         <div className={style.nav_button_wrapper}>
-          <span className={style.nav_button}>
-            <CreateSendButton
-              canSend={this.state.selectedUserIds.length > 0}
-              handleSendButton={this.handleInviteButton}
-            >
-              招待する
-            </CreateSendButton>
-          </span>
           <span className={style.nav_button}>
             <Button
               variant="outlined"
@@ -94,32 +81,20 @@ class UserInvitePage extends React.Component<
               スキップ
             </Button>
           </span>
-        </div>
-        <Dialog
-          open={this.state.openedConfirmDialog}
-          onClose={this.handleConfirmDialogClose}
-        >
-          <DialogTitle>招待せずに移動しますか?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              選択されたユーザーがいます。
-              <br />
-              このまま移動すると、選択したユーザーへの招待はされません。
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              autoFocus
-              onClick={this.handleConfirmDialogClose}
-              color="secondary"
+          <span className={style.nav_button}>
+            <CreateSendButton
+              canSend={this.state.selectedUserIds.length > 0}
+              handleSendButton={this.handleInviteButton}
             >
-              キャンセル
-            </Button>
-            <Button onClick={this.gotoNextPage} color="secondary">
-              移動する
-            </Button>
-          </DialogActions>
-        </Dialog>
+              招待する
+            </CreateSendButton>
+          </span>
+        </div>
+        <InviteSkipConfirmDialog
+          open={this.state.openedConfirmDialog}
+          onClosed={this.handleDialogClosed}
+          onConfirmed={this.gotoNextPage}
+        />
       </div>
     );
   }

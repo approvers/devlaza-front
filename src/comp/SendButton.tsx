@@ -1,13 +1,18 @@
 import * as React from "react";
 import { Button } from "@material-ui/core";
 
+import styles from "css/comp/SendButton.module.css";
+import { PropsWithChildren } from "react";
+
 type SendButtonProps = {
   canSend: boolean;
   handleSendButton: () => void;
   outline?: boolean;
 };
 
-const CreateSendButton: React.FC<SendButtonProps> = (props) => {
+const CreateSendButton: React.FC<SendButtonProps> = (
+  props: PropsWithChildren<SendButtonProps>
+) => {
   const isOutlineSelected: boolean = props.outline ?? false;
 
   const enabledButton = (
@@ -29,7 +34,11 @@ const CreateSendButton: React.FC<SendButtonProps> = (props) => {
       {props.children}
     </Button>
   );
-  return props.canSend ? enabledButton : disabledButton;
+  return (
+    <div className={styles.button_wrapper}>
+      {props.canSend ? enabledButton : disabledButton}
+    </div>
+  );
 };
 
 CreateSendButton.defaultProps = {

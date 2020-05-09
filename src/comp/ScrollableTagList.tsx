@@ -1,14 +1,11 @@
 import * as React from "react";
 
-import style from "css/comp/ScrollableTagList.module.css";
-import ProjectTag from "./ProjectTag";
+import ListElementTag from "./ListElementTag";
+import { Tag } from "../lib/model/Tag";
 
 type ProjectTagListProps = {
-  tagIDs: string[];
-  onTagClick?: (
-    tagID: string,
-    e: React.MouseEvent<HTMLParagraphElement>
-  ) => void;
+  tags: Tag[];
+  onTagClick?: (tag: Tag, e: React.MouseEvent<HTMLParagraphElement>) => void;
 };
 
 export class ScrollableTagList extends React.Component<
@@ -16,22 +13,16 @@ export class ScrollableTagList extends React.Component<
   {}
 > {
   render() {
-    return (
-      <div className={style.tag_list_wrapper}>
-        <div className={style.tag_list}>
-          {this.props.tagIDs.map((name) => (
-            <ProjectTag
-              tagId={name}
-              key={name}
-              onDelete={(e: React.MouseEvent<HTMLParagraphElement>) => {
-                if (typeof this.props.onTagClick !== "undefined") {
-                  this.props.onTagClick(name, e);
-                }
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    );
+    return this.props.tags.map((tag, index) => (
+      <ListElementTag
+        caption={tag.name}
+        key={index}
+        onDelete={(e: React.MouseEvent<HTMLParagraphElement>) => {
+          if (typeof this.props.onTagClick !== "undefined") {
+            this.props.onTagClick(tag, e);
+          }
+        }}
+      />
+    ));
   }
 }

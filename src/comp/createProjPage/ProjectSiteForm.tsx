@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as CommonStyles from "css/comp/Common.module.css";
 import {
-  Box,
+  Card,
   IconButton,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
 } from "@material-ui/core";
+import { TextInputField } from "comp/TextInputField";
 import CloseIcon from "@material-ui/icons/Close";
 import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace, checkIsUrl } from "utils/ValidationUtil";
@@ -108,43 +108,36 @@ class ProjectSiteForm extends React.Component<
         <div className={CommonStyles.content_subtitle}>関連サイト</div>
         <List style={{ padding: 0 }}>
           {this.state.sites.map((site, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={site.description} secondary={site.url} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() => {
-                    this.handleSiteRemoveButton(index);
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <Card variant="outlined" key={index}>
+              <ListItem>
+                <ListItemText primary={site.description} secondary={site.url} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    onClick={() => {
+                      this.handleSiteRemoveButton(index);
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </Card>
           ))}
         </List>
-        <TextField
+        <TextInputField
           id="site_name"
           label="サイトの名前"
-          margin="normal"
-          multiline
-          variant="outlined"
-          fullWidth
           onChange={this.handleSiteNameChange}
           value={this.state.siteName}
         />
-        <TextField
+        <TextInputField
           id="site_url"
           label="サイトのURL"
-          margin="normal"
-          multiline
-          variant="outlined"
-          fullWidth
           onChange={this.handleSiteUrlChange}
           error={this.state.isUrlInvalid}
           value={this.state.siteUrl}
           helperText={siteUrlHelperText}
         />
-        <Box m={1} />
         <CreateSendButton
           canSend={
             checkBlankSpace(this.state.siteName) &&

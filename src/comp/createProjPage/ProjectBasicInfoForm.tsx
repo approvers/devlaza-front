@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as CommonStyles from "css/comp/Common.module.css";
-import { TextField } from "@material-ui/core";
+import { TextInputField } from "comp/TextInputField";
 import { checkBlankSpace } from "utils/ValidationUtil";
 
 type ErrorType = "name" | "introduction";
@@ -87,28 +87,18 @@ class ProjectBasicInfoForm extends React.Component<
     return (
       <div className={CommonStyles.createProjectContentsBox}>
         <div className={CommonStyles.content_title}>プロジェクト作成</div>
-        <TextField
+        <TextInputField
           id="project-name"
           label="名前"
-          margin="normal"
-          multiline
-          variant="outlined"
-          fullWidth
           required
           onChange={this.handleNameInputChange}
           error={this.state.errors.has("name")}
           value={this.state.name}
           helperText={nameHelperText}
         />
-        <TextField
+        <TextInputField
           id="project-intro"
           label="プロジェクトの説明"
-          margin="normal"
-          multiline
-          rows={4}
-          variant="outlined"
-          style={{ marginBottom: "1rem" }}
-          fullWidth
           required
           onChange={this.handleIntroductionInputChange}
           error={this.state.errors.has("introduction")}

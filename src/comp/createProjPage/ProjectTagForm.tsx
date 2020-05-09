@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as CommonStyles from "css/comp/Common.module.css";
 import { ScrollableTagList } from "comp/ScrollableTagList";
-import { Box, TextField } from "@material-ui/core";
+import { TextInputField } from "comp/TextInputField";
 import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace } from "utils/ValidationUtil";
 import { TagList } from "lib/util/TagList";
+import { Tag } from "../../lib/model/Tag";
 
 type ErrorType = "tagBlank" | "tagDuplicate";
 
@@ -90,11 +91,8 @@ class ProjectTagForm extends React.Component<
     this.props.onTagsChange(Array.from(newTags).map((value) => value.uuid));
   };
 
-  handleTagListClick = (id: string) => {
-    const isUserDecided = window.confirm(`本当に削除しますか?`);
-    if (!isUserDecided) return;
-
-    const newTagsId = this.state.tags.deleteFromId(id);
+  handleTagListClick = (tag: Tag) => {
+    const newTagsId = this.state.tags.deleteFromId(tag.uuid);
     this.setState({
       tags: newTagsId,
     });
@@ -116,16 +114,12 @@ class ProjectTagForm extends React.Component<
       <div className={CommonStyles.createProjectContentsBox}>
         <div className={CommonStyles.content_subtitle}>タグ</div>
         <ScrollableTagList
-          tagIDs={Array.from(this.state.tags).map((value) => value.uuid)}
+          tags={Array.from(this.state.tags)}
           onTagClick={this.handleTagListClick}
         />
-        <TextField
+        <TextInputField
           id="add_tag_name"
           label="追加するタグの名前"
-          margin="normal"
-          multiline
-          variant="outlined"
-          fullWidth
           onChange={this.handleTagNameInputChange}
           error={
             this.state.errors.has("tagBlank") ||
@@ -134,7 +128,6 @@ class ProjectTagForm extends React.Component<
           value={this.state.addingTagName}
           helperText={tagIDHelperText}
         />
-        <Box m={1} />
         <CreateSendButton
           canSend={
             checkBlankSpace(this.state.addingTagName) &&

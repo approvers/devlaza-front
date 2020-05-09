@@ -9,7 +9,8 @@ import { Button, Link, Divider } from "@material-ui/core";
 import { PostAdd, Favorite } from "@material-ui/icons";
 import Loading from "comp/Loading";
 import Avater from "comp/Avater";
-import ProjectTag from "comp/ProjectTag";
+import ListElementTag from "comp/ListElementTag";
+import { Tag } from "../../lib/model/Tag";
 
 /* --- ボタンのスタイル --- */
 
@@ -23,7 +24,7 @@ type ProjectDetailPageState = {
   introduction: string;
 
   sites: string[][];
-  tags: string[];
+  tags: Tag[];
   member: string[];
 
   favs: number;
@@ -69,7 +70,13 @@ class ProjectDetailPage extends React.Component<
         ["GitHub", "https://github.com/"],
         ["Twitter", "https://twitter.com/"],
       ],
-      tags: ["1", "2", "3", "4", "5"],
+      tags: [
+        { name: "タグ-1", uuid: "1" },
+        { name: "タグ-2", uuid: "2" },
+        { name: "タグ-3", uuid: "3" },
+        { name: "タグ-4", uuid: "4" },
+        { name: "タグ-5", uuid: "5" },
+      ],
       member: ["haracho", "meme", "birb"],
       favs: 100,
       recruiting: true,
@@ -135,7 +142,7 @@ class ProjectDetailPage extends React.Component<
             <Divider light />
             <div className={styles.contents_wrapper}>
               {this.state.tags.map((tag, index) => (
-                <ProjectTag tagId={tag} key={index} />
+                <ListElementTag caption={tag.name} key={index} />
               ))}
             </div>
 

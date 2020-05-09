@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import * as CommonStyles from "css/comp/Common.module.css";
 import CreateSendButton from "comp/SendButton";
-import { Divider, Box } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 
 import { checkBlankSpace } from "utils/ValidationUtil";
 import ProjectBasicInfoForm from "comp/createProjPage/ProjectBasicInfoForm";
@@ -116,7 +116,6 @@ class CreateProjectPage extends React.Component<
               onIntroductionChanged={this.handleIntroductionInputChange}
             />
             <ProjectTagForm onTagsChange={this.handleTagChange} />
-            <Box m={2} />
             <ProjectSiteForm onSitesChange={this.handleSitesChange} />
             <div className={CommonStyles.createProjectContentsBox}>
               <Divider />
