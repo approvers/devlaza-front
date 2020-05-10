@@ -45,7 +45,7 @@ class ProjectSiteForm extends React.Component<
   }
 
   handleSiteNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.indexOf("\n") !== -1) return;
+    if (e.target.value.includes("\n")) return;
 
     this.setState({
       siteName: e.target.value,
@@ -53,7 +53,7 @@ class ProjectSiteForm extends React.Component<
   };
 
   handleSiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.indexOf("\n") !== -1) return;
+    if (e.target.value.includes("\n")) return;
 
     const isError =
       checkBlankSpace(e.target.value) && !checkIsUrl(e.target.value);

@@ -37,7 +37,7 @@ class ProjectBasicInfoForm extends React.Component<
 
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
-    if (e.target.value.indexOf("\n") !== -1) return;
+    if (e.target.value.includes("\n")) return;
     const isError = !checkBlankSpace(e.target.value);
 
     if (isError) {

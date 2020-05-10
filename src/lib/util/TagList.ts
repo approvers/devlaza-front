@@ -7,11 +7,7 @@ export class TagList implements Iterable<Tag> {
   readonly length: number;
 
   constructor(tags: Tag[] = []) {
-    if (typeof tags === "undefined") {
-      this.tagList = [];
-    } else {
-      this.tagList = [...tags];
-    }
+    this.tagList = [...tags];
     this.length = this.tagList.length;
   }
 

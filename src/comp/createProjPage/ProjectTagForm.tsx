@@ -54,7 +54,7 @@ class ProjectTagForm extends React.Component<
 
   handleTagNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
-    if (e.target.value.indexOf("\n") !== -1) return;
+    if (e.target.value.includes("\n")) return;
 
     this.removeError("tagBlank");
     if (!checkBlankSpace(e.target.value)) {
