@@ -11,7 +11,7 @@ export type ListElementTagProps = {
 class ListElementTag extends React.Component<ListElementTagProps, {}> {
   render() {
     let avatar: React.ReactElement | undefined;
-    if (typeof this.props.imageUrl !== "undefined") {
+    if (this.props.imageUrl != null) {
       avatar = <Avatar src={this.props.imageUrl} />;
     }
 
