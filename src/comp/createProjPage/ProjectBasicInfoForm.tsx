@@ -107,6 +107,7 @@ class ProjectBasicInfoForm extends React.Component<
           id="project-intro"
           label="プロジェクトの説明"
           required
+          rows={4}
           onChange={this.handleIntroductionInputChange}
           error={this.state.errors.has("introduction")}
           helperText={introductionHelperText}
