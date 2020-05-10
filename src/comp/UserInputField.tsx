@@ -74,7 +74,8 @@ class UserInputField extends React.Component<
       clearTimeout(this.pendingRequestTimerId);
     }
 
-    if (value.length < 2 || this.state.loading) {
+    const enoughLengthToSearch = value.startsWith("@") ? 2 : 1;
+    if (value.length < enoughLengthToSearch || this.state.loading) {
       this.setState({
         suggestedUsers: [],
       });
