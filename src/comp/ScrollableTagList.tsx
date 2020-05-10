@@ -18,7 +18,7 @@ export class ScrollableTagList extends React.Component<
         caption={tag.name}
         key={index}
         onDelete={(e: React.MouseEvent<HTMLParagraphElement>) => {
-          if (typeof this.props.onTagClick !== "undefined") {
+          if (this.props.onTagClick != null) {
             this.props.onTagClick(tag, e);
           }
         }}

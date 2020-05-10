@@ -1,2 +1,2 @@
-export const checkBlankSpace = (value: string) => !!value.match(/\S/g);
-export const checkIsUrl = (value: string) => !!value.match(/^https?:\/\/.+$/g);
+export const checkBlankSpace = (value: string) => /\S/g.test(value);
+export const checkIsUrl = (value: string) => /^https?:\/\/.+$/g.test(value);

@@ -15,32 +15,27 @@ export type ProjectAPIResult = {
 };
 
 /**
- * Projectに関するAPIを叩くクラス。
+ * プロジェクトを作成する。
+ * @param name 名前
+ * @param introduction 説明
  */
-export class ProjectAPI {
-  /**
-   * プロジェクトを作成する。
-   * @param name 名前
-   * @param introduction 説明
-   */
-  static async create(
-    name: string,
-    introduction: string
-  ): Promise<ProjectAPIResult> {
-    // TODO: APIを叩く
-    await new Promise((resolver) => setTimeout(resolver, 50));
-    return {
-      code: 200,
-      received: [
-        {
-          name: name,
-          introduction: introduction,
-          recruiting: true,
-          uuid: `uuid for ${name}`,
-          createdAt: new Date(),
-          createdOwner: `uuid for the user who made ${name}`,
-        },
-      ],
-    };
-  }
+export async function create(
+  name: string,
+  introduction: string
+): Promise<ProjectAPIResult> {
+  // TODO: APIを叩く
+  await new Promise((resolver) => setTimeout(resolver, 50));
+  return {
+    code: 200,
+    received: [
+      {
+        name: name,
+        introduction: introduction,
+        recruiting: true,
+        uuid: `uuid for ${name}`,
+        createdAt: new Date(),
+        createdOwner: `uuid for the user who made ${name}`,
+      },
+    ],
+  };
 }

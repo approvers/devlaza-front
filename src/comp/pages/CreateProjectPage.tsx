@@ -8,9 +8,9 @@ import { checkBlankSpace } from "utils/ValidationUtil";
 import ProjectBasicInfoForm from "comp/createProjPage/ProjectBasicInfoForm";
 import ProjectTagForm from "comp/createProjPage/ProjectTagForm";
 import ProjectSiteForm from "comp/createProjPage/ProjectSiteForm";
-import { ProjectAPI } from "lib/api/ProjectAPI";
-import { SiteAPI } from "lib/api/SiteAPI";
-import { TagAPI } from "lib/api/TagAPI";
+import * as ProjectAPI from "lib/api/ProjectAPI";
+import * as SiteAPI from "lib/api/SiteAPI";
+import * as TagAPI from "lib/api/TagAPI";
 
 type PendingSite = {
   description: string;
@@ -44,33 +44,41 @@ class CreateProjectPage extends React.Component<
     };
   }
 
-  errors = (
-    previousErrors: Set<ProjectError>,
-    error: ProjectError,
-    isError: boolean
-  ) => {
-    const errors: Set<ProjectError> = new Set<ProjectError>([
-      ...Array.from(previousErrors),
-    ]);
-    if (isError) {
-      errors.add(error);
-    } else {
-      errors.delete(error);
-    }
-    return errors;
+  addError = (error: ProjectError) => {
+    this.setState({
+      errors: new Set<ProjectError>([...Array.from(this.state.errors), error]),
+    });
+  };
+
+  removeError = (error: ProjectError) => {
+    const newErrors = new Set<ProjectError>([...Array.from(this.state.errors)]);
+    newErrors.delete(error);
+    this.setState({
+      errors: newErrors,
+    });
   };
 
   handleNameInputChange = (value: string, isValid: boolean) => {
+    if (isValid) {
+      this.removeError("name");
+    } else {
+      this.addError("name");
+    }
+
     this.setState({
       name: value,
-      errors: this.errors(this.state.errors, "name", !isValid),
     });
   };
 
   handleIntroductionInputChange = (value: string, isValid: boolean) => {
+    if (isValid) {
+      this.removeError("introduction");
+    } else {
+      this.addError("introduction");
+    }
+
     this.setState({
       introduction: value,
-      errors: this.errors(this.state.errors, "introduction", !isValid),
     });
   };
 

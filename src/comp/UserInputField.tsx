@@ -4,7 +4,7 @@ import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 
 import * as styles from "css/comp/UserInputField.module.css";
 import { User } from "lib/model/User";
-import { UserAPI, UserAPIResult } from "../lib/api/UserAPI";
+import * as UserAPI from "../lib/api/UserAPI";
 import ListElementTag from "./ListElementTag";
 
 type UserInputFieldProps = {
@@ -17,6 +17,20 @@ type UserInputFieldState = {
   selectedUsers: User[];
   loading: boolean;
 };
+
+function getOptionFromUser(user: User) {
+  return (
+    <>
+      <img
+        className={styles.user_image}
+        src={user.pictureUrl}
+        alt={`${user.name}'s icon`}
+      />
+      <span className={styles.user_name}>{user.name}</span>
+      <span className={styles.user_id}>@{user.showId}</span>
+    </>
+  );
+}
 
 class UserInputField extends React.Component<
   UserInputFieldProps,
@@ -79,7 +93,7 @@ class UserInputField extends React.Component<
       loading: true,
       suggestedUsers: [],
     });
-    let apiResult: UserAPIResult;
+    let apiResult: UserAPI.UserAPIResult;
     if (this.state.pendingUsername.startsWith("@")) {
       apiResult = await UserAPI.searchUserFromName(this.state.pendingUsername);
     } else {
@@ -92,20 +106,6 @@ class UserInputField extends React.Component<
       loading: false,
       suggestedUsers: apiResult.received,
     });
-  };
-
-  getOptionFromUser = (user: User) => {
-    return (
-      <>
-        <img
-          className={styles.user_image}
-          src={user.pictureUrl}
-          alt={`${user.name}'s icon`}
-        />
-        <span className={styles.user_name}>{user.name}</span>
-        <span className={styles.user_id}>@{user.showId}</span>
-      </>
-    );
   };
 
   componentWillUnmount(): void {
@@ -159,7 +159,7 @@ class UserInputField extends React.Component<
             }}
             options={this.state.suggestedUsers}
             renderTags={() => null}
-            renderOption={this.getOptionFromUser}
+            renderOption={getOptionFromUser}
             renderInput={(params) => (
               <TextField
                 {...params}

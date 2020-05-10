@@ -38,36 +38,31 @@ class ProjectTagForm extends React.Component<
     };
   }
 
-  errors = (
-    previousErrors: Set<ErrorType>,
-    error: ErrorType,
-    isError: boolean
-  ) => {
-    const errors: Set<ErrorType> = new Set<ErrorType>([
-      ...Array.from(previousErrors),
-    ]);
-    if (isError) {
-      errors.add(error);
-    } else {
-      errors.delete(error);
-    }
-    return errors;
+  addError = (error: ErrorType) => {
+    this.setState({
+      errors: new Set<ErrorType>([...Array.from(this.state.errors), error]),
+    });
+  };
+
+  removeError = (error: ErrorType) => {
+    const newErrors = new Set<ErrorType>([...Array.from(this.state.errors)]);
+    newErrors.delete(error);
+    this.setState({
+      errors: newErrors,
+    });
   };
 
   handleTagNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
-    if (e.target.value.endsWith("\n")) return;
+    if (e.target.value.indexOf("\n") !== -1) return;
 
-    const newErrors = this.errors(
-      this.state.errors,
-      "tagBlank",
-      !checkBlankSpace(e.target.value)
-    );
-    newErrors.delete("tagDuplicate");
+    this.removeError("tagBlank");
+    if (!checkBlankSpace(e.target.value)) {
+      this.addError("tagBlank");
+    }
 
     this.setState({
       addingTagName: e.target.value,
-      errors: newErrors,
     });
   };
 
@@ -77,9 +72,7 @@ class ProjectTagForm extends React.Component<
     );
 
     if (newTags.length === this.state.tags.length) {
-      this.setState({
-        errors: this.errors(this.state.errors, "tagDuplicate", true),
-      });
+      this.addError("tagDuplicate");
       return;
     }
 
@@ -98,6 +91,7 @@ class ProjectTagForm extends React.Component<
     });
 
     this.props.onTagsChange(Array.from(newTagsId).map((value) => value.uuid));
+    this.removeError("tagDuplicate");
   };
 
   render() {

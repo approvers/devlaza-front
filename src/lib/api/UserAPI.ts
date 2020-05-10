@@ -37,32 +37,31 @@ const sampleUser = [
 ];
 
 /**
- * Userに関するAPIを叩くクラス。
+ * 名前からユーザーを検索する。
  */
-export class UserAPI {
-  /**
-   * 名前からユーザーを検索する。
-   */
-  static async searchUserFromName(query: string): Promise<UserAPIResult> {
-    console.log(`[UserAPI] searching users ${query}`);
-    // TODO: APIをぶっ叩いて名前でユーザー検索する
-    await new Promise((resolver) => setTimeout(resolver, 250));
-    return {
-      code: 200,
-      received: sampleUser,
-    };
-  }
+export async function searchUserFromName(
+  query: string
+): Promise<UserAPIResult> {
+  console.log(`[UserAPI] searching users ${query}`);
+  // TODO: APIをぶっ叩いて名前でユーザー検索する
+  await new Promise((resolver) => setTimeout(resolver, 250));
+  return {
+    code: 200,
+    received: sampleUser,
+  };
+}
 
-  /**
-   * showIDからユーザーを検索する。
-   */
-  static async searchUserFromShowId(query: string): Promise<UserAPIResult> {
-    console.log(`[UserAPI] searching users ${query}`);
-    // TODO: APIをぶっ叩いてshowID(Twitterの@で始まるアレ)でユーザー検索する
-    await new Promise((resolver) => setTimeout(resolver, 250));
-    return {
-      code: 200,
-      received: sampleUser,
-    };
-  }
+/**
+ * showIDからユーザーを検索する。
+ */
+export async function searchUserFromShowId(
+  query: string
+): Promise<UserAPIResult> {
+  console.log(`[UserAPI] searching users ${query}`);
+  // TODO: APIをぶっ叩いてshowID(Twitterの@で始まるアレ)でユーザー検索する
+  await new Promise((resolver) => setTimeout(resolver, 250));
+  return {
+    code: 200,
+    received: sampleUser,
+  };
 }

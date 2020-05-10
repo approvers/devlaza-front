@@ -37,12 +37,16 @@ class ProjectBasicInfoForm extends React.Component<
 
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
-    if (e.target.value.endsWith("\n")) return;
+    if (e.target.value.indexOf("\n") !== -1) return;
     const isError = !checkBlankSpace(e.target.value);
 
+    if (isError) {
+      this.addError("name");
+    } else {
+      this.removeError("name");
+    }
     this.setState({
       name: e.target.value,
-      errors: this.errors(this.state.errors, "name", isError),
     });
     this.props.onNameChanged(e.target.value, !isError);
   };
@@ -50,27 +54,30 @@ class ProjectBasicInfoForm extends React.Component<
   handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isError = !checkBlankSpace(e.target.value);
 
+    if (isError) {
+      this.addError("introduction");
+    } else {
+      this.removeError("introduction");
+    }
+
     this.setState({
       introduction: e.target.value,
-      errors: this.errors(this.state.errors, "introduction", isError),
     });
     this.props.onIntroductionChanged(e.target.value, !isError);
   };
 
-  errors = (
-    previousErrors: Set<ErrorType>,
-    error: ErrorType,
-    isError: boolean
-  ) => {
-    const errors: Set<ErrorType> = new Set<ErrorType>([
-      ...Array.from(previousErrors),
-    ]);
-    if (isError) {
-      errors.add(error);
-    } else {
-      errors.delete(error);
-    }
-    return errors;
+  addError = (error: ErrorType) => {
+    this.setState({
+      errors: new Set<ErrorType>([...Array.from(this.state.errors), error]),
+    });
+  };
+
+  removeError = (error: ErrorType) => {
+    const newErrors = new Set<ErrorType>([...Array.from(this.state.errors)]);
+    newErrors.delete(error);
+    this.setState({
+      errors: newErrors,
+    });
   };
 
   render() {

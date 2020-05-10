@@ -1,12 +1,12 @@
 import { Tag } from "lib/model/Tag";
-import { TagAPI } from "../api/TagAPI";
+import * as TagAPI from "lib/api/TagAPI";
 
 export class TagList implements Iterable<Tag> {
   private readonly tagList: Tag[];
 
   readonly length: number;
 
-  constructor(tags?: Tag[]) {
+  constructor(tags: Tag[] = []) {
     if (typeof tags === "undefined") {
       this.tagList = [];
     } else {
