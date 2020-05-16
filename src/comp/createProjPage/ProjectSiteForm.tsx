@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as CommonStyles from "css/comp/Common.module.css";
+import * as style from "css/comp/createProjectPage/ProjectSiteForm.module.css";
 import {
   Card,
   IconButton,
@@ -13,6 +14,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import CreateSendButton from "comp/SendButton";
 import { checkBlankSpace, checkIsUrl } from "utils/ValidationUtil";
 
+type SiteError = "UrlInvalid" | "UrlDuplicate" | "DescriptionDuplicate";
+
 type PendingSite = {
   description: string;
   url: string;
@@ -23,10 +26,10 @@ type ProjectSiteFormProps = {
 };
 
 type ProjectSiteFormState = {
-  siteName: string;
+  description: string;
   siteUrl: string;
   sites: PendingSite[];
-  isUrlInvalid: boolean;
+  errors: Set<SiteError>;
 };
 
 class ProjectSiteForm extends React.Component<
@@ -37,30 +40,66 @@ class ProjectSiteForm extends React.Component<
     super(props);
 
     this.state = {
-      siteName: "",
+      description: "",
       siteUrl: "",
       sites: [],
-      isUrlInvalid: false,
+      errors: new Set<SiteError>([]),
     };
   }
+
+  addError = (oldErrors: Set<SiteError>, error: SiteError) => {
+    return new Set<SiteError>([...Array.from(oldErrors), error]);
+  };
+
+  removeError = (oldErrors: Set<SiteError>, error: SiteError) => {
+    const newErrors = new Set<SiteError>([...Array.from(oldErrors)]);
+    newErrors.delete(error);
+    return newErrors;
+  };
 
   handleSiteNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.includes("\n")) return;
 
+    let newErrors: Set<SiteError>;
+    const isDescriptionDuplicate =
+      this.state.sites.find((value) => value.description === e.target.value) !==
+      undefined;
+    if (isDescriptionDuplicate) {
+      newErrors = this.addError(this.state.errors, "DescriptionDuplicate");
+    } else {
+      newErrors = this.removeError(this.state.errors, "DescriptionDuplicate");
+    }
+
     this.setState({
-      siteName: e.target.value,
+      description: e.target.value,
+      errors: newErrors,
     });
   };
 
   handleSiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.includes("\n")) return;
 
-    const isError =
-      checkBlankSpace(e.target.value) && !checkIsUrl(e.target.value);
+    let newErrors = this.state.errors;
+    newErrors = this.removeError(newErrors, "UrlDuplicate");
+
+    if (checkBlankSpace(e.target.value) && !checkIsUrl(e.target.value)) {
+      newErrors = this.addError(newErrors, "UrlInvalid");
+    } else {
+      newErrors = this.removeError(newErrors, "UrlInvalid");
+    }
+
+    const isUrlDuplicate =
+      this.state.sites.find((value) => value.url === e.target.value) !==
+      undefined;
+    if (isUrlDuplicate) {
+      newErrors = this.addError(newErrors, "UrlDuplicate");
+    } else {
+      newErrors = this.removeError(newErrors, "UrlDuplicate");
+    }
 
     this.setState({
       siteUrl: e.target.value,
-      isUrlInvalid: isError,
+      errors: newErrors,
     });
   };
 
@@ -68,14 +107,14 @@ class ProjectSiteForm extends React.Component<
     const newSites: PendingSite[] = [
       ...this.state.sites,
       {
-        description: this.state.siteName,
+        description: this.state.description,
         url: this.state.siteUrl,
       },
     ];
 
     this.setState({
       sites: newSites,
-      siteName: "",
+      description: "",
       siteUrl: "",
     });
 
@@ -83,8 +122,17 @@ class ProjectSiteForm extends React.Component<
   };
 
   handleSiteRemoveButton = (index: number) => {
-    const isUserDecided = window.confirm(`本当に削除しますか?`);
-    if (!isUserDecided) return;
+    const descriptionDuplicated =
+      this.state.sites[index].description === this.state.description;
+    const urlDuplicated = this.state.sites[index].url === this.state.siteUrl;
+
+    let newErrors: Set<SiteError> = this.state.errors;
+    if (descriptionDuplicated) {
+      newErrors = this.removeError(newErrors, "DescriptionDuplicate");
+    }
+    if (urlDuplicated) {
+      newErrors = this.removeError(newErrors, "UrlDuplicate");
+    }
 
     const newSites = this.state.sites.filter(
       (_, elemIndex) => elemIndex !== index
@@ -92,21 +140,29 @@ class ProjectSiteForm extends React.Component<
 
     this.setState({
       sites: newSites,
+      errors: newErrors,
     });
     this.props.onSitesChange(newSites);
   };
 
   render() {
+    let siteDescriptionHelperText = "";
     let siteUrlHelperText = "";
 
-    if (this.state.isUrlInvalid) {
+    if (this.state.errors.has("DescriptionDuplicate")) {
+      siteDescriptionHelperText = "名前が重複しています";
+    }
+    if (this.state.errors.has("UrlDuplicate")) {
+      siteUrlHelperText = "URLが重複しています";
+    }
+    if (this.state.errors.has("UrlInvalid")) {
       siteUrlHelperText = "正しい形式で入力されていません";
     }
 
     return (
       <div className={CommonStyles.createProjectContentsBox}>
         <div className={CommonStyles.content_subtitle}>関連サイト</div>
-        <List style={{ padding: 0 }}>
+        <List className={style.site_list_wrapper}>
           {this.state.sites.map((site, index) => (
             <Card variant="outlined" key={index}>
               <ListItem>
@@ -128,21 +184,26 @@ class ProjectSiteForm extends React.Component<
           id="site_name"
           label="サイトの名前"
           onChange={this.handleSiteNameChange}
-          value={this.state.siteName}
+          value={this.state.description}
+          error={this.state.errors.has("DescriptionDuplicate")}
+          helperText={siteDescriptionHelperText}
         />
         <TextInputField
           id="site_url"
           label="サイトのURL"
           onChange={this.handleSiteUrlChange}
-          error={this.state.isUrlInvalid}
+          error={
+            this.state.errors.has("UrlDuplicate") ||
+            this.state.errors.has("UrlInvalid")
+          }
           value={this.state.siteUrl}
           helperText={siteUrlHelperText}
         />
         <CreateSendButton
           canSend={
-            checkBlankSpace(this.state.siteName) &&
+            checkBlankSpace(this.state.description) &&
             checkBlankSpace(this.state.siteUrl) &&
-            !this.state.isUrlInvalid
+            !(this.state.errors.size > 0)
           }
           handleSendButton={this.handleSiteAddButton}
           outline

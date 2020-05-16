@@ -44,40 +44,40 @@ class CreateProjectPage extends React.Component<
     };
   }
 
-  addError = (error: ProjectError) => {
-    this.setState({
-      errors: new Set<ProjectError>([...Array.from(this.state.errors), error]),
-    });
+  addError = (oldErrors: Set<ProjectError>, error: ProjectError) => {
+    return new Set<ProjectError>([...Array.from(oldErrors), error]);
   };
 
-  removeError = (error: ProjectError) => {
-    const newErrors = new Set<ProjectError>([...Array.from(this.state.errors)]);
+  removeError = (oldErrors: Set<ProjectError>, error: ProjectError) => {
+    const newErrors = new Set<ProjectError>([...Array.from(oldErrors)]);
     newErrors.delete(error);
-    this.setState({
-      errors: newErrors,
-    });
+    return newErrors;
   };
 
   handleNameInputChange = (value: string, isValid: boolean) => {
+    let newErrors = this.state.errors;
     if (isValid) {
-      this.removeError("name");
+      newErrors = this.removeError(newErrors, "name");
     } else {
-      this.addError("name");
+      newErrors = this.addError(newErrors, "name");
     }
 
     this.setState({
+      errors: newErrors,
       name: value,
     });
   };
 
   handleIntroductionInputChange = (value: string, isValid: boolean) => {
+    let newErrors = this.state.errors;
     if (isValid) {
-      this.removeError("introduction");
+      newErrors = this.removeError(newErrors, "introduction");
     } else {
-      this.addError("introduction");
+      newErrors = this.addError(newErrors, "introduction");
     }
 
     this.setState({
+      errors: newErrors,
       introduction: value,
     });
   };

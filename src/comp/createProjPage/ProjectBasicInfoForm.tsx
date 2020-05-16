@@ -35,18 +35,30 @@ class ProjectBasicInfoForm extends React.Component<
     };
   }
 
+  addError = (oldErrors: Set<ErrorType>, error: ErrorType) => {
+    return new Set<ErrorType>([...Array.from(oldErrors), error]);
+  };
+
+  removeError = (oldErrors: Set<ErrorType>, error: ErrorType) => {
+    const newErrors = new Set<ErrorType>([...Array.from(oldErrors)]);
+    newErrors.delete(error);
+    return newErrors;
+  };
+
   handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
     if (e.target.value.includes("\n")) return;
     const isError = !checkBlankSpace(e.target.value);
 
+    let newErrors: Set<ErrorType> = this.state.errors;
     if (isError) {
-      this.addError("name");
+      newErrors = this.addError(newErrors, "name");
     } else {
-      this.removeError("name");
+      newErrors = this.removeError(newErrors, "name");
     }
     this.setState({
       name: e.target.value,
+      errors: newErrors,
     });
     this.props.onNameChanged(e.target.value, !isError);
   };
@@ -54,30 +66,18 @@ class ProjectBasicInfoForm extends React.Component<
   handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isError = !checkBlankSpace(e.target.value);
 
+    let newErrors: Set<ErrorType> = this.state.errors;
     if (isError) {
-      this.addError("introduction");
+      newErrors = this.addError(newErrors, "introduction");
     } else {
-      this.removeError("introduction");
+      newErrors = this.removeError(newErrors, "introduction");
     }
 
     this.setState({
       introduction: e.target.value,
-    });
-    this.props.onIntroductionChanged(e.target.value, !isError);
-  };
-
-  addError = (error: ErrorType) => {
-    this.setState({
-      errors: new Set<ErrorType>([...Array.from(this.state.errors), error]),
-    });
-  };
-
-  removeError = (error: ErrorType) => {
-    const newErrors = new Set<ErrorType>([...Array.from(this.state.errors)]);
-    newErrors.delete(error);
-    this.setState({
       errors: newErrors,
     });
+    this.props.onIntroductionChanged(e.target.value, !isError);
   };
 
   render() {
