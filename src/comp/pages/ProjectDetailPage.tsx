@@ -1,4 +1,4 @@
-port * as React from "react";
+import * as React from "react";
 import * as styles from "css/comp/pages/ProjectDetailPage.module.css";
 import * as CommonStyle from "css/comp/Common.module.css";
 
