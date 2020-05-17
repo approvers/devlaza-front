@@ -76,19 +76,9 @@ class ProjectSiteForm extends React.Component<
   handleSiteNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.includes("\n")) return;
 
-    let newErrors: Set<SiteError>;
-    const isDescriptionDuplicate =
-      this.state.sites.find((value) => value.description === e.target.value) !==
-      undefined;
-    if (isDescriptionDuplicate) {
-      newErrors = this.addError(this.state.errors, "DescriptionDuplicate");
-    } else {
-      newErrors = this.removeError(this.state.errors, "DescriptionDuplicate");
-    }
-
     this.setState({
       description: e.target.value,
-      errors: newErrors,
+      errors: this.removeError(this.state.errors, "DescriptionDuplicate"),
     });
   };
 
@@ -104,14 +94,7 @@ class ProjectSiteForm extends React.Component<
       newErrors = this.removeError(newErrors, "UrlInvalid");
     }
 
-    const isUrlDuplicate =
-      this.state.sites.find((value) => value.url === e.target.value) !==
-      undefined;
-    if (isUrlDuplicate) {
-      newErrors = this.addError(newErrors, "UrlDuplicate");
-    } else {
-      newErrors = this.removeError(newErrors, "UrlDuplicate");
-    }
+    this.removeError(newErrors, "UrlDuplicate");
 
     this.setState({
       siteUrl: e.target.value,
@@ -127,6 +110,28 @@ class ProjectSiteForm extends React.Component<
         url: this.state.siteUrl,
       },
     ];
+
+    let newErrors: Set<SiteError> = this.state.errors;
+    const isDescriptionDuplicate =
+      this.state.sites.find(
+        (value) => value.description === this.state.description
+      ) !== undefined;
+    const isUrlDuplicate =
+      this.state.sites.find((value) => value.url === this.state.siteUrl) !==
+      undefined;
+    if (isDescriptionDuplicate) {
+      newErrors = this.addError(newErrors, "DescriptionDuplicate");
+    }
+    if (isUrlDuplicate) {
+      newErrors = this.addError(newErrors, "UrlDuplicate");
+    }
+
+    if (newErrors.size > this.state.errors.size) {
+      this.setState({
+        errors: newErrors,
+      });
+      return;
+    }
 
     this.setState({
       sites: newSites,
