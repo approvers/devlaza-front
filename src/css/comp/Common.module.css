@@ -6,13 +6,30 @@
   padding-bottom: 0.5vh;
 }
 
+.content_subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  padding-top: 1.5vh;
+  padding-bottom: 0.5vh;
+}
+
 .createProjectContentsBox {
-  padding-bottom: 2vh;
+  padding-bottom: 2.5vh;
+}
+
+.form_wrapper {
+  display: block;
+  max-width: 30rem;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 639px) {
   .createProjectContentsBox {
-    padding-bottom: 1vh;
+    padding-bottom: 1.5vh;
+  }
+  .createProjectContentsBox div {
+    font-size: 16px;
   }
   .createProjectContentsBox div {
     font-size: 16px;

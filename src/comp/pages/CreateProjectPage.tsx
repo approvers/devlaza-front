@@ -1,18 +1,32 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import * as styles from "css/comp/pages/CreateProjectPage.module.css";
 import * as CommonStyles from "css/comp/Common.module.css";
-import CreateSendButton from "../SendButton";
-import { TextField } from "@material-ui/core";
+import CreateSendButton from "comp/SendButton";
+import { Divider } from "@material-ui/core";
+
+import { checkBlankSpace } from "utils/ValidationUtil";
+import ProjectBasicInfoForm from "comp/createProjPage/ProjectBasicInfoForm";
+import ProjectTagForm from "comp/createProjPage/ProjectTagForm";
+import ProjectSiteForm from "comp/createProjPage/ProjectSiteForm";
+import * as ProjectAPI from "lib/api/ProjectAPI";
+import * as SiteAPI from "lib/api/SiteAPI";
+import * as TagAPI from "lib/api/TagAPI";
+
+type PendingSite = {
+  description: string;
+  url: string;
+};
+
+type ProjectError = "name" | "introduction";
 
 type CreateProjectPageState = {
   name: string;
   introduction: string;
-  isNameError: boolean;
-  isIntroductionError: boolean;
+  tagIDs: string[];
+  sites: PendingSite[];
+  errors: Set<ProjectError>;
+  isSending: boolean;
 };
-
-const checkBlankSpace = (value: string) => !!value.match(/\S/g);
 
 class CreateProjectPage extends React.Component<
   RouteComponentProps,
@@ -23,90 +37,108 @@ class CreateProjectPage extends React.Component<
     this.state = {
       name: "",
       introduction: "",
-      isNameError: false,
-      isIntroductionError: false,
+      tagIDs: [],
+      sites: [],
+      errors: new Set<ProjectError>([]),
+      isSending: false,
     };
   }
 
-  handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // multiline属性を消すと表示が乱れるのでこっちで複数行入力を阻止する
-    if (e.target.value.endsWith("\n")) return;
-    const isError = checkBlankSpace(e.target.value) === false;
+  addError = (oldErrors: Set<ProjectError>, error: ProjectError) => {
+    return new Set<ProjectError>([...Array.from(oldErrors), error]);
+  };
+
+  removeError = (oldErrors: Set<ProjectError>, error: ProjectError) => {
+    const newErrors = new Set<ProjectError>([...Array.from(oldErrors)]);
+    newErrors.delete(error);
+    return newErrors;
+  };
+
+  handleNameInputChange = (value: string, isValid: boolean) => {
+    let newErrors = this.state.errors;
+    if (isValid) {
+      newErrors = this.removeError(newErrors, "name");
+    } else {
+      newErrors = this.addError(newErrors, "name");
+    }
+
     this.setState({
-      name: e.target.value,
-      isNameError: isError,
+      errors: newErrors,
+      name: value,
     });
   };
 
-  handleIntroductionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isError = checkBlankSpace(e.target.value) === false;
+  handleIntroductionInputChange = (value: string, isValid: boolean) => {
+    let newErrors = this.state.errors;
+    if (isValid) {
+      newErrors = this.removeError(newErrors, "introduction");
+    } else {
+      newErrors = this.addError(newErrors, "introduction");
+    }
+
     this.setState({
-      introduction: e.target.value,
-      isIntroductionError: isError,
+      errors: newErrors,
+      introduction: value,
     });
   };
 
-  handleSendButton = () => {
-    // TODO: ここでAPIに情報をぶん投げる
-    const projectId = "7438921";
-    this.props.history.push(`/projects/detail/${projectId}`);
+  handleTagChange = (tagIDs: string[]) => {
+    this.setState({
+      tagIDs: tagIDs,
+    });
+  };
+
+  handleSitesChange = (sites: PendingSite[]) => {
+    this.setState({
+      sites: sites,
+    });
+  };
+
+  handleSendButton = async () => {
+    this.setState({
+      isSending: true,
+    });
+
+    const projectAPIResult = await ProjectAPI.create(
+      this.state.name,
+      this.state.introduction
+    );
+    const projectId = projectAPIResult.received[0].uuid;
+
+    for (const tagID of this.state.tagIDs) {
+      await TagAPI.belongToProject(tagID, projectId);
+    }
+    for (const site of this.state.sites) {
+      await SiteAPI.create(site.description, site.url, projectId);
+    }
+    this.props.history.push(`/projects/create/invite/${projectId}`);
   };
 
   render() {
-    let nameHelperText = "";
-    let introductionHelperText = "";
-
-    if (this.state.isNameError) {
-      nameHelperText = "プロジェクト名を入力してください";
-    }
-    if (this.state.isIntroductionError) {
-      introductionHelperText = "プロジェクトの説明を入力してください";
-    }
-
     return (
       <>
-        <div className={styles.form_wrapper}>
-          <div className={CommonStyles.content_title}>プロジェクト作成</div>
+        <div className={CommonStyles.form_wrapper}>
           <form autoComplete="off">
+            <ProjectBasicInfoForm
+              onNameChanged={this.handleNameInputChange}
+              onIntroductionChanged={this.handleIntroductionInputChange}
+            />
+            <ProjectTagForm onTagsChange={this.handleTagChange} />
+            <ProjectSiteForm onSitesChange={this.handleSitesChange} />
             <div className={CommonStyles.createProjectContentsBox}>
-              <TextField
-                id="project-name"
-                label="名前"
-                margin="normal"
-                multiline
-                variant="outlined"
-                fullWidth
-                required
-                onChange={this.handleNameInputChange}
-                error={this.state.isNameError}
-                value={this.state.name}
-                helperText={nameHelperText}
-              />
-            </div>
-            <div className={CommonStyles.createProjectContentsBox}>
-              <TextField
-                id="project-intro"
-                label="プロジェクトの説明"
-                margin="normal"
-                multiline
-                rows={4}
-                variant="outlined"
-                style={{ marginBottom: "1rem" }}
-                fullWidth
-                required
-                onChange={this.handleIntroductionInputChange}
-                error={this.state.isIntroductionError}
-                helperText={introductionHelperText}
-              />
+              <Divider />
             </div>
             <div className={CommonStyles.createProjectContentsBox}>
               <CreateSendButton
                 canSend={
                   checkBlankSpace(this.state.name) &&
-                  checkBlankSpace(this.state.introduction)
+                  checkBlankSpace(this.state.introduction) &&
+                  !this.state.isSending
                 }
                 handleSendButton={this.handleSendButton}
-              />
+              >
+                {this.state.isSending ? "作成中" : "作成"}
+              </CreateSendButton>
             </div>
           </form>
         </div>
