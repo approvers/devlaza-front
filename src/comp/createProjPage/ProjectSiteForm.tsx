@@ -32,6 +32,22 @@ type ProjectSiteFormState = {
   errors: Set<SiteError>;
 };
 
+const errorMessages: { [name in SiteError]: string } = {
+  UrlInvalid: "正しい形式で入力されていません",
+  UrlDuplicate: "URLが重複しています",
+  DescriptionDuplicate: "名前が重複しています",
+};
+
+const getHelperText = (errors: Set<SiteError>) => {
+  const siteDescriptionHelperText =
+    errors.has("DescriptionDuplicate") && errorMessages["DescriptionDuplicate"];
+  const siteUrlHelperText =
+    (errors.has("UrlDuplicate") && errorMessages["UrlDuplicate"]) ||
+    (errors.has("UrlInvalid") && errorMessages["UrlInvalid"]);
+
+  return { siteDescriptionHelperText, siteUrlHelperText };
+};
+
 class ProjectSiteForm extends React.Component<
   ProjectSiteFormProps,
   ProjectSiteFormState
@@ -146,18 +162,9 @@ class ProjectSiteForm extends React.Component<
   };
 
   render() {
-    let siteDescriptionHelperText = "";
-    let siteUrlHelperText = "";
-
-    if (this.state.errors.has("DescriptionDuplicate")) {
-      siteDescriptionHelperText = "名前が重複しています";
-    }
-    if (this.state.errors.has("UrlDuplicate")) {
-      siteUrlHelperText = "URLが重複しています";
-    }
-    if (this.state.errors.has("UrlInvalid")) {
-      siteUrlHelperText = "正しい形式で入力されていません";
-    }
+    const { siteDescriptionHelperText, siteUrlHelperText } = getHelperText(
+      this.state.errors
+    );
 
     return (
       <div className={CommonStyles.createProjectContentsBox}>

@@ -23,7 +23,7 @@ class ProjectTagForm extends React.Component<
   ProjectTagFormProps,
   ProjectTagFormState
 > {
-  private errorMessages: { [name in ErrorType]: string } = {
+  private readonly errorMessages: { [name in ErrorType]: string } = {
     tagBlank: "タグの名前は空白にはできません",
     tagDuplicate: "重複しているタグがあります",
   };
@@ -98,14 +98,10 @@ class ProjectTagForm extends React.Component<
   };
 
   render() {
-    let tagIDHelperText = "";
-
-    if (this.state.errors.has("tagBlank")) {
-      tagIDHelperText = this.errorMessages["tagBlank"];
-    }
-    if (this.state.errors.has("tagDuplicate")) {
-      tagIDHelperText = this.errorMessages["tagDuplicate"];
-    }
+    const tagIDHelperText =
+      (this.state.errors.has("tagBlank") && this.errorMessages["tagBlank"]) ||
+      (this.state.errors.has("tagDuplicate") &&
+        this.errorMessages["tagDuplicate"]);
 
     return (
       <div className={CommonStyles.createProjectContentsBox}>

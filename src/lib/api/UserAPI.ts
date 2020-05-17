@@ -65,3 +65,17 @@ export async function searchUserFromShowId(
     received: sampleUser,
   };
 }
+
+/**
+ * ユーザーを名前またはshowIDから検索する。
+ * queryの先頭に「@」がある場合はshowID、それ以外は名前から検索される。
+ */
+export async function searchUser(query: string) {
+  let apiResult: UserAPIResult;
+  if (query.startsWith("@")) {
+    apiResult = await searchUserFromName(query);
+  } else {
+    apiResult = await searchUserFromShowId(query);
+  }
+  return apiResult;
+}

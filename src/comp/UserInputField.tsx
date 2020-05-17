@@ -94,14 +94,8 @@ class UserInputField extends React.Component<
       loading: true,
       suggestedUsers: [],
     });
-    let apiResult: UserAPI.UserAPIResult;
-    if (this.state.pendingUsername.startsWith("@")) {
-      apiResult = await UserAPI.searchUserFromName(this.state.pendingUsername);
-    } else {
-      apiResult = await UserAPI.searchUserFromShowId(
-        this.state.pendingUsername
-      );
-    }
+
+    const apiResult = await UserAPI.searchUser(this.state.pendingUsername);
 
     this.setState({
       loading: false,

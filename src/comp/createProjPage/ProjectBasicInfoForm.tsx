@@ -16,15 +16,22 @@ type ProjectBasicInfoFormState = {
   errors: Set<ErrorType>;
 };
 
+const errorMessages: { [name in ErrorType]: string } = {
+  name: "プロジェクト名を入力してください",
+  introduction: "プロジェクトの説明を入力してください",
+};
+
+const getHelperTexts = (errors: Set<ErrorType>) => {
+  const nameHelperText = errors.has("name") && errorMessages["name"];
+  const introductionHelperText =
+    errors.has("introduction") && errorMessages["introduction"];
+  return { nameHelperText, introductionHelperText };
+};
+
 class ProjectBasicInfoForm extends React.Component<
   ProjectBasicInfoFormProps,
   ProjectBasicInfoFormState
 > {
-  private errorMessages: { [name in ErrorType]: string } = {
-    name: "プロジェクト名を入力してください",
-    introduction: "プロジェクトの説明を入力してください",
-  };
-
   constructor(props: ProjectBasicInfoFormProps) {
     super(props);
 
@@ -81,15 +88,9 @@ class ProjectBasicInfoForm extends React.Component<
   };
 
   render() {
-    let nameHelperText = "";
-    let introductionHelperText = "";
-
-    if (this.state.errors.has("name")) {
-      nameHelperText = this.errorMessages["name"];
-    }
-    if (this.state.errors.has("introduction")) {
-      introductionHelperText = this.errorMessages["introduction"];
-    }
+    const { nameHelperText, introductionHelperText } = getHelperTexts(
+      this.state.errors
+    );
 
     return (
       <div className={CommonStyles.createProjectContentsBox}>
