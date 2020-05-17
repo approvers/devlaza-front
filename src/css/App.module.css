@@ -1,5 +1,7 @@
+@import "https://cdn.jsdelivr.net/npm/yakuhanjp@3.3.1/dist/css/yakuhanjp.min.css";
+
 .App {
-  font-family: Roboto, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka,
+  font-family: YakuHanJP, Roboto, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka,
     メイリオ, Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
 }
 
 .footerPosition {
-  width: 100vw;
+  width: 100%;
   margin-top: auto;
 }
 

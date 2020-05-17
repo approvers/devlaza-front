@@ -86,4 +86,8 @@
     width: 100%;
     float: none;
   }
+
+  .pdetail_property {
+    text-align: right;
+  }
 }

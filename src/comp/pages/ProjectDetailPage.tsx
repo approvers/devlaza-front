@@ -7,14 +7,15 @@ import { RouteComponentProps } from "react-router-dom";
 import { Button, Link, Divider } from "@material-ui/core";
 
 import { PostAdd, Favorite } from "@material-ui/icons";
-import Loading from "comp/Loading";
-import Avater from "comp/Avater";
+import Loading from "../Loading";
+import Avater from "../Avater";
 import ListElementTag from "comp/ListElementTag";
 import { Tag } from "../../lib/model/Tag";
+import ShareButtons from "../ShareButtons";
 
 /* --- ボタンのスタイル --- */
 
-type ProjectDetailPageProps = {} & RouteComponentProps<{ uuid: string }>;
+type ProjectDetailPageProps = RouteComponentProps<{ uuid: string }>;
 
 type ProjectDetailPageState = {
   name: string;
@@ -22,13 +23,10 @@ type ProjectDetailPageState = {
   createdUser: string;
   recruiting: boolean;
   introduction: string;
-
   sites: string[][];
   tags: Tag[];
   member: string[];
-
   favs: number;
-
   isLoaded: boolean;
 };
 
@@ -170,6 +168,11 @@ class ProjectDetailPage extends React.Component<
             </div>
           </div>
         </div>
+        <ShareButtons
+          pathName={this.props.location.pathname}
+          introduction={this.state.introduction}
+          projectName={this.state.name}
+        />
       </>
     );
   }
